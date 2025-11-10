@@ -179,6 +179,7 @@ Verify the setting is correctly applied:
 
 
 ## Creating the Pomodoro app
+Duration: 10
 
 In this hands-on, we'll develop a Pomodoro timer application. This application has functionality to set work time and break time and manage timers.
 
@@ -186,7 +187,7 @@ We aim to create an application with the following UI:
 
 ![Pomodoro Timer UI](github-copilot-workshop-id/img/__pomodoro.png)
 
-Let's first create a new Python file in VS Code. Since we want to create this as a web application, we'll use Fastify. Let's name the main file "server.py".
+Let's first create a new Python file in VS Code. Since we want to create this as a web application, we'll use FastAPI. Let's name the main file "server.py".
 
 ### Project Overview
 
@@ -204,7 +205,7 @@ These are the required feature for the MVP:
 
 
 ## Think About Pomodoro Timer Design
-Duration: 10
+Duration: 15
 
 First, rather than starting implementation immediately, let's consult with Copilot about what approach and design to proceed with. From here on, we'll proceed entirely in agent mode.
 
@@ -221,20 +222,23 @@ Once the image is uploaded, it will be displayed in Copilot Chat.
 Then, enter the following prompt:
 
 ```text
-We plan to create a Pomodoro timer web app in this project. The attached image is a UI mock for that app. What design should we proceed with to create this app using Fastify and HTML/CSS/JavaScript? Please suggest an architecture.
+We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using FastAPI and HTML/CSS/JavaScript? Please suggest an architecture.
 ```
 
 It will then suggest a recommended web application architecture.
 
-If there are points that should be improved or considerations that are lacking in this architecture, try pointing them out. For example, the following suggestion:
-```text
-Considering the ease of unit testing, please also list any improvements or additions needed to the current architecture.
-```
+> aside positive
+>
+> If there are points that should be improved or considerations that are lacking in this architecture, try pointing them out. For example, the following suggestion: "Considering the ease of unit testing, please also list any improvements or additions needed to the current architecture."
 
-After this exchange, once the architectural design is settled, let's save that content to a file once. By doing so, you can reference the same architectural content even if you open a different chat session.
+After this exchange, once the architectural design is settled, let's save that content to a file once, `architecture.md`. By doing so, you can reference the same architectural content even if you open a different chat session.
 ```text
 Since the architecture has been settled through our conversation so far, please compile a web application architecture proposal in a file called architecture.md in `docs/` directory, based on the content of our conversation.
 ```
+
+> aside negative
+>
+> Don't forget to click "Keep" to save the changes.
 
 > aside positive
 >
@@ -242,7 +246,7 @@ Since the architecture has been settled through our conversation so far, please 
 
 ### Specification
 
-To make sure the agent understand the requirements, we create another document using this prompt:
+To make sure the agent understand the requirements, we create another document (`specs.md`) using this prompt:
 ```text
 Create a document to be used as specification for the development of this application. Make sure these requirements are included in the specification:
 - 25-minute work timer
@@ -252,6 +256,38 @@ Create a document to be used as specification for the development of this applic
 - Responsive web UI
 Compile the specifications in a file called in specs.md in `docs/` directory.
 ```
+
+
+## Let's List What Needs to Be Done
+Duration: 10
+
+In using Copilot it is not recommended to try implement a large feature all at once. It is better to start implementing in small increments. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.
+
+Let's consult with Copilot Chat about this. Attach `pomodoro.png`, `architecture.md`, and `specs.md`, using the `Add Context...` button:
+
+![Attach Context](github-copilot-workshop-id/img/__attach.png)
+
+Then enter this prompt:
+
+```
+For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
+Then, I want to implement this Pomodoro timer application step by step. Based on the attached image and documents, please suggest what granularity should be used to implement functions and save the step-by-step implementation plan in a file called `plan.md` in the `docs/` directory.
+```
+
+![Planning Identification Example](github-copilot-workshop-id/img/__planning.png)
+
+> aside positive
+>
+> If there are points you'd like to see improved, try pointing them out to Copilot. By this point you should be able to write the prompt you can use to give instructions.
+
+> aside negative
+>
+> Also, if the result from Copilot does not meet your needs, you can always ask Copilot to make adjustments.
+
+
+## Let's Implement
+Duration: 15
+
 
 
 ## Explain Code
@@ -277,6 +313,36 @@ Confirm the chat mode is set to "Ask".
 > aside positive
 >
 > **Tip**: By adding `#` before a filename, you can include that entire file as context.
+
+
+## Let's List What Needs to Be Done
+Duration: 10
+
+Now that the UI mock and architectural design are established, let's consider what specific functionality needs to be implemented. Let's consult with Copilot Chat about this too. At that time, let's attach pomodoro.png and architecture.md.
+
+```
+For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
+```
+
+<img src="github-copilot-workshop/img/pomodoro.png" alt="Feature List Consideration" width="400" />
+
+![Feature Identification Example](github-copilot-workshop/img/10-2.list_features.png)
+
+Let's improve this content through chat with Copilot. Once the content is finalized, let's save this content in a file called features.md, just like we did with the architecture.
+
+```
+Thank you. That content looks good, so please write the list of functions that need to be implemented in a file called features.md.
+```
+
+Now we're about to start implementation, but a tip for mastering Copilot is not to try to implement large functions all at once, but to start implementing small functions first. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.
+
+Let's also consult with Copilot about what granularity to break down and implement this application development. Here, let's attach pomodoro.png, architecture.md, and features.md.
+
+```
+I want to implement this Pomodoro timer application step by step. Based on the attached image, architecture, and feature list, please suggest what granularity should be used to implement functions and propose a step-by-step implementation plan.
+```
+
+When I tried it, it suggested a plan consisting of 6 steps. If there are points you'd like to see improved, try pointing them out to Copilot. And let's save this content in a file called plan.md so it can be referenced later. Please think for yourself what prompt should be used to give instructions.
 
 
 ## [WIP] Documentation

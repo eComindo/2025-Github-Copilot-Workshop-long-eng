@@ -129,7 +129,7 @@
 </ul>
 <h2 is-upgraded>3. Search Settings</h2>
 <p>Enter the following in the settings search box:</p>
-<pre><code>github.copilot.nextEditSuggestions.enabled
+<pre><code language="language-text" class="language-text">github.copilot.nextEditSuggestions.enabled
 </code></pre>
 <h2 is-upgraded>4. Enable Setting</h2>
 <ul>
@@ -179,11 +179,11 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Creating the Pomodoro app" duration="0">
+      <google-codelab-step label="Creating the Pomodoro app" duration="10">
         <p>In this hands-on, we&#39;ll develop a Pomodoro timer application. This application has functionality to set work time and break time and manage timers.</p>
 <p>We aim to create an application with the following UI:</p>
 <p class="image-container"><img alt="Pomodoro Timer UI" src="img/db1beea0fe471449.png"></p>
-<p>Let&#39;s first create a new Python file in VS Code. Since we want to create this as a web application, we&#39;ll use Fastify. Let&#39;s name the main file &#34;server.py&#34;.</p>
+<p>Let&#39;s first create a new Python file in VS Code. Since we want to create this as a web application, we&#39;ll use FastAPI. Let&#39;s name the main file &#34;server.py&#34;.</p>
 <h2 is-upgraded>Project Overview</h2>
 <p>Create a web timer application for the Pomodoro Technique.</p>
 <h2 is-upgraded>Required Features</h2>
@@ -199,7 +199,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Think About Pomodoro Timer Design" duration="10">
+      <google-codelab-step label="Think About Pomodoro Timer Design" duration="15">
         <p>First, rather than starting implementation immediately, let&#39;s consult with Copilot about what approach and design to proceed with. From here on, we&#39;ll proceed entirely in agent mode.</p>
 <p>What&#39;s helpful when creating a web application with UI like this is Copilot Chat&#39;s image upload functionality. Using this, you can make Copilot understand your application&#39;s UI image.</p>
 <h2 is-upgraded>Architecture</h2>
@@ -207,20 +207,21 @@
 <p>Once the image is uploaded, it will be displayed in Copilot Chat.</p>
 <p class="image-container"><img alt="VS Code Copilot Chat Context Menu" src="img/34a6b6e70d8aa9fb.png"></p>
 <p>Then, enter the following prompt:</p>
-<pre><code language="language-text" class="language-text">We plan to create a Pomodoro timer web app in this project. The attached image is a UI mock for that app. What design should we proceed with to create this app using Fastify and HTML/CSS/JavaScript? Please suggest an architecture.
+<pre><code language="language-text" class="language-text">We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using FastAPI and HTML/CSS/JavaScript? Please suggest an architecture.
 </code></pre>
 <p>It will then suggest a recommended web application architecture.</p>
-<p>If there are points that should be improved or considerations that are lacking in this architecture, try pointing them out. For example, the following suggestion:</p>
-<pre><code>Considering the ease of unit testing, please also list any improvements or additions needed to the current architecture.
+<aside class="special"><p>If there are points that should be improved or considerations that are lacking in this architecture, try pointing them out. For example, the following suggestion: &#34;Considering the ease of unit testing, please also list any improvements or additions needed to the current architecture.&#34;</p>
+</aside>
+<p>After this exchange, once the architectural design is settled, let&#39;s save that content to a file once, <code>architecture.md</code>. By doing so, you can reference the same architectural content even if you open a different chat session.</p>
+<pre><code language="language-text" class="language-text">Since the architecture has been settled through our conversation so far, please compile a web application architecture proposal in a file called architecture.md in `docs/` directory, based on the content of our conversation.
 </code></pre>
-<p>After this exchange, once the architectural design is settled, let&#39;s save that content to a file once. By doing so, you can reference the same architectural content even if you open a different chat session.</p>
-<pre><code>Since the architecture has been settled through our conversation so far, please compile a web application architecture proposal in a file called architecture.md in `docs/` directory, based on the content of our conversation.
-</code></pre>
+<aside class="warning"><p>Don&#39;t forget to click &#34;Keep&#34; to save the changes.</p>
+</aside>
 <aside class="special"><p>When a conversation with Copilot Chat reaches a conclusion, you can give clearer instructions to Copilot by starting a new conversation. To start a new conversation, click the &#34;New conversation&#34; button at the top of the chat window. At that time, content you want to reference in future chats, like the architectural content this time, is convenient to write out and save to files as we did here.</p>
 </aside>
 <h2 is-upgraded>Specification</h2>
-<p>To make sure the agent understand the requirements, we create another document using this prompt:</p>
-<pre><code>Create a document to be used as specification for the development of this application. Make sure these requirements are included in the specification:
+<p>To make sure the agent understand the requirements, we create another document (<code>specs.md</code>) using this prompt:</p>
+<pre><code language="language-text" class="language-text">Create a document to be used as specification for the development of this application. Make sure these requirements are included in the specification:
 - 25-minute work timer
 - 5-minute break timer
 - Timer start/stop/reset
@@ -229,6 +230,26 @@
 Compile the specifications in a file called in specs.md in `docs/` directory.
 </code></pre>
 
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Let&#39;s List What Needs to Be Done" duration="10">
+        <p>In using Copilot it is not recommended to try implement a large feature all at once. It is better to start implementing in small increments. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.</p>
+<p>Let&#39;s consult with Copilot Chat about this. Attach <code>pomodoro.png</code>, <code>architecture.md</code>, and <code>specs.md</code>, using the <code>Add Context...</code> button:</p>
+<p class="image-container"><img alt="Attach Context" src="img/7a24f9b17622de8.png"></p>
+<p>Then enter this prompt:</p>
+<pre><code>For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
+Then, I want to implement this Pomodoro timer application step by step. Based on the attached image and documents, please suggest what granularity should be used to implement functions and save the step-by-step implementation plan in a file called `plan.md` in the `docs/` directory.
+</code></pre>
+<p class="image-container"><img alt="Planning Identification Example" src="img/119806b1ed332e41.png"></p>
+<aside class="special"><p>If there are points you&#39;d like to see improved, try pointing them out to Copilot. By this point you should be able to write the prompt you can use to give instructions.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Let&#39;s Implement" duration="15">
+        
 
       </google-codelab-step>
     
@@ -253,9 +274,27 @@ Compile the specifications in a file called in specs.md in `docs/` directory.
 
       </google-codelab-step>
     
+      <google-codelab-step label="Let&#39;s List What Needs to Be Done" duration="10">
+        <p>Now that the UI mock and architectural design are established, let&#39;s consider what specific functionality needs to be implemented. Let&#39;s consult with Copilot Chat about this too. At that time, let&#39;s attach pomodoro.png and architecture.md.</p>
+<pre><code>For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
+</code></pre>
+<p class="image-container"><img alt="Feature List Consideration" style="width: 400.00px" src="img/8e24c2d7e6a91e1b.png"></p>
+<p class="image-container"><img alt="Feature Identification Example" src="img/20a6ec3e5b2f7c50.png"></p>
+<p>Let&#39;s improve this content through chat with Copilot. Once the content is finalized, let&#39;s save this content in a file called features.md, just like we did with the architecture.</p>
+<pre><code>Thank you. That content looks good, so please write the list of functions that need to be implemented in a file called features.md.
+</code></pre>
+<p>Now we&#39;re about to start implementation, but a tip for mastering Copilot is not to try to implement large functions all at once, but to start implementing small functions first. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.</p>
+<p>Let&#39;s also consult with Copilot about what granularity to break down and implement this application development. Here, let&#39;s attach pomodoro.png, architecture.md, and features.md.</p>
+<pre><code>I want to implement this Pomodoro timer application step by step. Based on the attached image, architecture, and feature list, please suggest what granularity should be used to implement functions and propose a step-by-step implementation plan.
+</code></pre>
+<p>When I tried it, it suggested a plan consisting of 6 steps. If there are points you&#39;d like to see improved, try pointing them out to Copilot. And let&#39;s save this content in a file called plan.md so it can be referenced later. Please think for yourself what prompt should be used to give instructions.</p>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="[WIP] Documentation" duration="0">
         <h2 is-upgraded>Create User Flow</h2>
-<pre><code>Create a documentation about how to use this web application. Draw a user flow chart and sequence diagram, use Mermaid format.
+<pre><code language="language-text" class="language-text">Create a documentation about how to use this web application. Draw a user flow chart and sequence diagram, use Mermaid format.
 </code></pre>
 
 
