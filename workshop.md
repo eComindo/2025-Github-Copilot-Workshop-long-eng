@@ -187,7 +187,7 @@ We aim to create an application with the following UI:
 
 ![Pomodoro Timer UI](github-copilot-workshop-id/img/__pomodoro.png)
 
-Let's first create a new Python file in VS Code. Since we want to create this as a web application, we'll use FastAPI. Let's name the main file "server.py".
+Let's first create a new Python file in VS Code. Since we want to create this as a web application, we'll use Flask. Let's name the main file `app.py`.
 
 ### Project Overview
 
@@ -222,7 +222,7 @@ Once the image is uploaded, it will be displayed in Copilot Chat.
 Then, enter the following prompt:
 
 ```text
-We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using FastAPI and HTML/CSS/JavaScript? Please suggest an architecture.
+We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using Flask and HTML/CSS/JavaScript? Please suggest an architecture.
 ```
 
 It will then suggest a recommended web application architecture.
@@ -285,9 +285,58 @@ Then, I want to implement this Pomodoro timer application step by step. Based on
 > Also, if the result from Copilot does not meet your needs, you can always ask Copilot to make adjustments.
 
 
-## Let's Implement
-Duration: 15
+## Set Up The Python Environment (Optional)
+Duration: 10
 
+To make sure we can develop this project without obstacles, let's try setting up the Python environment using `uv` and `venv`.
+
+### uv
+Install uv if you don't have it in your system yet. uv is a modern, high-performance Python package manager and installer written in Rust. It serves as a drop-in replacement for traditional Python package management tools like pip, offering significant improvements in speed, reliability, and dependency resolution.. Go to this file to install uv: https://docs.astral.sh/uv/getting-started/installation/.
+
+### venv
+Install venv to create a virtual environment for this work project:
+``` bash
+uv venv
+```
+
+Activate venv:
+```bash
+source .venv/bin/activate
+```
+
+
+## Let's Implement
+Duration: 30
+
+Now that all the preparation is complete, let's finally start implementation.
+
+Attach the `plan.md` file to the chat then use this prompt.
+
+```
+Please implement the development of this project using `plan.md` and other necessary documents.
+If there are additional considerations needed, please ask me questions.
+Don't forget to activate `venv` by using this command: `source .venv/bin/activate` and use `uv pip` to install the Python requirements.
+```
+
+After that, Copilot implements the documents. Once implementation is complete, Copilot builds the project on its own initiative and checks for errors. If errors occur, it makes additional corrections to resolve those errors. This kind of autonomous behavior is characteristic of agent mode.
+
+![Example Implementation from Copilot](github-copilot-workshop-id/img/__implement.png)
+
+Once implementation is complete, check the following points:
+
+1. **Directory Structure**: Is it structured according to the recommended architecture?
+2. **Basic Files**: Are the necessary basic files (app.py, HTML templates, CSS files, etc.) created?
+3. **Operation Check**: Perform simple operation tests to see if any errors occur?
+
+> aside negative
+>
+> Copilot could sometimes forget to activate the virtual environment. Just tell it to activate venv and run the Python application on the same terminal if it forgot to do that.
+
+Below is the result of step 1 implementation in my case. What kind of application this becomes at this stage will differ from person to person.
+
+![Example Implementation from Copilot](github-copilot-workshop-id/img/__result-1.png)
+
+![Example Result](github-copilot-workshop-id/img/__result-2.png)
 
 
 ## Explain Code
@@ -306,43 +355,9 @@ Confirm the chat mode is set to "Ask".
 
 ### Request File Explanation
 
-1. Enter `#server.py` in the chat field. Using the character `#` will let you select a file.
+1. Attach one of the files in the chat field.
 2. Enter the prompt "Please explain this entire file."
-3. Press Enter and Copilot Chat will explain the entire `server.py` file
-
-> aside positive
->
-> **Tip**: By adding `#` before a filename, you can include that entire file as context.
-
-
-## Let's List What Needs to Be Done
-Duration: 10
-
-Now that the UI mock and architectural design are established, let's consider what specific functionality needs to be implemented. Let's consult with Copilot Chat about this too. At that time, let's attach pomodoro.png and architecture.md.
-
-```
-For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
-```
-
-<img src="github-copilot-workshop/img/pomodoro.png" alt="Feature List Consideration" width="400" />
-
-![Feature Identification Example](github-copilot-workshop/img/10-2.list_features.png)
-
-Let's improve this content through chat with Copilot. Once the content is finalized, let's save this content in a file called features.md, just like we did with the architecture.
-
-```
-Thank you. That content looks good, so please write the list of functions that need to be implemented in a file called features.md.
-```
-
-Now we're about to start implementation, but a tip for mastering Copilot is not to try to implement large functions all at once, but to start implementing small functions first. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.
-
-Let's also consult with Copilot about what granularity to break down and implement this application development. Here, let's attach pomodoro.png, architecture.md, and features.md.
-
-```
-I want to implement this Pomodoro timer application step by step. Based on the attached image, architecture, and feature list, please suggest what granularity should be used to implement functions and propose a step-by-step implementation plan.
-```
-
-When I tried it, it suggested a plan consisting of 6 steps. If there are points you'd like to see improved, try pointing them out to Copilot. And let's save this content in a file called plan.md so it can be referenced later. Please think for yourself what prompt should be used to give instructions.
+3. Press Enter and Copilot Chat will explain the entire file
 
 
 ## [WIP] Documentation

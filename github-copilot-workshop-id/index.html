@@ -183,7 +183,7 @@
         <p>In this hands-on, we&#39;ll develop a Pomodoro timer application. This application has functionality to set work time and break time and manage timers.</p>
 <p>We aim to create an application with the following UI:</p>
 <p class="image-container"><img alt="Pomodoro Timer UI" src="img/db1beea0fe471449.png"></p>
-<p>Let&#39;s first create a new Python file in VS Code. Since we want to create this as a web application, we&#39;ll use FastAPI. Let&#39;s name the main file &#34;server.py&#34;.</p>
+<p>Let&#39;s first create a new Python file in VS Code. Since we want to create this as a web application, we&#39;ll use Flask. Let&#39;s name the main file <code>app.py</code>.</p>
 <h2 is-upgraded>Project Overview</h2>
 <p>Create a web timer application for the Pomodoro Technique.</p>
 <h2 is-upgraded>Required Features</h2>
@@ -207,7 +207,7 @@
 <p>Once the image is uploaded, it will be displayed in Copilot Chat.</p>
 <p class="image-container"><img alt="VS Code Copilot Chat Context Menu" src="img/34a6b6e70d8aa9fb.png"></p>
 <p>Then, enter the following prompt:</p>
-<pre><code language="language-text" class="language-text">We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using FastAPI and HTML/CSS/JavaScript? Please suggest an architecture.
+<pre><code language="language-text" class="language-text">We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using Flask and HTML/CSS/JavaScript? Please suggest an architecture.
 </code></pre>
 <p>It will then suggest a recommended web application architecture.</p>
 <aside class="special"><p>If there are points that should be improved or considerations that are lacking in this architecture, try pointing them out. For example, the following suggestion: &#34;Considering the ease of unit testing, please also list any improvements or additions needed to the current architecture.&#34;</p>
@@ -236,7 +236,7 @@ Compile the specifications in a file called in specs.md in `docs/` directory.
       <google-codelab-step label="Let&#39;s List What Needs to Be Done" duration="10">
         <p>In using Copilot it is not recommended to try implement a large feature all at once. It is better to start implementing in small increments. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.</p>
 <p>Let&#39;s consult with Copilot Chat about this. Attach <code>pomodoro.png</code>, <code>architecture.md</code>, and <code>specs.md</code>, using the <code>Add Context...</code> button:</p>
-<p class="image-container"><img alt="Attach Context" src="img/7a24f9b17622de8.png"></p>
+<p class="image-container"><img alt="Attach Context" src="img/261f8c2f5127b944.png"></p>
 <p>Then enter this prompt:</p>
 <pre><code>For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
 Then, I want to implement this Pomodoro timer application step by step. Based on the attached image and documents, please suggest what granularity should be used to implement functions and save the step-by-step implementation plan in a file called `plan.md` in the `docs/` directory.
@@ -244,12 +244,48 @@ Then, I want to implement this Pomodoro timer application step by step. Based on
 <p class="image-container"><img alt="Planning Identification Example" src="img/119806b1ed332e41.png"></p>
 <aside class="special"><p>If there are points you&#39;d like to see improved, try pointing them out to Copilot. By this point you should be able to write the prompt you can use to give instructions.</p>
 </aside>
+<aside class="warning"><p>Also, if the result from Copilot does not meet your needs, you can always ask Copilot to make adjustments.</p>
+</aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Let&#39;s Implement" duration="15">
-        
+      <google-codelab-step label="Set Up The Python Environment (Optional)" duration="10">
+        <p>To make sure we can develop this project without obstacles, let&#39;s try setting up the Python environment using <code>uv</code> and <code>venv</code>.</p>
+<h2 is-upgraded>uv</h2>
+<p>Install uv if you don&#39;t have it in your system yet. uv is a modern, high-performance Python package manager and installer written in Rust. It serves as a drop-in replacement for traditional Python package management tools like pip, offering significant improvements in speed, reliability, and dependency resolution.. Go to this file to install uv: https://docs.astral.sh/uv/getting-started/installation/.</p>
+<h2 is-upgraded>venv</h2>
+<p>Install venv to create a virtual environment for this work project:</p>
+<pre><code language="language-bash" class="language-bash">uv venv
+</code></pre>
+<p>Activate venv:</p>
+<pre><code language="language-bash" class="language-bash">source .venv/bin/activate
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Let&#39;s Implement" duration="30">
+        <p>Now that all the preparation is complete, let&#39;s finally start implementation.</p>
+<p>Attach the <code>plan.md</code> file to the chat then use this prompt.</p>
+<pre><code>Please implement the development of this project using `plan.md` and other necessary documents.
+If there are additional considerations needed, please ask me questions.
+Don&#39;t forget to activate `venv` by using this command: `source .venv/bin/activate` and use `uv pip` to install the Python requirements.
+</code></pre>
+<p>After that, Copilot implements the documents. Once implementation is complete, Copilot builds the project on its own initiative and checks for errors. If errors occur, it makes additional corrections to resolve those errors. This kind of autonomous behavior is characteristic of agent mode.</p>
+<p class="image-container"><img alt="Example Implementation from Copilot" src="img/64c7cf97fc6777a0.png"></p>
+<p>Once implementation is complete, check the following points:</p>
+<ol type="1">
+<li><strong>Directory Structure</strong>: Is it structured according to the recommended architecture?</li>
+<li><strong>Basic Files</strong>: Are the necessary basic files (app.py, HTML templates, CSS files, etc.) created?</li>
+<li><strong>Operation Check</strong>: Perform simple operation tests to see if any errors occur?</li>
+</ol>
+<aside class="warning"><p>Copilot could sometimes forget to activate the virtual environment. Just tell it to activate venv and run the Python application on the same terminal if it forgot to do that.</p>
+</aside>
+<p>Below is the result of step 1 implementation in my case. What kind of application this becomes at this stage will differ from person to person.</p>
+<p class="image-container"><img alt="Example Implementation from Copilot" src="img/252bf13f5d995622.png"></p>
+<p class="image-container"><img alt="Example Result" src="img/5a6f0fea7e8b8c44.png"></p>
+
 
       </google-codelab-step>
     
@@ -264,30 +300,10 @@ Then, I want to implement this Pomodoro timer application step by step. Based on
 <p>Confirm the chat mode is set to &#34;Ask&#34;.</p>
 <h2 is-upgraded>Request File Explanation</h2>
 <ol type="1">
-<li>Enter <code>#server.py</code> in the chat field. Using the character <code>#</code> will let you select a file.</li>
+<li>Attach one of the files in the chat field.</li>
 <li>Enter the prompt &#34;Please explain this entire file.&#34;</li>
-<li>Press Enter and Copilot Chat will explain the entire <code>server.py</code> file</li>
+<li>Press Enter and Copilot Chat will explain the entire file</li>
 </ol>
-<aside class="special"><p><strong>Tip</strong>: By adding <code>#</code> before a filename, you can include that entire file as context.</p>
-</aside>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Let&#39;s List What Needs to Be Done" duration="10">
-        <p>Now that the UI mock and architectural design are established, let&#39;s consider what specific functionality needs to be implemented. Let&#39;s consult with Copilot Chat about this too. At that time, let&#39;s attach pomodoro.png and architecture.md.</p>
-<pre><code>For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
-</code></pre>
-<p class="image-container"><img alt="Feature List Consideration" style="width: 400.00px" src="img/8e24c2d7e6a91e1b.png"></p>
-<p class="image-container"><img alt="Feature Identification Example" src="img/20a6ec3e5b2f7c50.png"></p>
-<p>Let&#39;s improve this content through chat with Copilot. Once the content is finalized, let&#39;s save this content in a file called features.md, just like we did with the architecture.</p>
-<pre><code>Thank you. That content looks good, so please write the list of functions that need to be implemented in a file called features.md.
-</code></pre>
-<p>Now we&#39;re about to start implementation, but a tip for mastering Copilot is not to try to implement large functions all at once, but to start implementing small functions first. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.</p>
-<p>Let&#39;s also consult with Copilot about what granularity to break down and implement this application development. Here, let&#39;s attach pomodoro.png, architecture.md, and features.md.</p>
-<pre><code>I want to implement this Pomodoro timer application step by step. Based on the attached image, architecture, and feature list, please suggest what granularity should be used to implement functions and propose a step-by-step implementation plan.
-</code></pre>
-<p>When I tried it, it suggested a plan consisting of 6 steps. If there are points you&#39;d like to see improved, try pointing them out to Copilot. And let&#39;s save this content in a file called plan.md so it can be referenced later. Please think for yourself what prompt should be used to give instructions.</p>
 
 
       </google-codelab-step>
