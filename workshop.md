@@ -38,7 +38,7 @@ Duration: 15
 
 This workshop uses the following GitHub repository:
 
-**Project URL**: [https://github.com/arisetyo/2025-github-ur-copilot-workshop](https://github.com/arisetyo/2025-github-ur-copilot-workshop)
+**Project URL**: [https://github.com/eComindo/2025-github-ur-copilot-workshop](https://github.com/eComindo/2025-github-ur-copilot-workshop)
 
 ### Step 1: Fork the Repository
 
@@ -86,9 +86,9 @@ cd 2025-github-ur-copilot-workshop
 
 4. Open the project in VSCode
 
-### Step 3: Workspace Setup
+### Step 3: Workspace Setup (Optional)
 
-After opening the project, please install the following extensions:
+After opening the project, please install the following extensions (if you haven't):
 
 1. Install **GitHub Copilot** extension
 2. Install **GitHub Copilot Chat** extension
@@ -184,153 +184,155 @@ Verify the setting is correctly applied:
 
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = =  SLIDE XX = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Github Coopilot Spaces
-Duration: 10
-```text
-This space will be used for designing and improving a Pomodoro web application that we are going to build.
-```
-
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = =  SLIDE 04 = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Creating the Pomodoro app
-Duration: 5
+## Initialize The Repo
+Duration: 10
 
-In this hands-on, we'll develop a Pomodoro timer application. This application has functionality to set work time and break time and manage timers.
+### Python prerequisites
 
-We aim to create an application with the following UI:
+Follow the instructions in the `README.md` file to install `uv` (if you don't have it yet) and to create the virtual environment.
 
-![Pomodoro Timer UI](github-copilot-workshop-id/img/__pomodoro.png)
+### Github MCP
 
-Let's first create a new Python file in VS Code. Since we want to create this as a web application, we'll use Flask. Let's name the main file `app.py`.
+1. From Github MCP Registry
 
-### Project Overview
+Go to [Github MCP Registry](https://github.com/mcp/) and search for Github MCP.
 
-Create a web timer application for the Pomodoro Technique.
+Click `Install in VS Code`.
 
-### Required Features
+![Github MCP Registry](github-copilot-workshop-id/img/__github_mcp-reg.png)
 
-These are the required feature for the MVP:
+2. From VSCode
 
-- 25-minute work timer
-- 5-minute break timer
-- Timer start/stop/reset
-- Progress display
-- Responsive web UI
+Install the [Github MCP Server](https://github.com/mcp/github/github-mcp-server) in VSCode
 
+![Github MCP Server](github-copilot-workshop-id/img/__github_mcp.png)
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = =  SLIDE 05 = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Think About Pomodoro Timer Design
+## Github Copilot Spaces
 Duration: 10
 
-First, rather than starting implementation immediately, let's consult with Copilot about what approach and design to proceed with. From here on, we'll proceed entirely in agent mode.
+Before we start the development, let's go to [Copilot Spaces](https://github.com/copilot/spaces).
 
-What's helpful when creating a web application with UI like this is Copilot Chat's image upload functionality. Using this, you can make Copilot understand your application's UI image.
+In Copilot Spaces we can organize our files, PR, issues, and standards. This helps Copilot in giving us more relevant assistance to our projects.
 
-### Architecture
+### Start a Space
 
-Type `#` in the chat field and wrote the name of the UI image: `pomodoro.png`.
+Create a new space like the example here:
+![Create a new Copilot space](github-copilot-workshop-id/img/__spaces-1.png)
 
-Once the image is uploaded, it will be displayed in Copilot Chat.
+Then we can start using it:
 
-![VS Code Copilot Chat Context Menu](github-copilot-workshop-id/img/__add-context.png)
+1. Attach these files from the repo
+- `README.md`
+- `POMODORO_TECHNIQUE.md`
+
+![Create a new Copilot space](github-copilot-workshop-id/img/__spaces-2.png)
+
+2. Give Copilot in Spaces this prompt:
+
+```text
+This space will be used for designing and improving a Pomodoro web application that we are going to build.
+```
+
+Copilot will then learn about our project and provide some suggestions.
+
+### Architecture Request
+
+![Request](github-copilot-workshop-id/img/__init-arch.png)
+
+In the next chat, attach the screenshot image `new_pomodoro_ss.png` and enter this prompt:
+
+```text
+We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using Flask and HTML/CSS/JavaScript?
+I want the timer functionality to be handled on the frontend using JavaScript. The backend should serves the HTML page and static assets, and to store the status of ongoing or finished sessions in a log file.
+Please suggest an architecture.
+```
+
+Copilot then returns with the suggestions:
+
+![Suggestions](github-copilot-workshop-id/img/__spaces-3.png)
+
+### Architectural Suggestion
+
+Rather than starting implementation immediately, let's consult with Copilot about what approach and design to proceed with. From here on, we'll proceed entirely in agent mode.
+
+Ask Copilot to save the conclusion from the chat above as a file `architecture.md`. Download the file and store it on the root of our project.
+
+By doing so, you can reference the same architectural content even if you open a different chat session, both in VSCode or Copilot online.
+
+![Architecture](github-copilot-workshop-id/img/__spaces-4.png)
+
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = =  SLIDE 06 = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Planning The Application
+Duration: 10
+
+In using Copilot it is not recommended to try implement a large feature all at once. It is better to start implementing in small increments. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.
+
+Let's go back to VSCode. Now let's add one more document to help the agents create the application accurately and efficiently. This approach is known as [Spec-Driven Development](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/), a highly recommended technique in developing software with AI.
+
+1. Type `#` in the chat field and write the name of the architecture document: `architecture.md`.
+
+2. Select the `Plan` mode 
+
+![Planning](github-copilot-workshop-id/img/__plan.png)
 
 Then, enter the following prompt:
 
 ```text
-We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using Flask and HTML/CSS/JavaScript?
-I want the timer functionality to be handled on the frontend using JavaScript. The backend should serves the HTML page and static assets, and to store the status of ongoing or finished sessions.
-Please suggest an architecture.
+Based on the attached document, please create step-by-step development plan that can be followed by the coding agents.
+Please suggest what granularity should be used to implement functions in an easy-to-test steps.
 ```
-
-It will then suggest a recommended web application architecture.
 
 > aside positive
 >
-> If there are points that should be improved or considerations that are lacking in this architecture, try pointing them out. For example, the following suggestion: "Considering the ease of unit testing, please also list any improvements or additions needed to the current architecture."
+> If there are points that should be improved or considerations that are lacking in this plan, try pointing them out. For example, the following suggestion: "Considering the ease of unit testing, please also list any improvements or additions needed to the current plan."
 
-After this exchange, once the architectural design is settled, let's save that content to a file once, `architecture.md`. By doing so, you can reference the same architectural content even if you open a different chat session.
-```text
-Since the architecture has been settled through our conversation so far, please compile a web application architecture proposal in a file called architecture.md in `docs/` directory, based on the content of our conversation.
-```
+Change to `Agent` mode and prompt: "Save the development plan in a file called `plan.md`." (or you can always do that manually). Don't forget to click "Keep" to save the changes. 
 
-> aside negative
->
-> Don't forget to click "Keep" to save the changes.
+![Planning](github-copilot-workshop-id/img/__new-plan.png)
+
+Now we have two specifications file: `architecture.md` and `plan.md`. These will be the documents Copilot refer to in developing the Pomodoro app.
 
 > aside positive
 >
 > When a conversation with Copilot Chat reaches a conclusion, you can give clearer instructions to Copilot by starting a new conversation. To start a new conversation, click the "New conversation" button at the top of the chat window. At that time, content you want to reference in future chats, like the architectural content this time, is convenient to write out and save to files as we did here.
 
-### Specification
-
-To make sure the agent understand the requirements, we create another document (`specs.md`) using this prompt:
-```text
-Create a document to be used as specification for the development of this application. Make sure these requirements are included in the specification:
-- 25-minute work timer
-- 5-minute break timer
-- Timer start/stop/reset
-- Progress display
-- Responsive web UI
-Compile the specifications in a file called in specs.md in `docs/` directory.
-```
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = =  SLIDE 06 = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Let's List What Needs to Be Done
-Duration: 5
-
-In using Copilot it is not recommended to try implement a large feature all at once. It is better to start implementing in small increments. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.
-
-Let's consult with Copilot Chat about this. Attach `pomodoro.png`, `architecture.md`, and `specs.md`, using the `Add Context...` button:
-
-![Attach Context](github-copilot-workshop-id/img/__attach.png)
-
-Then enter this prompt:
-
-```
-For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
-Then, I want to implement this Pomodoro timer application step by step. Based on the attached image and documents, please suggest what granularity should be used to implement functions and save the step-by-step implementation plan in a file called `plan.md` in the `docs/` directory.
-```
-
-![Planning Identification Example](github-copilot-workshop-id/img/__planning.png)
-
-> aside positive
->
-> If there are points you'd like to see improved, try pointing them out to Copilot. By this point you should be able to write the prompt you can use to give instructions.
-
-> aside negative
->
-> Also, if the result from Copilot does not meet your needs, you can always ask Copilot to make adjustments.
-
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = =  SLIDE 07 = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Set Up The Python Environment (Optional)
+## Custom Instructions
 Duration: 5
 
-To make sure we can develop this project without obstacles, let's try setting up the Python environment using `uv` and `venv`.
+Before we start implementing the plan using Copilot, let's update the [custom instruction](https://docs.github.com/en/copilot/tutorials/customization-library/custom-instructions/your-first-custom-instructions) file.
 
-### uv
-Install uv if you don't have it in your system yet. uv is a modern, high-performance Python package manager and installer written in Rust. It serves as a drop-in replacement for traditional Python package management tools like pip, offering significant improvements in speed, reliability, and dependency resolution.. Go to this file to install uv: https://docs.astral.sh/uv/getting-started/installation/.
+Open the file `.github/copilot-instructions` and add these lines:
 
-### venv
-Install venv to create a virtual environment for this work project:
-``` bash
-uv venv
+```
+Before making any big changes to the project, always check the architecture documentation in `architecture.md` to ensure alignment with the overall design and goals.
 ```
 
-Activate venv:
-```bash
-source .venv/bin/activate
-```
+![Custom Instructions](github-copilot-workshop-id/img/__custom-ins.png)
+
+> aside positive
+>
+> Note on the screenshot above that Copilot also provide some inline suggestions. You can add Copilot suggestions or your own instruction to this to make Copilot works better in your project. You can add lines like  for example.
+
+That custom instruction tells Copilot to:
+
+1. Make sure to run the Python file in an activated virtual environment
+2. Always check the architecture document before making any big changes
+
+You can add other things in that file that you want Copilot to do with each request, for example: "Always add documentation to all new functions.".
+
+Here are some great examples of prompts that you can use, modify, and adjust for your custom instructions: [Godlike Prompts](https://copilot-instructions.md/prompts.html)
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = =  SLIDE 08 = = = = = = = = = = = = = -->
@@ -345,7 +347,6 @@ Attach the `plan.md` file to the chat then use this prompt.
 ```
 Please implement the development of this project using `plan.md` and other necessary documents.
 If there are additional considerations needed, please ask me questions.
-Don't forget to activate `venv` by using this command: `source .venv/bin/activate` and use `uv pip` to install the Python requirements.
 ```
 
 After that, Copilot implements the documents. Once implementation is complete, Copilot builds the project on its own initiative and checks for errors. If errors occur, it makes additional corrections to resolve those errors. This kind of autonomous behavior is characteristic of agent mode.
@@ -358,22 +359,16 @@ Once implementation is complete, check the following points:
 2. **Basic Files**: Are the necessary basic files (app.py, HTML templates, CSS files, etc.) created?
 3. **Operation Check**: Perform simple operation tests to see if any errors occur?
 
-> aside negative
->
-> Copilot could sometimes forget to activate the virtual environment. Just tell it to activate venv and run the Python application on the same terminal if it forgot to do that.
-
 Below is the result of step 1 implementation in my case. What kind of application this becomes at this stage will differ from person to person.
 
-![Example Implementation from Copilot](github-copilot-workshop-id/img/__result-1.png)
-
-![Example Result](github-copilot-workshop-id/img/__result-2.png)
+![Result](github-copilot-workshop-id/img/__result-2.png)
 
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = =  SLIDE 09 = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Explain Code
-Duration: 10
+Duration: 5
 
 Let's have Copilot Chat explain this code.
 
@@ -400,54 +395,102 @@ Confirm the chat mode is set to "Ask".
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = =  SLIDE 10 = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Custom Instructions
-Duration: 10
+## Product Documentation
+Duration: 5
 
-### Create Custom Copilot Instruction
-
-Let's create a [custom instruction](https://copilot-instructions.md/) that Copilot will follow before executing prompts in chat.
-
-```bash
-mkdir .github && cd .github
-touch copilot-instructions.md
-```
-
-Then, inside the file `copilot-instructions.md`, put this text:
+Let's ask Copilot to add more documentations:
 
 ```text
-**Prompt:**
-Always ensure that any Python command is run inside an activated virtual environment (`.venv`).
-Before running a Python command, activate the virtual environment using:
-
-source .venv/bin/activate
-
-Then run your Python command as needed.
-
-**Instruction:**
-Before making any big changes to the project, always check the architecture documentation in `docs/architecture.md` to ensure alignment with the overall design and goals.
+Create a documentation on how the current application works. Add a user flow chart and sequence diagram, using Mermaid format.
 ```
 
-That custom instruction tells Copilot to:
+We can use your favorite markdown viewer plugin to check the result, including the charts.
+Because the charts are created using Mermaid, you can also copy-paste the Mermaid code into Mermaid's tool.
 
-1. Make sure to run the Python file in an activated virtual environment
-2. Always check the architecture document before making any big changes
+![App documentation](github-copilot-workshop-id/img/__docs-1.png)
 
-![Custom instructions](github-copilot-workshop-id/img/__custom.png)
+![App documentation](github-copilot-workshop-id/img/__docs-2.png)
 
-You can add other things that you want Copilot to do with each request in that file.
-
-Here are some examples of great prompts that you can use, modify, and adjust: [Godlike Prompts](https://copilot-instructions.md/prompts.html)
 
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = =  SLIDE 11 = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Prompt Files and Custom Agents (Optional)
+Duration: 10
+
+### Prompt Files
+
+Prompt files define reusable prompts for specific tasks that you can invoke when needed.
+
+#### Create a "code explainer" agent
+
+1. Create a file: `.github/prompts/explain-code.prompt.md`
+2. Add this into the file:
+
+```text
+---
+agent: 'agent'
+description: 'Generate a clear code explanation with examples'
+---
+
+Explain the following code in a clear, beginner-friendly way:
+
+Code to explain: ${input:code:Paste your code here}
+Target audience: ${input:audience:Who is this explanation for? (e.g., beginners, intermediate developers, etc.)}
+
+Please provide:
+
+* A brief overview of what the code does
+* A step-by-step breakdown of the main parts
+* Explanation of any key concepts or terminology
+* A simple example showing how it works
+* Common use cases or when you might use this approach
+
+Use clear, simple language and avoid unnecessary jargon.
+```
+
+![Explainer](github-copilot-workshop-id/img/__explainer.png)
+
+### Custom Agents
+
+Other than the default agent provided by Copilot, you can create your own custom agent for specific use case.
+
+#### Create a "readme creator" agent
+
+1. Create a file: `.github/agents/readme-creator-agent.md`
+2. Add this into the file:
+
+```text
+---
+name: readme-creator
+description: Agent specializing in creating and improving README files
+---
+
+You are a documentation specialist focused on README files. Your scope is limited to README files or other related documentation files only - DO NOT modify or analyze code files.
+
+Focus on the following instructions:
+- Create and update README.md files with clear project descriptions
+- Structure README sections logically: overview, installation, usage, contributing
+- Write scannable content with proper headings and formatting
+- Add appropriate badges, links, and navigation elements
+- Use relative links (e.g., `docs/CONTRIBUTING.md`) instead of absolute URLs for files within the repository
+- Make links descriptive and add alt text to images
+```
+
+> aside positive
+>
+> You can create as many specific agents as you want.
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = =  SLIDE 12 = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Unit Tests and Code Quality
 Duration: 15
 
 ### Step 1. Enable CodeQL and Code Quality
 
-TBA
+[TBA]
 
 ### Step 2. Create Unit Tests
 
@@ -470,73 +513,6 @@ We can always do it manually by referring to the added section in the readme fil
 
 ![Unit test result](github-copilot-workshop-id/img/__ut-result.png)
 
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = =  SLIDE 12 = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Product Documentation
-Duration: 5
-
-Let's ask Copilot to add more documentations:
-
-```text
-Create a documentation on how the current application works. Add a user flow chart and sequence diagram, using Mermaid format.
-```
-
-We can use your favorite markdown viewer plugin to check the result, including the charts.
-Because the charts are created using Mermaid, you can also copy-paste the Mermaid code into Mermaid's tool.
-
-![App documentation](github-copilot-workshop-id/img/__docs-1.png)
-
-
-![App documentation](github-copilot-workshop-id/img/__docs-2.png)
-
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = =  SLIDE 13 = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Adding Github MCP Server (Optional)
-Duration: 10
-
-By using Model Context Protocol (MCP) servers, you can extend Copilot's functionality.
-
-In this slide we'll learn how to add a custom MCP to VSCode. In VSCode, we can also search for available MCPs in the `Extensions` panel.
-
-### Step 1: Add MCP Server
-
-1. Open command palette in VSCode: `Ctrl+Shift+P` (Windows/Linux) / `Cmd+Shift+P` (Mac)
-2. Type and select `mcp: add server`
-
-![MCP Add Server](github-copilot-workshop-id/img/__mcp-add.png)
-
-3. Select **HTTP**
-4. Enter server URL: `https://api.githubcopilot.com/mcp/`
-5. Enter a name in the Server ID field. For example: `my-github-mcp-server`. Or press Enter to skip.
-6. Select **Save to this workspace** for the save location
-7. Authenticate with your GitHub account
-
-### Step 2: Verify MCP Server Startup
-
-MCP server configuration is saved in `.vscode/mcp.json`.
-
-![MCP JSON Config](github-copilot-workshop-id/img/__mcp-conf.png)
-
-### Step 3: Enable Tools
-
-1. Click the tools button in Copilot Chat
-
-![MCP Tools Button](github-copilot-workshop-id/img/__mcp-btn.png)
-
-2. Confirm the GitHub MCP server appears in the list
-3. Check the checkbox to enable
-
-![MCP Enable Tools](github-copilot-workshop-id/img/__mcp-opts.png)
-
-Now you can reference GitHub information directly in Copilot Chat.
-
-> aside positive
->
-> **Tip**: Using MCP servers allows Copilot to directly access repository information, Issues, Pull Requests, etc., providing more detailed answers and suggestions.
 
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->

@@ -48,7 +48,7 @@
     
       <google-codelab-step label="Project Setup" duration="15">
         <p>This workshop uses the following GitHub repository:</p>
-<p><strong>Project URL</strong>: <a href="https://github.com/arisetyo/2025-github-ur-copilot-workshop" target="_blank">https://github.com/arisetyo/2025-github-ur-copilot-workshop</a></p>
+<p><strong>Project URL</strong>: <a href="https://github.com/eComindo/2025-github-ur-copilot-workshop" target="_blank">https://github.com/eComindo/2025-github-ur-copilot-workshop</a></p>
 <h2 is-upgraded>Step 1: Fork the Repository</h2>
 <p>First, open the project URL above in your browser and fork the repository:</p>
 <ol type="1">
@@ -86,8 +86,8 @@
 <ol type="1" start="4">
 <li>Open the project in VSCode</li>
 </ol>
-<h2 is-upgraded>Step 3: Workspace Setup</h2>
-<p>After opening the project, please install the following extensions:</p>
+<h2 is-upgraded>Step 3: Workspace Setup (Optional)</h2>
+<p>After opening the project, please install the following extensions (if you haven&#39;t):</p>
 <ol type="1">
 <li>Install <strong>GitHub Copilot</strong> extension</li>
 <li>Install <strong>GitHub Copilot Chat</strong> extension</li>
@@ -179,88 +179,101 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Creating the Pomodoro app" duration="5">
-        <p>In this hands-on, we&#39;ll develop a Pomodoro timer application. This application has functionality to set work time and break time and manage timers.</p>
-<p>We aim to create an application with the following UI:</p>
-<p class="image-container"><img alt="Pomodoro Timer UI" src="img/db1beea0fe471449.png"></p>
-<p>Let&#39;s first create a new Python file in VS Code. Since we want to create this as a web application, we&#39;ll use Flask. Let&#39;s name the main file <code>app.py</code>.</p>
-<h2 is-upgraded>Project Overview</h2>
-<p>Create a web timer application for the Pomodoro Technique.</p>
-<h2 is-upgraded>Required Features</h2>
-<p>These are the required feature for the MVP:</p>
-<ul>
-<li>25-minute work timer</li>
-<li>5-minute break timer</li>
-<li>Timer start/stop/reset</li>
-<li>Progress display</li>
-<li>Responsive web UI</li>
-</ul>
+      <google-codelab-step label="Initialize The Repo" duration="10">
+        <h2 is-upgraded>Python prerequisites</h2>
+<p>Follow the instructions in the <code>README.md</code> file to install <code>uv</code> (if you don&#39;t have it yet) and to create the virtual environment.</p>
+<h2 is-upgraded>Github MCP</h2>
+<ol type="1">
+<li>From Github MCP Registry</li>
+</ol>
+<p>Go to <a href="https://github.com/mcp/" target="_blank">Github MCP Registry</a> and search for Github MCP.</p>
+<p>Click <code>Install in VS Code</code>.</p>
+<p class="image-container"><img alt="Github MCP Registry" src="img/fde5d0de883dc5ee.png"></p>
+<ol type="1" start="2">
+<li>From VSCode</li>
+</ol>
+<p>Install the <a href="https://github.com/mcp/github/github-mcp-server" target="_blank">Github MCP Server</a> in VSCode</p>
+<p class="image-container"><img alt="Github MCP Server" src="img/6bb5116ee2c3155.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Think About Pomodoro Timer Design" duration="10">
-        <p>First, rather than starting implementation immediately, let&#39;s consult with Copilot about what approach and design to proceed with. From here on, we&#39;ll proceed entirely in agent mode.</p>
-<p>What&#39;s helpful when creating a web application with UI like this is Copilot Chat&#39;s image upload functionality. Using this, you can make Copilot understand your application&#39;s UI image.</p>
-<h2 is-upgraded>Architecture</h2>
-<p>Type <code>#</code> in the chat field and wrote the name of the UI image: <code>pomodoro.png</code>.</p>
-<p>Once the image is uploaded, it will be displayed in Copilot Chat.</p>
-<p class="image-container"><img alt="VS Code Copilot Chat Context Menu" src="img/34a6b6e70d8aa9fb.png"></p>
+      <google-codelab-step label="Github Copilot Spaces" duration="10">
+        <p>Before we start the development, let&#39;s go to <a href="https://github.com/copilot/spaces" target="_blank">Copilot Spaces</a>.</p>
+<p>In Copilot Spaces we can organize our files, PR, issues, and standards. This helps Copilot in giving us more relevant assistance to our projects.</p>
+<h2 is-upgraded>Start a Space</h2>
+<p>Create a new space like the example here: <img alt="Create a new Copilot space" src="img/68cdafc6c037a94.png"></p>
+<p>Then we can start using it:</p>
+<ol type="1">
+<li>Attach these files from the repo</li>
+</ol>
+<ul>
+<li><code>README.md</code></li>
+<li><code>POMODORO_TECHNIQUE.md</code></li>
+</ul>
+<p class="image-container"><img alt="Create a new Copilot space" src="img/c519d6821d6d4c3c.png"></p>
+<ol type="1" start="2">
+<li>Give Copilot in Spaces this prompt:</li>
+</ol>
+<pre><code language="language-text" class="language-text">This space will be used for designing and improving a Pomodoro web application that we are going to build.
+</code></pre>
+<p>Copilot will then learn about our project and provide some suggestions.</p>
+<h2 is-upgraded>Architecture Request</h2>
+<p class="image-container"><img alt="Request" src="img/657b3296b53e47fb.png"></p>
+<p>In the next chat, attach the screenshot image <code>new_pomodoro_ss.png</code> and enter this prompt:</p>
+<pre><code language="language-text" class="language-text">We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using Flask and HTML/CSS/JavaScript?
+I want the timer functionality to be handled on the frontend using JavaScript. The backend should serves the HTML page and static assets, and to store the status of ongoing or finished sessions in a log file.
+Please suggest an architecture.
+</code></pre>
+<p>Copilot then returns with the suggestions:</p>
+<p class="image-container"><img alt="Suggestions" src="img/258842a83f80b203.png"></p>
+<h2 is-upgraded>Architectural Suggestion</h2>
+<p>Rather than starting implementation immediately, let&#39;s consult with Copilot about what approach and design to proceed with. From here on, we&#39;ll proceed entirely in agent mode.</p>
+<p>Ask Copilot to save the conclusion from the chat above as a file <code>architecture.md</code>. Download the file and store it on the root of our project.</p>
+<p>By doing so, you can reference the same architectural content even if you open a different chat session, both in VSCode or Copilot online.</p>
+<p class="image-container"><img alt="Architecture" src="img/cca9c8c7e64a15d5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Planning The Application" duration="10">
+        <p>In using Copilot it is not recommended to try implement a large feature all at once. It is better to start implementing in small increments. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.</p>
+<p>Let&#39;s go back to VSCode. Now let&#39;s add one more document to help the agents create the application accurately and efficiently. This approach is known as <a href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/" target="_blank">Spec-Driven Development</a>, a highly recommended technique in developing software with AI.</p>
+<ol type="1">
+<li>Type <code>#</code> in the chat field and write the name of the architecture document: <code>architecture.md</code>.</li>
+<li>Select the <code>Plan</code> mode</li>
+</ol>
+<p class="image-container"><img alt="Planning" src="img/8df3dbb474dacfca.png"></p>
 <p>Then, enter the following prompt:</p>
-<pre><code language="language-text" class="language-text">We plan to create a simple Pomodoro timer web app in this project to learn the aspects of Github Copilot. The attached image is a UI mock for that app. What design should we proceed with to create this app using Flask and HTML/CSS/JavaScript? Please suggest an architecture.
+<pre><code language="language-text" class="language-text">Based on the attached document, please create step-by-step development plan that can be followed by the coding agents.
+Please suggest what granularity should be used to implement functions in an easy-to-test steps.
 </code></pre>
-<p>It will then suggest a recommended web application architecture.</p>
-<aside class="special"><p>If there are points that should be improved or considerations that are lacking in this architecture, try pointing them out. For example, the following suggestion: &#34;Considering the ease of unit testing, please also list any improvements or additions needed to the current architecture.&#34;</p>
+<aside class="special"><p>If there are points that should be improved or considerations that are lacking in this plan, try pointing them out. For example, the following suggestion: &#34;Considering the ease of unit testing, please also list any improvements or additions needed to the current plan.&#34;</p>
 </aside>
-<p>After this exchange, once the architectural design is settled, let&#39;s save that content to a file once, <code>architecture.md</code>. By doing so, you can reference the same architectural content even if you open a different chat session.</p>
-<pre><code language="language-text" class="language-text">Since the architecture has been settled through our conversation so far, please compile a web application architecture proposal in a file called architecture.md in `docs/` directory, based on the content of our conversation.
-</code></pre>
-<aside class="warning"><p>Don&#39;t forget to click &#34;Keep&#34; to save the changes.</p>
-</aside>
+<p>Change to <code>Agent</code> mode and prompt: &#34;Save the development plan in a file called <code>plan.md</code>.&#34; (or you can always do that manually). Don&#39;t forget to click &#34;Keep&#34; to save the changes.</p>
+<p class="image-container"><img alt="Planning" src="img/b1b472ffadbc11e5.png"></p>
+<p>Now we have two specifications file: <code>architecture.md</code> and <code>plan.md</code>. These will be the documents Copilot refer to in developing the Pomodoro app.</p>
 <aside class="special"><p>When a conversation with Copilot Chat reaches a conclusion, you can give clearer instructions to Copilot by starting a new conversation. To start a new conversation, click the &#34;New conversation&#34; button at the top of the chat window. At that time, content you want to reference in future chats, like the architectural content this time, is convenient to write out and save to files as we did here.</p>
 </aside>
-<h2 is-upgraded>Specification</h2>
-<p>To make sure the agent understand the requirements, we create another document (<code>specs.md</code>) using this prompt:</p>
-<pre><code language="language-text" class="language-text">Create a document to be used as specification for the development of this application. Make sure these requirements are included in the specification:
-- 25-minute work timer
-- 5-minute break timer
-- Timer start/stop/reset
-- Progress display
-- Responsive web UI
-Compile the specifications in a file called in specs.md in `docs/` directory.
-</code></pre>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Let&#39;s List What Needs to Be Done" duration="5">
-        <p>In using Copilot it is not recommended to try implement a large feature all at once. It is better to start implementing in small increments. This improves the accuracy of the code Copilot suggests and allows for smoother development progress.</p>
-<p>Let&#39;s consult with Copilot Chat about this. Attach <code>pomodoro.png</code>, <code>architecture.md</code>, and <code>specs.md</code>, using the <code>Add Context...</code> button:</p>
-<p class="image-container"><img alt="Attach Context" src="img/261f8c2f5127b944.png"></p>
-<p>Then enter this prompt:</p>
-<pre><code>For creating this Pomodoro timer application, please list the necessary functions that need to be implemented.
-Then, I want to implement this Pomodoro timer application step by step. Based on the attached image and documents, please suggest what granularity should be used to implement functions and save the step-by-step implementation plan in a file called `plan.md` in the `docs/` directory.
+      <google-codelab-step label="Custom Instructions" duration="5">
+        <p>Before we start implementing the plan using Copilot, let&#39;s update the <a href="https://docs.github.com/en/copilot/tutorials/customization-library/custom-instructions/your-first-custom-instructions" target="_blank">custom instruction</a> file.</p>
+<p>Open the file <code>.github/copilot-instructions</code> and add these lines:</p>
+<pre><code>Before making any big changes to the project, always check the architecture documentation in `architecture.md` to ensure alignment with the overall design and goals.
 </code></pre>
-<p class="image-container"><img alt="Planning Identification Example" src="img/119806b1ed332e41.png"></p>
-<aside class="special"><p>If there are points you&#39;d like to see improved, try pointing them out to Copilot. By this point you should be able to write the prompt you can use to give instructions.</p>
+<p class="image-container"><img alt="Custom Instructions" src="img/9f6e9d02033bde7a.png"></p>
+<aside class="special"><p>Note on the screenshot above that Copilot also provide some inline suggestions. You can add Copilot suggestions or your own instruction to this to make Copilot works better in your project. You can add lines like  for example.</p>
 </aside>
-<aside class="warning"><p>Also, if the result from Copilot does not meet your needs, you can always ask Copilot to make adjustments.</p>
-</aside>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Set Up The Python Environment (Optional)" duration="5">
-        <p>To make sure we can develop this project without obstacles, let&#39;s try setting up the Python environment using <code>uv</code> and <code>venv</code>.</p>
-<h2 is-upgraded>uv</h2>
-<p>Install uv if you don&#39;t have it in your system yet. uv is a modern, high-performance Python package manager and installer written in Rust. It serves as a drop-in replacement for traditional Python package management tools like pip, offering significant improvements in speed, reliability, and dependency resolution.. Go to this file to install uv: https://docs.astral.sh/uv/getting-started/installation/.</p>
-<h2 is-upgraded>venv</h2>
-<p>Install venv to create a virtual environment for this work project:</p>
-<pre><code language="language-bash" class="language-bash">uv venv
-</code></pre>
-<p>Activate venv:</p>
-<pre><code language="language-bash" class="language-bash">source .venv/bin/activate
-</code></pre>
+<p>That custom instruction tells Copilot to:</p>
+<ol type="1">
+<li>Make sure to run the Python file in an activated virtual environment</li>
+<li>Always check the architecture document before making any big changes</li>
+</ol>
+<p>You can add other things in that file that you want Copilot to do with each request, for example: &#34;Always add documentation to all new functions.&#34;.</p>
+<p>Here are some great examples of prompts that you can use, modify, and adjust for your custom instructions: <a href="https://copilot-instructions.md/prompts.html" target="_blank">Godlike Prompts</a></p>
 
 
       </google-codelab-step>
@@ -270,7 +283,6 @@ Then, I want to implement this Pomodoro timer application step by step. Based on
 <p>Attach the <code>plan.md</code> file to the chat then use this prompt.</p>
 <pre><code>Please implement the development of this project using `plan.md` and other necessary documents.
 If there are additional considerations needed, please ask me questions.
-Don&#39;t forget to activate `venv` by using this command: `source .venv/bin/activate` and use `uv pip` to install the Python requirements.
 </code></pre>
 <p>After that, Copilot implements the documents. Once implementation is complete, Copilot builds the project on its own initiative and checks for errors. If errors occur, it makes additional corrections to resolve those errors. This kind of autonomous behavior is characteristic of agent mode.</p>
 <p class="image-container"><img alt="Example Implementation from Copilot" src="img/64c7cf97fc6777a0.png"></p>
@@ -280,16 +292,13 @@ Don&#39;t forget to activate `venv` by using this command: `source .venv/bin/act
 <li><strong>Basic Files</strong>: Are the necessary basic files (app.py, HTML templates, CSS files, etc.) created?</li>
 <li><strong>Operation Check</strong>: Perform simple operation tests to see if any errors occur?</li>
 </ol>
-<aside class="warning"><p>Copilot could sometimes forget to activate the virtual environment. Just tell it to activate venv and run the Python application on the same terminal if it forgot to do that.</p>
-</aside>
 <p>Below is the result of step 1 implementation in my case. What kind of application this becomes at this stage will differ from person to person.</p>
-<p class="image-container"><img alt="Example Implementation from Copilot" src="img/252bf13f5d995622.png"></p>
-<p class="image-container"><img alt="Example Result" src="img/5a6f0fea7e8b8c44.png"></p>
+<p class="image-container"><img alt="Result" src="img/bacf0cbf5edec6e4.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Explain Code" duration="10">
+      <google-codelab-step label="Explain Code" duration="5">
         <p>Let&#39;s have Copilot Chat explain this code.</p>
 <h2 is-upgraded>Open Copilot Chat</h2>
 <ol type="1">
@@ -310,51 +319,6 @@ Don&#39;t forget to activate `venv` by using this command: `source .venv/bin/act
 
       </google-codelab-step>
     
-      <google-codelab-step label="Custom Instructions" duration="10">
-        <h2 is-upgraded>Create Custom Copilot Instruction</h2>
-<p>Let&#39;s create a <a href="https://copilot-instructions.md/" target="_blank">custom instruction</a> that Copilot will follow before executing prompts in chat.</p>
-<pre><code language="language-bash" class="language-bash">mkdir .github &amp;&amp; cd .github
-touch copilot-instructions.md
-</code></pre>
-<p>Then, inside the file <code>copilot-instructions.md</code>, put this text:</p>
-<pre><code language="language-text" class="language-text">**Prompt:**
-Always ensure that any Python command is run inside an activated virtual environment (`.venv`).
-Before running a Python command, activate the virtual environment using:
-
-source .venv/bin/activate
-
-Then run your Python command as needed.
-
-**Instruction:**
-Before making any big changes to the project, always check the architecture documentation in `docs/architecture.md` to ensure alignment with the overall design and goals.
-</code></pre>
-<p>That custom instruction tells Copilot to:</p>
-<ol type="1">
-<li>Make sure to run the Python file in an activated virtual environment</li>
-<li>Always check the architecture document before making any big changes</li>
-</ol>
-<p class="image-container"><img alt="Custom instructions" src="img/e3105fa17ed22ee.png"></p>
-<p>You can add other things that you want Copilot to do with each request in that file.</p>
-<p>Here are some examples of great prompts that you can use, modify, and adjust: <a href="https://copilot-instructions.md/prompts.html" target="_blank">Godlike Prompts</a></p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Unit Tests" duration="10">
-        <p>We can ask Copilot to create unit tests. For example, we can enter this prompt to do that:</p>
-<pre><code language="language-text" class="language-text">We want to add unit testing to this project.
-Please create unit tests for all the important functions in this application.
-Install necessary libraries to support this change.
-Then in the readme file, add explanation on how to run the unit tests.
-</code></pre>
-<p>As we can see below, Copilot created a to-do list to complete the task from the previous prompt. Using the custom instruction we have added in the previous slide, Copilot first check the architecture document to provide a more accurate solution.</p>
-<p class="image-container"><img alt="Unit test request" src="img/98effe6470e40459.png"></p>
-<p>We can ask Copilot to run the test from the Chat panel. This way it will check the result from the terminal automatically and make adjustments as necessary. We can always do it manually by referring to the added section in the readme file.</p>
-<p class="image-container"><img alt="Unit test result" src="img/17d4ce778a3947c9.png"></p>
-
-
-      </google-codelab-step>
-    
       <google-codelab-step label="Product Documentation" duration="5">
         <p>Let&#39;s ask Copilot to add more documentations:</p>
 <pre><code language="language-text" class="language-text">Create a documentation on how the current application works. Add a user flow chart and sequence diagram, using Mermaid format.
@@ -366,38 +330,77 @@ Then in the readme file, add explanation on how to run the unit tests.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Adding Github MCP Server (Optional)" duration="10">
-        <p>By using Model Context Protocol (MCP) servers, you can extend Copilot&#39;s functionality.</p>
-<p>In this slide we&#39;ll learn how to add a custom MCP to VSCode. In VSCode, we can also search for available MCPs in the <code>Extensions</code> panel.</p>
-<h2 is-upgraded>Step 1: Add MCP Server</h2>
+      <google-codelab-step label="Prompt Files and Custom Agents (Optional)" duration="10">
+        <h2 is-upgraded>Prompt Files</h2>
+<p>Prompt files define reusable prompts for specific tasks that you can invoke when needed.</p>
+<h3 is-upgraded>Create a &#34;code explainer&#34; agent</h3>
 <ol type="1">
-<li>Open command palette in VSCode: <code>Ctrl+Shift+P</code> (Windows/Linux) / <code>Cmd+Shift+P</code> (Mac)</li>
-<li>Type and select <code>mcp: add server</code></li>
+<li>Create a file: <code>.github/prompts/explain-code.prompt.md</code></li>
+<li>Add this into the file:</li>
 </ol>
-<p class="image-container"><img alt="MCP Add Server" src="img/d69758964965d34.png"></p>
-<ol type="1" start="3">
-<li>Select <strong>HTTP</strong></li>
-<li>Enter server URL: <code>https://api.githubcopilot.com/mcp/</code></li>
-<li>Enter a name in the Server ID field. For example: <code>my-github-mcp-server</code>. Or press Enter to skip.</li>
-<li>Select <strong>Save to this workspace</strong> for the save location</li>
-<li>Authenticate with your GitHub account</li>
-</ol>
-<h2 is-upgraded>Step 2: Verify MCP Server Startup</h2>
-<p>MCP server configuration is saved in <code>.vscode/mcp.json</code>.</p>
-<p class="image-container"><img alt="MCP JSON Config" src="img/45985ec9af4a86e.png"></p>
-<h2 is-upgraded>Step 3: Enable Tools</h2>
+<pre><code language="language-text" class="language-text">---
+agent: &#39;agent&#39;
+description: &#39;Generate a clear code explanation with examples&#39;
+---
+
+Explain the following code in a clear, beginner-friendly way:
+
+Code to explain: ${input:code:Paste your code here}
+Target audience: ${input:audience:Who is this explanation for? (e.g., beginners, intermediate developers, etc.)}
+
+Please provide:
+
+* A brief overview of what the code does
+* A step-by-step breakdown of the main parts
+* Explanation of any key concepts or terminology
+* A simple example showing how it works
+* Common use cases or when you might use this approach
+
+Use clear, simple language and avoid unnecessary jargon.
+</code></pre>
+<p class="image-container"><img alt="Explainer" src="img/c7952b98bf7adc56.png"></p>
+<h2 is-upgraded>Custom Agents</h2>
+<p>Other than the default agent provided by Copilot, you can create your own custom agent for specific use case.</p>
+<h3 is-upgraded>Create a &#34;readme creator&#34; agent</h3>
 <ol type="1">
-<li>Click the tools button in Copilot Chat</li>
+<li>Create a file: <code>.github/agents/readme-creator-agent.md</code></li>
+<li>Add this into the file:</li>
 </ol>
-<p class="image-container"><img alt="MCP Tools Button" src="img/f53152abe76306d8.png"></p>
-<ol type="1" start="2">
-<li>Confirm the GitHub MCP server appears in the list</li>
-<li>Check the checkbox to enable</li>
-</ol>
-<p class="image-container"><img alt="MCP Enable Tools" src="img/e6bcb48e59fff098.png"></p>
-<p>Now you can reference GitHub information directly in Copilot Chat.</p>
-<aside class="special"><p><strong>Tip</strong>: Using MCP servers allows Copilot to directly access repository information, Issues, Pull Requests, etc., providing more detailed answers and suggestions.</p>
+<pre><code language="language-text" class="language-text">---
+name: readme-creator
+description: Agent specializing in creating and improving README files
+---
+
+You are a documentation specialist focused on README files. Your scope is limited to README files or other related documentation files only - DO NOT modify or analyze code files.
+
+Focus on the following instructions:
+- Create and update README.md files with clear project descriptions
+- Structure README sections logically: overview, installation, usage, contributing
+- Write scannable content with proper headings and formatting
+- Add appropriate badges, links, and navigation elements
+- Use relative links (e.g., `docs/CONTRIBUTING.md`) instead of absolute URLs for files within the repository
+- Make links descriptive and add alt text to images
+</code></pre>
+<aside class="special"><p>You can create as many specific agents as you want.</p>
 </aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Unit Tests and Code Quality" duration="15">
+        <h2 is-upgraded>Step 1. Enable CodeQL and Code Quality</h2>
+<p>[TBA]</p>
+<h2 is-upgraded>Step 2. Create Unit Tests</h2>
+<p>We can ask Copilot to create unit tests. For example, we can enter this prompt to do that:</p>
+<pre><code language="language-text" class="language-text">We want to add unit testing to this project.
+Please create unit tests for all the important functions in this application.
+Install necessary libraries to support this change.
+Then in the readme file, add explanation on how to run the unit tests.
+</code></pre>
+<p>As we can see below, Copilot created a to-do list to complete the task from the previous prompt. Using the custom instruction we have added in the previous slide, Copilot first check the architecture document to provide a more accurate solution.</p>
+<p class="image-container"><img alt="Unit test request" src="img/98effe6470e40459.png"></p>
+<p>We can ask Copilot to run the test from the Chat panel. This way it will check the result from the terminal automatically and make adjustments as necessary. We can always do it manually by referring to the added section in the readme file.</p>
+<p class="image-container"><img alt="Unit test result" src="img/17d4ce778a3947c9.png"></p>
 
 
       </google-codelab-step>
