@@ -1,0 +1,39 @@
+name: Create index.html
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/main.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  convert-to-html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v4
+
+      - name: Download claat binary
+        run: |
+          curl -L https://github.com/googlecodelabs/tools/releases/download/v2.2.6/claat-linux-amd64 -o claat
+          chmod +x claat
+
+      - name: Export codelab to HTML
+        run: ./claat export -o . -e web -f html workshop.md
+      
+      - name: Upload to Azure Storage
+        run: |
+          az storage blob upload-batch \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN }}" \
+            --destination '$web' \
+            --source ./github-copilot-workshop-id/ \
+            --overwrite
