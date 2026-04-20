@@ -111,6 +111,10 @@ Cross-OS readiness note:
 ## Database Bootstrap using Docker
 Duration: 10
 
+### **TO-DO**
+- Optional: use DBeaver to see the result
+- Pastikan Postgre service tidak running, hanya yang di docker
+
 Bootstrap workshop database (schema + sample data):
 
 ```bash
@@ -138,6 +142,10 @@ docker compose exec -T db psql -U workshop -d procurement_mvp -c "SELECT COUNT(*
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Configure Local Credentials
 Duration: 10
+
+### **TO-DO**
+- jalankan npm install di tiga tempat: be, fe, root
+- npm run dev can be run from root
 
 Create backend `.env`:
 
@@ -201,6 +209,10 @@ Here are some great examples of prompts that you can use, modify, and adjust for
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## API Readiness Check
 Duration: 15
+
+### **TO-DO**
+- Langsung agent mode
+- remove swagger entries in package.json (BE)
 
 Goal:
 - Validate backend API is running before PO implementation starts
@@ -306,7 +318,15 @@ Save the refined checklist to docs/runbook.md.
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Figma MCP Setup
-Duration: 5
+Duration: 15
+
+### **TO-DO**
+- Screenshot Figma MCP
+- manually add MCP config in mcp.json
+- Add Figma MCP config in mcp.json
+  - optional https://github.com/mcp/com.figma.mcp/mcp
+- User must logged in to Figma
+
 
 Before implementing PO module pages, make sure Figma MCP is available in Copilot.
 
@@ -326,12 +346,19 @@ Expected result:
 ## Generate Page using Figma MCP
 Duration: 20
 
+### **TO-DO**
+- Talk about best practices
+- User will need to be approved or file made public
+- add the Figma link in the slide (not just on prompt)
+
 Participants start the PO module by generating **PO Create page** from Figma using MCP.
 
 Scope for generated page:
 - Header section (vendor, PO date, notes)
 - Line table section (approved PR open lines, allocate qty, unit price)
 - Actions (save draft, submit)
+
+[Figma file](https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6.)
 
 Prompt example:
 
@@ -377,6 +404,9 @@ Expected result:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Baseline Review + PO Backlog Start
 Duration: 25
+
+### **TO-DO**
+- Copilot must be in PLAN mode
 
 Tasks:
 - Explore existing project structure.
@@ -466,7 +496,10 @@ Create Jest tests focused on PO service validation and status transition rules.
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Copilot PR summary & review
-Duration: 5
+Duration: 10
+
+### **TO-DO**
+- Add Copilot commit message feature in VSCode
 
 We can use GitHub Copilot for:
 
@@ -531,6 +564,9 @@ After the Pull Request is opened, you can view Copilot Code Review results:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## GitHub Issue
 Duration: 10
+
+### **TO-DO**
+- Add steps to enable Issue tab
 
 Let's create a new Bookmark feature using GitHub Issue.
 
