@@ -1,5 +1,5 @@
 author: Arie M. Prasetyo
-summary: GitHub Copilot Workshop - 5 Hours Procurement MVP (VS Code + GitHub)
+summary: GitHub Copilot Workshop - Procurement MVP (Anteraja 2 x 4 Hours)
 id: github-copilot-workshop-procurement-mvp
 categories: AI, Development
 environments: Web
@@ -15,13 +15,13 @@ feedback link: https://example.com/feedback
 ## About this workshop
 Duration: 10
 
-Welcome! In this workshop, participants build a real-world procurement MVP using GitHub Copilot in both VS Code and GitHub.
+Welcome. In this workshop, participants build a real-world procurement MVP using GitHub Copilot in VS Code and GitHub.
 
 Application scope:
 - Baseline provided: Home/Dashboard + PR module (list/create/detail + APIs)
 - Participant backlog: PO module (list/create/detail + APIs)
 - Optional extension: Bookmark feature (`PR | PO | GR`) via GitHub Issue workflow
-- Further exploration: GR module (self-paced after workshop)
+- Further exploration: GR module (self-paced)
 
 Tech stack:
 - Backend: Fastify + JavaScript
@@ -32,7 +32,31 @@ Tech stack:
 
 > aside positive
 >
-> You can access this slides at [https://stghuniverse.z45.web.core.windows.net/#0](https://stghuniverse.z45.web.core.windows.net/#0) or [https://bit.ly/GitHubRecapJkt2025](https://bit.ly/GitHubRecapJkt2025)
+> You can access the slide deck at [https://stghuniverse.z45.web.core.windows.net/#0](https://stghuniverse.z45.web.core.windows.net/#0) or [https://bit.ly/GitHubRecapJkt2025](https://bit.ly/GitHubRecapJkt2025)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## AI, LLM, and Context Basics
+Duration: 15
+
+Before hands-on coding, align on AI context:
+
+- AI -> ML -> Deep Learning -> Transformer -> LLM
+- LLMs predict the next token based on context
+- Better context gives better output quality
+
+Prompt anatomy in Copilot:
+- System instructions: global behavior and constraints
+- User message: immediate task objective
+- Repository context: code, docs, config, commit history
+
+Working rule for this workshop:
+- Always attach relevant docs (`docs/plan.md`, runbook, schema notes)
+- Ask for a plan first, then implement in small checkpoints
+- Use validation prompts before merge
 
 ---
 
@@ -61,20 +85,20 @@ Optional MCP tools:
 ## Fork the Repository
 Duration: 5
 
-First, open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop/issues](https://github.com/eComindo/2026-github-copilot-workshop/issues) in your browser and fork the repository:
+Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop/issues](https://github.com/eComindo/2026-github-copilot-workshop/issues)
 
 1. Open the project URL in your browser
-2. Click the **Fork** button in the top right
+2. Click **Fork** in the top right
 
 ---
 
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Setup the Project Locally
 Duration: 20
 
-
 ### 1. Setup the repo
-
-After the project's repo is forked, clone it to your local machine.
 
 ```bash
 git clone https://github.com/<your-org-or-user>/<repo>.git
@@ -83,10 +107,8 @@ git checkout -b feature/procurement-mvp
 ```
 
 Ensure project references:
-
 - `docs/plan.md`
 - `.github/copilot-instructions.md`
-
 
 ### 2. Prepare the database
 
@@ -96,12 +118,23 @@ Bootstrap files used by all participants:
 - `docker/postgres/init/00-init-mvp-db.sh`
 
 Cross-OS readiness note:
-- Workshop bootstrap supports Windows, macOS, and Linux participants by enforcing LF line endings for `.sh` and `.sql` via `.gitattributes`.
-- If the DB init script cannot execute on a participant machine, run:
+- Bootstrap supports Windows, macOS, Linux via LF line endings for `.sh` and `.sql` in `.gitattributes`
 
-> aside positive
->
-> We pre-provide baseline migration + seed and run them automatically via Docker init so everyone starts with the same working dataset.
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (Hour 1)
+Duration: 5
+
+Facilitator prompts:
+- What context gave Copilot the best responses so far?
+- Where do participants usually lose time in project setup?
+- Quick sharing: one AI-assisted workflow from your current team
+
+Story prompt:
+- DBS AI transformation headline and what changed in engineering culture
 
 ---
 
@@ -110,10 +143,6 @@ Cross-OS readiness note:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Database Bootstrap using Docker
 Duration: 10
-
-### **TO-DO**
-- Optional: use DBeaver to see the result
-- Pastikan Postgre service tidak running, hanya yang di docker
 
 Bootstrap workshop database (schema + sample data):
 
@@ -127,9 +156,8 @@ What this does:
 - Creates PostgreSQL volume from scratch
 - Applies baseline schema migration
 - Inserts workshop sample data for Home/Dashboard + PR baseline
-- Runs via container init script (`/docker-entrypoint-initdb.d/00-init-mvp-db.sh`) to keep bootstrap behavior consistent across OS hosts
 
-Verification command:
+Verification:
 
 ```bash
 docker compose exec -T db psql -U workshop -d procurement_mvp -c "SELECT COUNT(*) FROM purchase_requisitions;"
@@ -143,9 +171,9 @@ docker compose exec -T db psql -U workshop -d procurement_mvp -c "SELECT COUNT(*
 ## Configure Local Credentials
 Duration: 10
 
-### **TO-DO**
-- jalankan npm install di tiga tempat: be, fe, root
-- npm run dev can be run from root
+### TO-DO
+- Run `npm install` in backend, frontend, and root (if monorepo scripts used)
+- `npm run dev` can be run from root if preconfigured
 
 Create backend `.env`:
 
@@ -160,98 +188,56 @@ Create frontend `.env`:
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
-Run baseline apps and verify prebuilt modules:
-
-```bash
-# backend
-npm run dev
-
-# frontend (new terminal)
-npm run dev
-```
-
 Baseline expectation:
 - Home/Dashboard works
-- PR list/create/detail pages work
-- PR APIs already connected to provided database
-
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Copilot Instructions
-Duration: 10
-
-Duration: 5
-
-Before we start implementing the plan using Copilot, let's update the [custom instruction](https://docs.github.com/en/copilot/tutorials/customization-library/custom-instructions/your-first-custom-instructions) file.
-
-Open the file `.github/copilot-instructions` and add these lines:
-
-```
-Before making any big changes to the project, always check the documentation in `docs/plan.md` to ensure alignment with the overall design and goals.
-```
-
-> aside positive
->
-> You can add inline suggestions or your own instruction to make Copilot works better in your project.
-
-You can add other things in that file that you want Copilot to do with each request, for example: "Always add documentation to all new functions.".
-
-Here are some great examples of prompts that you can use, modify, and adjust for your custom instructions: [Godlike Prompts](https://copilot-instructions.md/prompts.html)
+- PR list/create/detail works
+- PR APIs connected to DB
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## API Readiness Check
+## Copilot Instructions Checklist
 Duration: 15
 
-### **TO-DO**
-- Langsung agent mode
-- remove swagger entries in package.json (BE)
+Before implementation, update custom instructions to shape Copilot output quality.
 
-Goal:
-- Validate backend API is running before PO implementation starts
-- Let participants practice asking Copilot to generate API docs view
-- Make available endpoints visible in one place
+Open `.github/copilot-instructions.md` and add rules such as:
+- Always check `docs/plan.md` before large changes
+- Add tests for new logic
+- Use descriptive naming
+- Update docs when introducing new flows
 
-Participant task:
-1. Ask Copilot to add Swagger/OpenAPI to the Fastify backend.
-2. Run backend and open Swagger UI in browser.
-3. Confirm baseline PR endpoints are listed and callable.
-
-Prompt example for Copilot:
+Prompt:
 
 ```text
-Add Swagger/OpenAPI support to this Fastify JavaScript backend.
-Use @fastify/swagger and @fastify/swagger-ui.
-Register plugins in the main server/bootstrap file, expose docs at /docs, and include all existing routes in the generated OpenAPI spec.
-Keep implementation simple.
+Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
 ```
 
-Verification steps:
+Expected outcome:
+- Copilot responses become more consistent with project standards
 
-```bash
-# backend terminal
-npm install @fastify/swagger @fastify/swagger-ui
-npm run dev
-```
+---
 
-Open in browser:
-- `http://localhost:3000/docs`
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## SDD and Guardrail Documents
+Duration: 15
 
-Ready criteria:
-- Swagger page loads successfully
-- Existing baseline PR endpoints are visible
-- At least one endpoint can be tried successfully from Swagger UI
+Why this matters:
+- Vibe-coded output is fast, but often inconsistent
+- Product-grade output needs explicit software design documents (SDD)
 
-> aside positive
->
-> This gives participants a fast confidence check that API contracts are live before building PO features.
+Recommended pattern:
+- Create and maintain spec docs before large features
+- Keep guardrail docs for architecture, naming, and patterns
+- Keep stack decisions and coding conventions in a dedicated docs folder
+
+Copilot alignment:
+- Point `.github/copilot-instructions.md` to these guardrail docs
+- Ask Copilot to validate plan alignment before implementation
 
 ---
 
@@ -259,34 +245,47 @@ Ready criteria:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## GitHub Spaces
-Duration: 20
+Duration: 10
 
-Let's use GitHub Spaces for onboarding + brainstorming
+Use Copilot Spaces for onboarding and product brainstorming.
 
-Open [Copilot Spaces](https://github.com/copilot/spaces) on GitHub and create a space named:
-`Procurement MVP Onboarding`
+Create a space:
+- Name: `Procurement MVP Onboarding`
+- Attach: `README.md`, `docs/plan.md`
 
-Attach these files:
-- `README.md`
-- `docs/plan.md`
-
-Prompt 1 (new team member onboarding):
+Prompt 1 (onboarding):
 
 ```text
 Create a new team member onboarding summary for this repository.
-Explain the business flow (PR -> PO -> GR), tech stack, and first 3 tasks to start contributing.
+Explain the business flow (PR -> PO -> GR), tech stack, and first 3 tasks.
 ```
 
-Prompt 2 (product brainstorming):
+Prompt 2 (brainstorming):
 
 ```text
 For this procurement MVP, suggest 5 realistic enhancements for a future version.
-Keep current workshop scope unchanged and clearly mark each enhancement as out-of-scope for today.
+Keep workshop scope unchanged and mark each as out-of-scope for today.
 ```
 
-You can keep any resulting markdown documents in the `docs/` directory in the repo, eg.:
-- `docs/onboarding.md` (optional)
-- `docs/brainstorm.md` (optional)
+> aside positive
+>
+> Copilot Space is optional but useful for keeping planning context reusable across the team.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (Hour 2)
+Duration: 5
+
+Facilitator prompts:
+- What info is best stored in Spaces vs in repository docs?
+- Which onboarding summary output was most reusable?
+- What enhancement ideas were realistic for your current team?
+
+Story prompt:
+- Forrester + DBS billion-dollar AI result and operating model changes
 
 ---
 
@@ -296,7 +295,7 @@ You can keep any resulting markdown documents in the `docs/` directory in the re
 ## Finalize Plan
 Duration: 15
 
-Use Copilot's **Plan** mode with `docs/plan.md` attached.
+Use Copilot **Plan** mode with `docs/plan.md` attached.
 
 Prompt:
 
@@ -317,26 +316,82 @@ Save the refined checklist to docs/runbook.md.
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Agent Skills for Delivery
+Duration: 15
+
+Create a dedicated slide for agent skills in Copilot.
+
+What to cover:
+- How to add skills to the project
+- Where to find available skills
+- How to decide when to use a skill vs regular prompts
+
+Examples:
+- README/documentation skill
+- Vue frontend implementation skill
+- Backend API/service skill
+- Figma implementation skill
+
+Reference:
+- Figma skill: https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## API Readiness Check
+Duration: 15
+
+Goal:
+- Validate backend API before PO implementation
+- Let participants practice generating API docs with Copilot
+
+Participant task:
+1. Ask Copilot to add Swagger/OpenAPI support
+2. Start backend and open Swagger UI
+3. Verify baseline PR endpoints are listed and callable
+
+Prompt example:
+
+```text
+Add Swagger/OpenAPI support to this Fastify JavaScript backend.
+Use @fastify/swagger and @fastify/swagger-ui.
+Register plugins in the main bootstrap file and expose docs at /docs.
+```
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Figma MCP Setup
 Duration: 15
 
-### **TO-DO**
-- Screenshot Figma MCP
-- manually add MCP config in mcp.json
-- Add Figma MCP config in mcp.json
-  - optional https://github.com/mcp/com.figma.mcp/mcp
-- User must logged in to Figma
-
-
-Before implementing PO module pages, make sure Figma MCP is available in Copilot.
-
 Checklist:
-- Confirm Figma MCP is installed/available in current Copilot environment
-- Confirm access to workshop Figma file and node/page IDs
-- Confirm participants can call MCP from Copilot chat
+- Confirm Figma MCP is available in current Copilot environment
+- Add MCP config in `mcp.json` if needed
+- Confirm user is logged in to Figma
+- Confirm workshop file and node IDs are accessible
 
 Expected result:
-- Everyone is ready to generate PO Create UI from the same Figma source
+- Everyone can generate PO Create UI from the same source
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (Hour 3)
+Duration: 5
+
+Facilitator prompts:
+- What should be generated from design vs handwritten in project style?
+- How do skills change prompt quality for implementation?
+- Where did participants get blocked in API and MCP setup?
+
+Story prompt:
+- Grab 2024 AI acceleration and impact on product iteration speed
 
 ---
 
@@ -346,56 +401,51 @@ Expected result:
 ## Generate Page using Figma MCP
 Duration: 20
 
-### **TO-DO**
-- Talk about best practices
-- User will need to be approved or file made public
-- add the Figma link in the slide (not just on prompt)
-
-Participants start the PO module by generating **PO Create page** from Figma using MCP.
+Participants start PO module by generating **PO Create page** from Figma using MCP.
 
 Scope for generated page:
 - Header section (vendor, PO date, notes)
 - Line table section (approved PR open lines, allocate qty, unit price)
 - Actions (save draft, submit)
 
-[Figma file](https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6.)
+Figma file:
+- https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6.
 
-Prompt example:
+Prompt:
 
 ```text
-Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6.
+Using Figma MCP, generate Vue code for the PO Create page from this Figma file.
 Include reusable components for header form and line allocation table.
 Do not implement API calls yet. Keep structure simple.
 ```
-
-Expected result:
-- PO Create page and base UI components are generated from Figma
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Add Unit Tests
-Duration: 15
+## PO Testing with Copilot (Unit + Jest)
+Duration: 20
 
-Once PO Create page/components are generated, ask participants to add component-level unit tests.
+Merged testing segment.
 
-Minimum test targets:
+UI component test targets:
 1. Header component renders required fields
-2. Line table component adds/removes line rows
-3. Allocation input blocks invalid values at UI validation layer
+2. Line table component adds/removes rows
+3. Allocation input blocks invalid values
 
-Prompt example:
+Service/Jest test targets:
+1. Reject over-allocation in PO creation
+2. Reject invalid PO status transition
+3. Accept valid allocation and status transition path
+
+Prompt:
 
 ```text
-Create unit tests for the generated Vue PO Create components.
-Focus on rendering, line add/remove behavior, and basic allocation input validation.
-Keep tests simple and readable.
+Create unit tests for Vue PO Create components and Jest tests for PO service validation.
+Focus on rendering, line add/remove behavior, over-allocation validation, and status transition rules.
+Keep tests readable.
 ```
-
-Expected result:
-- Participants see how Copilot generates tests for UI components before API integration
 
 ---
 
@@ -405,20 +455,30 @@ Expected result:
 ## Baseline Review + PO Backlog Start
 Duration: 25
 
-### **TO-DO**
-- Copilot must be in PLAN mode
+Task:
+- Explore project structure
+- Identify extension points for PO routes/services/pages
+- Confirm API client and routing patterns
 
-Tasks:
-- Explore existing project structure.
-- Identify extension points for PO routes/services/pages.
-- Confirm existing API client and page routing patterns.
-
-Prompt example:
+Prompt:
 
 ```text
 Analyze this repository and summarize what is already implemented.
 Propose a minimal implementation plan for PO list/create/detail pages and PO endpoints only.
 ```
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (Hour 4)
+Duration: 5
+
+Facilitator prompts:
+- Which tests caught real defects before integration?
+- What was hardest in PO backlog decomposition?
+- Which prompts generated the most maintainable code?
 
 ---
 
@@ -434,17 +494,30 @@ PO endpoints (participant scope):
 - `GET /api/purchase-orders/:id`
 - `GET /api/purchase-orders/:id/open-lines`
 
-Required PO rule:
-1. PO allocation qty <= PR line remaining qty
+Required rule:
+- PO allocation qty <= PR line remaining qty
 
-Prompt example:
+Prompt:
 
 ```text
 Implement Purchase Order module.
 Create PO service + routes for create, submit, detail, and open-lines.
 Enforce over-allocation validation against PR remaining quantities.
-Return 422 for business rule violations with clear messages.
+Return 422 for rule violations with clear messages.
 ```
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (Hour 5)
+Duration: 5
+
+Facilitator prompts:
+- Which PO validation rule should always be server-side?
+- Where should business-rule tests live: route or service?
+- How do we keep generated code aligned with API contracts?
 
 ---
 
@@ -454,18 +527,16 @@ Return 422 for business rule violations with clear messages.
 ## Build PO Pages
 Duration: 35
 
-Let's build the pages and connect them to the API.
-
-PO pages (participant scope):
+Build and connect:
 - PO List page
-- PO Create page (already generated from Figma MCP, now wire to API)
+- PO Create page (generated from Figma MCP, now wired to APIs)
 - PO Detail page
 
-Prompt example:
+Prompt:
 
 ```text
 Implement PO list/detail pages in Vue using existing patterns.
-For PO Create page, keep the generated Figma components and wire them to purchase order APIs.
+For PO Create page, keep generated Figma components and wire them to purchase order APIs.
 Keep UI simple for clarity.
 ```
 
@@ -474,292 +545,38 @@ Keep UI simple for clarity.
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Jest tests with Copilot
+## Git Hooks Mini Demo
 Duration: 10
 
-Let's add PO-focused Jest tests
+Small demo before GitHub Actions discussion.
 
-Minimum tests:
-1. Reject over-allocation in PO creation
-2. Reject invalid PO status transition
-3. Accept valid allocation and transition path
+Objective:
+- Show local pre-push checks can block low-quality pushes quickly
 
-Prompt example:
+Demo flow:
+1. Show `.githooks/pre-push`
+2. Push with failing tests to show block
+3. Fix tests and push again
 
-```text
-Create Jest tests focused on PO service validation and status transition rules.
-```
+Key message:
+- Combining local hooks and GitHub Actions gives stronger quality gates
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Copilot PR summary & review
+## Code Quality Primer
 Duration: 10
 
-### **TO-DO**
-- Add Copilot commit message feature in VSCode
-
-We can use GitHub Copilot for:
-
-- creating PR summary
-- reviewing PR
-
-Steps:
-1. Push branch and open Pull Request
-2. Use Copilot to generate PR summary
-3. Request Copilot code review as reviewer
-4. Triage comments and apply fixes in a small follow-up commit
-
-### 1. Create PR description
-We can ask Copilot to add Pull Request description.
-
-1. Commit the changes from the previous slide.
-2. Push to your repo.
-3. Open your Github repo page, create a new Pull Request.
-4. Click on the Copilot icon on the PR page, then select the "Generate > Summary" button.
-5. This will create a comprehensive PR description based on the commits in the branch that we wanted to merge.
-
-![Request PR summary](github-copilot-workshop-id/img/__aa-pr-desc.png)
-
-### 2. Add Copilot as PR Reviewer
-
-We can also add Copilot as a reviewer to a Pull Request. Very handy if you're working solo on a project.
-
-After pushing, let's create a Pull Request on GitHub.com and utilize Copilot's code review functionality.
-
-1. Access your repository on GitHub
-2. Click **Open a pull request**
-3. On the Pull Request creation screen, click **Copilot icon** >> **Summary**
-
-![CopilotPR review](github-copilot-workshop-id/img/__aa-pr.png)
-
-In the **Reviewers** section, you can assign **Copilot** as a reviewer to request code review from Copilot.
-
-Copilot would check all the files in the PR and make appropriate comments.
-
-> aside positive
->
-> **Auto-assign Setting**: By checking Settings >> Branches >> Rulesets >> Require a pull request before merging >> Automatically request Copilot code review, Copilot will be automatically assigned when opening Pull Requests.
-
-After the Pull Request is opened, you can view Copilot Code Review results:
-
-- **Pull Request Overview**: Summary of code changes
-- **Issues Identified**: Pointing out potential problems
-- **Improvement Suggestions**: Specific suggestions for improving code quality
-
-> aside negative
->
-> **Note**: Depending on the PR size, you might need to wait for Copilot to finish creating a summary or adding PR reviews.
-
-> aside positive
->
-> **Pro Tip**: not confidence about your PR? Anxious that the senior devs are going to roast your PR? Let Copilot review your PR first, before you add other reviewers.
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## GitHub Issue
-Duration: 10
-
-### **TO-DO**
-- Add steps to enable Issue tab
-
-Let's create a new Bookmark feature using GitHub Issue.
-
-### Create issue
-
-Create an issue: "Bookmark feature for PR/PO/GR".
-
-Enter this in the description text input:
-```text
-
-Create a Bookmark feature in this procurement app.
-
-**Scope**
-User can bookmark PR/PO/GR entity from detail page.
-
-**Goal**
-A fully functional feature development including the necessary backend APIs, frontend UIs, and migration SQL script.
-```
-
-Finally, assign to Copilot by clicking the "Assign to Copilot" button.
-
-### Implement changes
-After assigning the issues to an agent, Copilot will automatically create a branch, a pull request, complete with a detailed description of changes it makes to address the issue.
-
-You can check the progress of Copilot in addressing the issues in Pull requests page. After a few minutes, depending on the task size, we can see the changes completed as a Pull Request.
-
-![Issue PR Result](github-copilot-workshop-id/img/__new-feature-result.png)
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Creating E2E test with Copilot
-Duration: 10
-
-### 1. Create new E2E test
-Let's create dedicated Playwright spec for the PO module.
-
-Before running Playwright, participants create one dedicated E2E spec file for the PO module built in previous slides.
-
-Target file:
-- `tests/e2e/po-module.spec.js`
-
-Required scenarios:
-1. Happy path: create + submit PO from baseline approved PR data
-2. Negative path: reject over-allocation qty
-
-Prompt example:
-
-```text
-Create tests/e2e/po-module.spec.js using @playwright/test.
-Add:
-1) happy path: create + submit PO from approved PR and verify PO detail
-2) negative path: reject allocation qty that exceeds PR remaining qty
-Use stable selectors and clear assertions.
-```
-
-### 2. E2E Test Outcome
-
-Expected outcome:
-- Participants understand test intent before execution
-- One dedicated PO module spec is ready to run
-
-Artifact locations:
-- HTML report: `playwright-report/index.html`
-- Screenshots, traces, videos: `test-results/`
-
-How to open artifacts:
-- VS Code Explorer: open `playwright-report/` and `test-results/`
-- Terminal (macOS):
-
-```bash
-open playwright-report/index.html
-open test-results
-```
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Product Documentation
-Duration: 5
-
-Make sure Copilot Chat is in **Agent** mode. Let's ask Copilot to add more documentations:
-
-```text
-Create a documentation on how the current application works. Add a user flow chart and sequence diagram, using Mermaid format. Save it as a markdown file.
-```
-
-We can use your favorite markdown viewer plugin to check the result, including the charts.
-Because the charts are created using Mermaid, you can also copy-paste the Mermaid code into Mermaid's tool.
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Prompt Files and Custom Agents (Optional)
-Duration: 15
-
-### Prompt Files
-
-Prompt files define reusable prompts for specific tasks that you can invoke when needed.
-
-#### Create a "code explainer" agent
-
-1. Create a file: `.github/prompts/explain-code.prompt.md`
-2. Add this into the file:
-
-```text
----
-agent: 'agent'
-description: 'Generate a clear code explanation with examples'
----
-
-Explain the following code in a clear, beginner-friendly way:
-
-Code to explain: ${input:code:Paste your code here}
-Target audience: ${input:audience:Who is this explanation for? (e.g., beginners, intermediate developers, etc.)}
-
-Please provide:
-
-* A brief overview of what the code does
-* A step-by-step breakdown of the main parts
-* Explanation of any key concepts or terminology
-* A simple example showing how it works
-* Common use cases or when you might use this approach
-
-Use clear, simple language and avoid unnecessary jargon.
-```
-
-![Explainer](github-copilot-workshop-id/img/__explainer.png)
-
-### Custom Agents
-
-Other than the default agent provided by Copilot, you can create your own custom agent for specific use case.
-
-#### Create a "readme creator" agent
-
-1. Create a file: `.github/agents/readme-creator-agent.md`
-2. Add this into the file:
-
-```text
----
-name: readme-creator
-description: Agent specializing in creating and improving README files
----
-
-You are a documentation specialist focused on README files. Your scope is limited to README files or other related documentation files only - DO NOT modify or analyze code files.
-
-Focus on the following instructions:
-- Create and update README.md files with clear project descriptions
-- Structure README sections logically: overview, installation, usage, contributing
-- Write scannable content with proper headings and formatting
-- Add appropriate badges, links, and navigation elements
-- Use relative links (e.g., `docs/CONTRIBUTING.md`) instead of absolute URLs for files within the repository
-- Make links descriptive and add alt text to images
-```
-
-> aside positive
->
-> You can create as many specific agents as you want.
-
-You will be able to access your custom agent in Copilot Chat.
-
-![Copilot VSCode](github-copilot-workshop-id/img/__agent-vsc.png)
-
-And once you've committed the agent definition to `main` branch, you can also access the agent in Copilot Online.
-
-![Copilot Online](github-copilot-workshop-id/img/__agent-cpo.png)
-
-> aside positive
->
-> Be creative, try creating some custom prompts and agents.
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Further Exploration: GR Module
-Duration: 20
-
-Not part of mandatory workshop backlog.
-
-Self-paced challenge:
-- Implement GR create/detail/post endpoints
-- Build GR list/create/detail pages
-- Add validation: received qty <= PO open qty
-
-Use `docs/plan.md` as implementation reference.
+What to explain before CodeQL demo:
+- Code quality checks in GitHub
+- Code scanning concepts
+- Why semantic analysis (CodeQL) catches deeper problems
+
+Also cover:
+- Where participants read action logs
+- How to interpret security severity and remediation guidance
 
 ---
 
@@ -767,43 +584,178 @@ Use `docs/plan.md` as implementation reference.
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Code Quality, Code Scanning, CodeQL
-Duration: 10
+Duration: 20
 
-### Enable and run checks
-- Enable GitHub Advanced Security features available in your environment
-- Enable Code Scanning
-- Enable CodeQL analysis
+Enable and run checks:
+- Enable Code quality and Code scanning features in GitHub
+- Ensure CodeQL analysis is available in your environment
 
-### Enable CodeQL and Code Quality
+Very important demo:
+1. Attempt to commit or push a hardcoded API key (demo branch only)
+2. Show secret scanning push protection block
+3. Run CodeQL on intentionally vulnerable code
+4. Open Security tab and review findings
+5. Show how findings flow into PR remediation conversation
 
-Merge all of our changes to the `main` branch.
-Then in your repo, go to `Settings` → `Code quality`. Click on `Enable code quality` button.
-If you've already merged your codes to `main` branch, it will automatically execute a scan.
+Actions walkthrough:
+- Open `Actions` tab and inspect scan jobs
+- Explain server-side enforcement and audit trail
 
-![Code Quality](github-copilot-workshop-id/img/__cq.png)
+Branch note:
+- Make sure `.github/workflows/codeql.yml` is not pre-existing on `main` before the demo if your scenario requires generating it during workshop.
 
-You can check the result of the action executed by Code quality in the `Actions` tab.
-
-![Actions](github-copilot-workshop-id/img/__cq-actions.png)
-
-### Add workflow (if not present)
-Create `.github/workflows/codeql.yml` using Copilot.
-
-Prompt example:
+Prompt to generate workflow (if not present):
 
 ```text
 Create a GitHub Actions workflow for JavaScript CodeQL analysis.
 Run on push and pull_request for main and feature branches.
 ```
 
-### Teach participants to read results
-- Security tab -> Code scanning alerts
-- Understand severity, affected file, and remediation guidance
-- Differentiate true positives vs acceptable risk for MVP
+---
 
-> aside positive
->
-> For workshop speed, fix 1 meaningful alert together rather than trying to clear everything.
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (Hour 6)
+Duration: 5
+
+Facilitator prompts:
+- What belongs in local hooks vs cloud checks?
+- What scan result would you fix first in MVP context?
+- How do you avoid demo-only vulnerabilities leaking to mainline?
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Copilot PR summary, review, and commit message
+Duration: 15
+
+Use GitHub Copilot for:
+- VS Code commit message generation
+- PR summary generation
+- PR review comments
+
+Suggested flow:
+1. Stage changes in VS Code Source Control
+2. Generate commit message with Copilot button
+3. Push branch and open PR
+4. Generate PR summary with Copilot
+5. Request Copilot as reviewer
+6. Triage comments and apply follow-up commit
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## GitHub Issue (Security Hardening)
+Duration: 15
+
+Create issue example:
+- Title: `Security Hardening: Remove hardcoded secrets and tighten validation`
+
+Include in issue description:
+- Problem statement
+- Current risk
+- Proposed remediation
+- Acceptance criteria
+
+Then:
+- Assign to Copilot
+- Review generated branch/PR
+- Link issue to remediation PR and security findings
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (Hour 7)
+Duration: 5
+
+Facilitator prompts:
+- What PR review comments from Copilot were most useful?
+- How should teams triage security findings into issue backlog?
+- Which guardrails gave the highest confidence today?
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Creating E2E test with Copilot
+Duration: 15
+
+Create dedicated Playwright spec:
+- `tests/e2e/po-module.spec.js`
+
+Required scenarios:
+1. Happy path: create + submit PO from approved PR data
+2. Negative path: reject over-allocation qty
+
+Prompt:
+
+```text
+Create tests/e2e/po-module.spec.js using @playwright/test.
+Add happy path and negative over-allocation path with stable selectors and clear assertions.
+```
+
+Artifacts:
+- HTML report: `playwright-report/index.html`
+- Screenshots/traces/videos: `test-results/`
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Product Documentation
+Duration: 10
+
+In Agent mode, ask Copilot to generate implementation docs with diagrams.
+
+Prompt:
+
+```text
+Create documentation for how the current application works.
+Add a user flow chart and sequence diagram in Mermaid.
+Save as markdown.
+```
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Prompt Files and Custom Agents (Optional)
+Duration: 10
+
+Optional extension:
+- Create prompt files for reusable tasks
+- Create custom agents for repeated work patterns
+
+Example prompt file:
+- `.github/prompts/explain-code.prompt.md`
+
+Example custom agent:
+- `.github/agents/readme-creator-agent.md`
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Further Exploration: GR Module
+Duration: 10
+
+Not part of mandatory workshop backlog.
+
+Self-paced challenge:
+- Implement GR create/detail/post endpoints
+- Build GR list/create/detail pages
+- Add validation: received qty <= PO open qty
 
 ---
 
@@ -816,9 +768,9 @@ Duration: 10
 What participants accomplished:
 - Started from a working baseline with JavaScript stack
 - Delivered PO backlog module end-to-end
-- Used Copilot Spaces for onboarding + brainstorming
-- Added PO-focused unit tests and Playwright e2e
-- Used GitHub Copilot review + CodeQL/code scanning
+- Used Copilot Spaces for onboarding and brainstorming
+- Added PO-focused unit/Jest/Playwright tests
+- Practiced PR review and CodeQL security workflow
 
 Suggested next iteration:
 - Add role-based authorization

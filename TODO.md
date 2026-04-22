@@ -1,82 +1,31 @@
 # TODO
 
 ---
-## *Part 1*
-
-December 2025
-
-### Slides
-
-#### 1. Preparation  (= = = = = DONE = = = = =)
-- Remove custom github mcp server slide
-- Add to pre-requisite instead: install [Github MCP Server](https://github.com/mcp/github/github-mcp-server) in VSCode
-
-#### 2. Copilot Space (= = = = = DONE = = = = =)
-
-- start from the Copilot Space?
-- add image and document about Pomodoro to Copilot Space
-- use Copilot Space to ask questions about the project
-- use Copilot Space to generate the plan.md file
-
-#### 3. Prompt File and Custom Agents (= = = = = DONE = = = = =)
-- create prompt file: eg. unit test, code explainer
-- create pre-built agents (already in the repo's `.github/`): eg. API agent, documentation maker
-- create a custom agent: eg. Readme specialist
-
-#### 4. Custom Instruction (= = = = = DONE = = = = =)
-- prebuilt custom instruction
-- modify custom instruction, eg. to always add documentation to all new function (this should be just before the "Create Issue" slide)
-
-#### 5. Advanced Agent Interaction (Agent HQ)
-- basically show the Copilot online's Agent tab to show the agent's activities
-- add a new task (eg. add logging feature) from the Agents' tab while another agent is working on the previous issue
-
-#### 6. Code Review Agent
-- Ask an agent to do a review
-- Ask agent to generate unit tests to improve overall Code Quality. So we need to check code quality BEFORE and AFTER the prompt
-- Just provide screenshots, to make sure non-enterprise account users can see the feature in action
-
-#### 7. Azure integration ???
-- publish to Azure using Copilot Chat
-
----
-
-### Preparation
-
-1. Retest on [eComindo repo](https://github.com/eComindo/2025-github-ur-copilot-workshop)
-2. Check time to complete the workshop with eComindo team (gladi kotor, with ~2-3 team members)
-3. Review and rework the slides or example
-4. Final test (gladi bersih, with all team members joining the workshop)
-
----
----
 
 ## *Part 2*
 
 April 2025
 
 ### Anteraja 2 days training module
-Add to slides:
-- Add in the beginning something about LLM and contexts (brief intro on AI, ML, transformer, LLM, context, system and human message)
-- GitHub spaces for new team member onboarding or product brainstorming
-- PO modules/pages: Backend sepertinya sudah ada, remove dari branch `main`
-- Join slides 13 (Add Unit Tests) & 17 (Jest tests with Copilot). Sum slide time.
-- Move Slide 24. Code Quality, Code Scanning, CodeQL before 18. Copilot PR summary & review
+1. DONE ~~Add in the beginning something about LLM and contexts (brief intro on AI. Relationship between AI-ML-Deep Learnin-transformer-LLM. Definition of context and system/human message when working with AI model)~~
+2. DONE ~~Slide about GitHub spaces for new team member onboarding or product brainstorming~~
+3. DONE ~~Join slides 13 (Add Unit Tests) & 17 (Jest tests with Copilot). Sum slide time.~~
+4. DONE ~~Move Slide 24. Code Quality, Code Scanning, CodeQL before 18. Copilot PR summary & review~~
   - Pastikan `.github/workflows/codeql.yml` tidak ada di branch `main`
-- explanation on Code quality (check the BCA guide material)
-- agent skills (readme, Vue frontend, backend)
+5. DONE ~~add Slide to explain Code quality (check the BCA guide material: `refs/bca_guide_material.md`)~~
+6. DONE ~~add a slide specific about "agent skills" (eg. create skills for creating readme, Vue frontend skill, backend skill, Figma skill)~~
   - adding skills
   - where to find available skills
-- ~~Figma to code example. use agent skill and MCP also.~~
-- add Figma skill https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md
-- ~~unit test and Playwright~~
-- more discussion on SDD
+  - add Figma skill https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md
+7. DONE ~~more discussion on SDD~~
+  - a new slide specific discussing the importance of SDD
+  - what differentiate a vibe-coded project with actual product is often SDD
   - my pattern
   - choose your own pattern, just make sure spec docs are created before adding new features, especially large fetaures
   - guardrail documents
   - tech stack and pattern documents
   - make sure copilot instructions know where to find these docs (put them in a specific folder inside the repo)
-- add knowledge from BCA demo:
+8. DONE ~~add knowledge as new slide or to existing slides from the BCA demo material (`refs/bca_guide_material.md`):~~
   - Demo Item 1: Copilot Instructions Checklist
     - Copilot instructions checklist — Show how project instructions shape Copilot responses.
   - Code QL: check Action results
@@ -88,21 +37,32 @@ Add to slides:
   - Demo Item 9: GitHub Issues (Security Hardening)
   - Demo Item 10: Copilot Space (Optional)
     - Show how Copilot Space captures project context and helps generate aligned implementation guidance.
-- implementation: use real cases, eg. DBS, Grab, Snoop Dogg
-  - => https://www.dbs.com/artificial-intelligence-machine-learning/index.html
-  - => https://www.forrester.com/blogs/dbs-banks-billion-dollar-ai-dream-realized/
-  - => https://www.grab.com/sg/inside-grab/stories/how-ai-accelerated-product-innovation-at-grab-in-2024/
-- Add small example of git hook before talking about Github Actions
+9. DONE ~~Add "break & discussion" slides for after every one-hour mark~~
+  - use it for discussion with participants
+  - share stories from these sources:
+    - => https://www.dbs.com/artificial-intelligence-machine-learning/index.html
+    - => https://www.forrester.com/blogs/dbs-banks-billion-dollar-ai-dream-realized/
+    - => https://www.grab.com/sg/inside-grab/stories/how-ai-accelerated-product-innovation-at-grab-in-2024/
+10. DONE ~~Add small example of git hook before talking about Github Actions~~
   - https://chatgpt.com/c/69aa94da-b47c-8324-b446-202295a1e8e7
   - Combining hooks and Actions is powerful.
-- very important demo: CodeQL
+11. DONE ~~very important demo: CodeQL~~
   - -> Show a developer attempting to commit a hardcoded API key and having the commit immediately blocked by Push Protection
   - -> Run a CodeQL scan on a repository with intentional vulnerabilities and show how the results are integrated directly into the pull request conversation for remediation
 
+**Done items:**
+- DONE ~~Figma to code example. use agent skill and MCP also.~~
+- DONE ~~unit test and Playwright~~
 
+---
 
-### Flow related
-- add break & discussion slides for after every one-hour mark
+### Sample app repository related
+- PO modules/pages: Backend sepertinya sudah ada, remove dari branch `main`
+
+---
+
+### Demo flow related
+- do this during break & discussion slides:
   - kuis berhadiah goodie bag
   - gain insights from the audience
 - add a demo guide document:
@@ -116,6 +76,8 @@ Add to slides:
   - Show that local pre-push checks automatically block bad pushes.
   - but user can still bypass it
 - `plan.md` should be very clear about the data for PR, PO, and GR so that when participant asks for migration SQL, they all will have the same result
+
+---
 
 ## Tips for Smooth Delivery
 - Keep a backup branch with known good state.
