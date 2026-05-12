@@ -1,12 +1,12 @@
 author: Arie M. Prasetyo
-summary: GitHub Copilot Workshop - Procurement MVP (Anteraja 2 x 4 Hours)
+summary: GitHub Copilot Workshop - Procurement MVP
 id: github-copilot-workshop-procurement-mvp
 categories: AI, Development
 environments: Web
 status: Published
-feedback link: https://example.com/feedback
+feedback link: 
 
-# GitHub Copilot Workshop: Build a Procurement MVP
+# GitHub Copilot Workshop: Build a Procurement System MVP
 
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
@@ -15,13 +15,21 @@ feedback link: https://example.com/feedback
 ## About this workshop
 Duration: 10
 
-Welcome. In this workshop, participants build a real-world procurement MVP using GitHub Copilot in VS Code and GitHub.
+Welcome. In this workshop, participants build a real-world procurement system MVP using GitHub Copilot in VS Code and GitHub.
+
+![Octocat](github-copilot-workshop-procurement-mvp/img-source/octocat-copilot.png)
+
+We are going to work on an existing procurement system. This system already has two main modules/pages:
+- Dashboard
+- PR (Purchase Requisition)
+
+The aim is to build the PO (Purchase Order) module. Another module GR (Goods Receipts) is open for exploration. The tables for PO and GR modules are already in the database (after migration).
 
 Application scope:
-- Baseline provided: Home/Dashboard + PR module (list/create/detail + APIs)
-- Participant backlog: PO module (list/create/detail + APIs)
-- Optional extension: Bookmark feature (`PR | PO | GR`) via GitHub Issue workflow
-- Further exploration: GR module (self-paced)
+- Baseline provided: *Home/Dashboard* & *PR module* (list/create/detail pages and backend APIs)
+- Participant backlog: *PO module* (list/create/detail pages and backend APIs)
+- Optional extension: *Bookmark feature* (for PR, PO, & GR modules) via GitHub Issue workflow
+- Further exploration: *GR module* (self-paced)
 
 Tech stack:
 - Backend: Fastify + JavaScript
@@ -32,7 +40,84 @@ Tech stack:
 
 > aside positive
 >
-> You can access the slide deck at [https://stghuniverse.z45.web.core.windows.net/#0](https://stghuniverse.z45.web.core.windows.net/#0) or [https://bit.ly/GitHubRecapJkt2025](https://bit.ly/GitHubRecapJkt2025)
+> You can access the slide deck at [text](link)
+
+
+<!--
+TO-DO = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+4. Reduce content on custom prompts to increase content on custom skills
+5. Make sure Mermaid is in slide about documentation
+-->
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## The example app: Procurement system MVP
+Duration: 10
+
+In this workshop we are going to build a procurement system MVP (minimum viable product). A procurement system manages how a company buys things, with control and traceability from request to receiving.
+
+In simple terms, it helps answer:
+
+- Who requested what?
+- Who approved it?
+- What was ordered from which vendor?
+- What quantity has been received so far?
+- What is still open or pending?
+
+In this app, the workflow chain would be:
+
+1. Purchase Requisition (PR) → internal request for goods/items
+2. Purchase Order (PO) → official order sent to supplier to buy goods/items
+3. Goods Receipt (GR) → record that goods/items were received
+
+![Flow](github-copilot-workshop-procurement-mvp/img-source/flow.png)
+
+### Definitions and Functions
+
+#### Purchase Requisition (PR)
+An internal document created by a requester (employee/department) to ask for goods or services.
+
+Main function:
+- Capture business need (item, quantity, required date, budget context).
+- Run internal approvals before spending commitment.
+- Does not go to vendor directly.
+- Typical statuses: `DRAFT` → `SUBMITTED` → `APPROVED`
+
+#### Purchase Order (PO)
+A commercial document issued to a vendor after PR approval.
+
+Main function:
+- Formally commit to buy specific items, quantities, and prices.
+- Serve as the legal/operational ordering reference.
+- Track what has been ordered and what remains open.
+- In this workshop logic: PO lines are allocated from approved PR lines, and allocation cannot exceed PR remaining quantity.
+- Typical statuses: `DRAFT` → `SUBMITTED`
+
+#### Goods Receipt (GR)
+A record that goods (or service delivery) were actually received against a PO.
+
+Main function:
+- Confirm physical receipt (or service completion).
+- Update received quantities.
+- Provide proof for downstream matching/invoicing/payment.
+- In this workshop logic: received quantity cannot exceed PO open quantity.
+- Typical statuses: `DRAFT` → `POSTED`
+
+#### One practical example
+
+1. PR: Maintenance team requests 10 safety helmets.
+2. PO: Purchasing orders 10 helmets from Vendor A at agreed unit price.
+3. GR: Warehouse receives 6 helmets today and records GR; later receives remaining 4 and records another GR.
+
+Result: system shows requested = 10, ordered = 10, received = 10, open = 0.
+
+So, a procurement app is essentially a controlled pipeline for spending:
+```
+request → approve → order → receive
+```
+with quantities and statuses enforced at each step.
 
 ---
 
@@ -40,23 +125,57 @@ Tech stack:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## AI, LLM, and Context Basics
-Duration: 15
+Duration: 5
 
-Before hands-on coding, align on AI context:
 
-- AI -> ML -> Deep Learning -> Transformer -> LLM
-- LLMs predict the next token based on context
-- Better context gives better output quality
+![AI](github-copilot-workshop-procurement-mvp/img-source/ai.png)
 
-Prompt anatomy in Copilot:
+How does LLM's, like GPT or Claude work? LLMs predict the next token based on the context provided to it. So, better context gives better output quality.
+
+Prompt anatomy in GitHub Copilot:
 - System instructions: global behavior and constraints
-- User message: immediate task objective
-- Repository context: code, docs, config, commit history
+- User message: immediate task objective, the prompt written by the user
+- Repository context: code, docs, config, the information available in the repo/workspace
 
 Working rule for this workshop:
-- Always attach relevant docs (`docs/plan.md`, runbook, schema notes)
-- Ask for a plan first, then implement in small checkpoints
-- Use validation prompts before merge
+1. If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt
+2. When working on something new, ask for a plan first. Afterwards, implement in small checkpoints
+3. Always validate the agent's work. You can outsource your code, but you must not outsource your understanding.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Why context matters - Part 1
+Duration: 5
+
+Open your favorite online LLM application (eg. ChatGPT, Claude, Gemini, etc.) and write a  prompt to recreate this image:
+
+![target picture](github-copilot-workshop-procurement-mvp/img-source/target-picture.jpeg)
+
+Be as specific as you can.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Why context matters - Part 2
+Duration: 10
+
+When working with an AI model, the problem (almost always) is not the AI. It is the brief you gave the AI.
+The gap is not technical—it is communicative. Prompting—communicating with an AI model—is a skill that we need to master so we can provide AI models with the best direction for it to complete its task. You have to make your intention as clear as possible.
+
+- Lead with WHAT you need and WHY it matters. Let the agent work out the HOW.
+- In human communication, brevity is a virtue; with AI agents, it is a liability. Be as comprehensive as you can.
+- The devil is in the details. Leave nothing to chance. Let the model know every last tiny bit of information that you can provide.
+
+
+> aside positive
+>
+> Share your result with everyone. What do you think you can improve in your prompt to make your picture looks as similar as the target picture? Do you think you share the responsibility if the result looks nothing like the target picture?
+
 
 ---
 
@@ -64,7 +183,7 @@ Working rule for this workshop:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Prerequisites
-Duration: 5
+Duration: 10
 
 - VS Code latest
 - GitHub account + Copilot license
@@ -72,6 +191,8 @@ Duration: 5
 - Node.js 20+
 - Git
 - GitHub Copilot extension
+
+![vscode](github-copilot-workshop-procurement-mvp/img-source/vscode.png)
 
 Optional MCP tools:
 - GitHub MCP Server
@@ -82,13 +203,32 @@ Optional MCP tools:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Fork the Repository
+## Break and Discussion (#1)
 Duration: 5
 
-Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop/issues](https://github.com/eComindo/2026-github-copilot-workshop/issues)
+- What context gave Copilot the best responses so far?
+- Where do participants usually lose time in project setup?
+- Quick sharing: one AI-assisted workflow from your current team
+
+### Success story
+**"The trust: How Singapore’s largest bank builds AI with confidence"**
+(March 12, 2026)
+[Link](https://cloud.google.com/transform/how-dbs-singapores-largest-bank-builds-ai-with-confidence)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Clone the Repository
+Duration: 5
+
+Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop](https://github.com/eComindo/2026-github-copilot-workshop)
+
+![github repo](github-copilot-workshop-procurement-mvp/img-source/github-repo.png)
 
 1. Open the project URL in your browser
-2. Click **Fork** in the top right
+2. Clone the repo. You can click **Code** button, the green button on the top right
 
 ---
 
@@ -125,22 +265,6 @@ Cross-OS readiness note:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (Hour 1)
-Duration: 5
-
-Facilitator prompts:
-- What context gave Copilot the best responses so far?
-- Where do participants usually lose time in project setup?
-- Quick sharing: one AI-assisted workflow from your current team
-
-Story prompt:
-- DBS AI transformation headline and what changed in engineering culture
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Database Bootstrap using Docker
 Duration: 10
 
@@ -171,24 +295,26 @@ docker compose exec -T db psql -U workshop -d procurement_mvp -c "SELECT COUNT(*
 ## Configure Local Credentials
 Duration: 10
 
-### TO-DO
-- Run `npm install` in backend, frontend, and root (if monorepo scripts used)
-- `npm run dev` can be run from root if preconfigured
+### 1. Start the backend server
 
 Create backend `.env`:
-
 ```env
 PORT=3000
 DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 ```
 
+- Run `npm install` in backend, frontend, and root (if monorepo scripts used)
+- `npm run dev` can be run from root if preconfigured
+
+
+### 2. Start the frontend server
 Create frontend `.env`:
 
 ```env
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
-Baseline expectation:
+### 3. Baseline expectation:
 - Home/Dashboard works
 - PR list/create/detail works
 - PR APIs connected to DB
@@ -218,26 +344,51 @@ Review this repository instruction file and improve it with a concise checklist 
 Expected outcome:
 - Copilot responses become more consistent with project standards
 
+> aside positive
+>
+> What makes a good copilot-instructions.md? You have to, at least, make sure it contains the product context & tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the `.env` file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.
+> 
+> And it is an evolving file. So you can always improve this file alongside the project.
+
+Example of the `copilot-instructions.md` file we are using for this project:
+
+![instruction](github-copilot-workshop-procurement-mvp/img-source/copilot-instructions.png)
+
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## SDD and Guardrail Documents
+## Concept: Spec-Driven Development (SDD)
 Duration: 15
 
-Why this matters:
-- Vibe-coded output is fast, but often inconsistent
-- Product-grade output needs explicit software design documents (SDD)
+Spec-driven development (SDD) is a software engineering approach where **structured, human-readable specifications** are the primary artifact and "source of truth".
 
-Recommended pattern:
-- Create and maintain spec docs before large features
-- Keep guardrail docs for architecture, naming, and patterns
-- Keep stack decisions and coding conventions in a dedicated docs folder
+Why SDD matters:
+- Vibe-coded output is fast, but often inconsistent and unmaintainable
+- Product-grade output needs explicit design documents ("specs")
 
-Copilot alignment:
-- Point `.github/copilot-instructions.md` to these guardrail docs
-- Ask Copilot to validate plan alignment before implementation
+There are various libraries and frameworks that help you create an SDD pattern. But you can always setup your own favorable pattern.
+What you need to make sure your development follows spec-driven development guidelines are:
+
+- Create and maintain spec docs before large features. You can store it in a specific folder called `plans/` or `docs/` in your repo/workspace.
+- Keep guardrail docs for architecture, naming, and patterns, eg. in a `guidelines/` folder.
+- If required, you can create a dedicated document that explains the tech-stack decisions and coding conventions.
+
+> aside positive
+> Make sure `.github/copilot-instructions.md` are aware of the locations of these spec documents. This will ensure that the documents can be invoked as relatable context.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (#2)
+Duration: 5
+
+- What is your ideal `copilot-instructions.md` file?
+- What documents do you want to store in your repo/workspace?
+- What enhancement ideas were realistic for your current team?
 
 ---
 
@@ -276,28 +427,12 @@ Keep workshop scope unchanged and mark each as out-of-scope for today.
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (Hour 2)
-Duration: 5
-
-Facilitator prompts:
-- What info is best stored in Spaces vs in repository docs?
-- Which onboarding summary output was most reusable?
-- What enhancement ideas were realistic for your current team?
-
-Story prompt:
-- Forrester + DBS billion-dollar AI result and operating model changes
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Finalize Plan
 Duration: 15
 
-Use Copilot **Plan** mode with `docs/plan.md` attached.
+To start this project, we use an already created plan document, the spec for the MVP. Use Copilot **Plan** mode with `docs/plan.md` attached and enter the following prompt.
 
-Prompt:
+![plan](github-copilot-workshop-procurement-mvp/img-source/mode-plan.png)
 
 ```text
 Validate this plan for an MVP.
@@ -305,60 +440,73 @@ Return a strict task sequence with checkpoints.
 Focus implementation on PO backlog.
 ```
 
-Then switch to **Agent** mode:
+Once you are satisfied with the plan, switch to **Agent** mode:
+
+![agent](github-copilot-workshop-procurement-mvp/img-source/mode-agent.png)
 
 ```text
 Save the refined checklist to docs/runbook.md.
 ```
 
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Agent Skills for Delivery
-Duration: 15
-
-Create a dedicated slide for agent skills in Copilot.
-
-What to cover:
-- How to add skills to the project
-- Where to find available skills
-- How to decide when to use a skill vs regular prompts
-
-Examples:
-- README/documentation skill
-- Vue frontend implementation skill
-- Backend API/service skill
-- Figma implementation skill
-
-Reference:
-- Figma skill: https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md
+Here we are creating another "spec" document, a document that contains all the items the agent needs to implement in order to create the MVP.
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## API Readiness Check
+## Agent Skills
 Duration: 15
 
-Goal:
-- Validate backend API before PO implementation
-- Let participants practice generating API docs with Copilot
+Agent skills are folders of instructions, scripts, and resources that Copilot can load when relevant to improve its performance in specialized tasks. The Agent Skills specification is an open standard, used by a range of different AI systems.
 
-Participant task:
-1. Ask Copilot to add Swagger/OpenAPI support
-2. Start backend and open Swagger UI
-3. Verify baseline PR endpoints are listed and callable
+You can create your own skills to teach Copilot to perform tasks in a specific, repeatable way—or use skills shared online, for example in the [anthropics/skills](https://github.com/anthropics/skills) repository or GitHub's community-created [github/awesome-copilot](https://github.com/github/awesome-copilot) collection.
 
-Prompt example:
+> aside positive
+> Skill files **must** be named SKILL.md
+
+### 1. Adding "skills" support
+Create a new folder `.github/skills`
+
+This will be the location for all the skill configurations.
+
+### 2. Add a Vue.js best practices skill
+- Create a new folder `.github/skills/vue-best-practices`
+- In that folder, create a new file `SKILL.md`
+- Copy the raw content of the markdown document in [this link](https://github.com/vuejs-ai/skills/blob/main/skills/vue-best-practices/SKILL.md?plain=1) to that file you have just created.
+
+### 3. Add a Figma design implementation skill
+Sometimes skill include other configuration files, not just the `SKILL.md` file.
+
+- Create a new folder `.github/skills/figma-implement-design`
+- As usual, in that folder, create a new file `SKILL.md`
+- Copy the raw content of the markdown document in [this link](https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md?plain=1) to that file you have just created.
+- Download or recreate the rest of the files in the [https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design](https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design) folder.
+
+> aside positive
+> You can learn more about adding skills in this [official Github page](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## API Documentation & Readiness Check
+Duration: 15
+
+Before we start with with the PO module implementation in our procurement system MVP, let's validate the backend API first.
+Use the **Agent** mode and enter this prompt:
 
 ```text
 Add Swagger/OpenAPI support to this Fastify JavaScript backend.
 Use @fastify/swagger and @fastify/swagger-ui.
 Register plugins in the main bootstrap file and expose docs at /docs.
 ```
+
+The goal is:
+1. Add Swagger/OpenAPI support
+2. Start backend and open Swagger UI
+3. Verify baseline PR endpoints are listed and callable
 
 ---
 
@@ -368,32 +516,52 @@ Register plugins in the main bootstrap file and expose docs at /docs.
 ## Figma MCP Setup
 Duration: 15
 
-Checklist:
-- Confirm Figma MCP is available in current Copilot environment
-- Add MCP config in `mcp.json` if needed
-- Confirm user is logged in to Figma
-- Confirm workshop file and node IDs are accessible
+Figma is the default tool in designing frontend pages and user interfaces. Adding Figma MCP allows the AI model to access Figma file directly.
 
-Expected result:
-- Everyone can generate PO Create UI from the same source
+### Modify the MCP config
+1. Use the Command Palette, open the MCP configuration file `mcp.json`.
+
+![mcp-config](github-copilot-workshop-procurement-mvp/img-source/mcp-config.png)
+
+2. Add Figma configuration in the `mcp.json` file.
+
+![mcp-figma](github-copilot-workshop-procurement-mvp/img-source/mcp-figma.png)
+
+
+### Important Note
+
+Before you ask Copilot to access a Figma file, make sure that:
+- you are logged in to Figma
+- confirm workshop file and node IDs are accessible
+- confirm that the Figma file owner already assign access to you
+
+> aside positive
+> To make sure the frontend codes implement the Figma design as accurate as possible, we need at least two things:
+> - Figma implementation skill
+> - Figma file that implements best practices
+>
+> Check [this article](https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f) to learn about the best practices in designing UI's in Figma for AI interpretation.
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (Hour 3)
+## Break and Discussion (#3)
 Duration: 5
 
-Facilitator prompts:
 - What should be generated from design vs handwritten in project style?
 - How do skills change prompt quality for implementation?
-- Where did participants get blocked in API and MCP setup?
+- Did you get blocked in API and MCP setup?
 
-Story prompt:
-- Grab 2024 AI acceleration and impact on product iteration speed
+### Success story
+**"How AI accelerated product innovation at Grab in 2024"**, (December 19, 2024) [Link](https://www.grab.com/inside-grab/stories/how-ai-accelerated-product-innovation-at-grab-in-2024/)
 
 ---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = DAY 2 = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->

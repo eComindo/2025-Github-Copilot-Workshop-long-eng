@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>GitHub Copilot Workshop: Build a Procurement MVP</title>
+  <title>GitHub Copilot Workshop: Build a Procurement System MVP</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -24,18 +24,25 @@
   <google-codelab codelab-gaid=""
                   codelab-ga4id=""
                   id="github-copilot-workshop-procurement-mvp"
-                  title="GitHub Copilot Workshop: Build a Procurement MVP"
+                  title="GitHub Copilot Workshop: Build a Procurement System MVP"
                   environment="web"
-                  feedback-link="https://example.com/feedback">
+                  feedback-link="">
     
       <google-codelab-step label="About this workshop" duration="10">
-        <p>Welcome. In this workshop, participants build a real-world procurement MVP using GitHub Copilot in VS Code and GitHub.</p>
+        <p>Welcome. In this workshop, participants build a real-world procurement system MVP using GitHub Copilot in VS Code and GitHub.</p>
+<p class="image-container"><img alt="Octocat" src="img/2584e5b4363ade8f.png"></p>
+<p>We are going to work on an existing procurement system. This system already has two main modules/pages:</p>
+<ul>
+<li>Dashboard</li>
+<li>PR (Purchase Requisition)</li>
+</ul>
+<p>The aim is to build the PO (Purchase Order) module. Another module GR (Goods Receipts) is open for exploration. The tables for PO and GR modules are already in the database (after migration).</p>
 <p>Application scope:</p>
 <ul>
-<li>Baseline provided: Home/Dashboard + PR module (list/create/detail + APIs)</li>
-<li>Participant backlog: PO module (list/create/detail + APIs)</li>
-<li>Optional extension: Bookmark feature (<code>PR | PO | GR</code>) via GitHub Issue workflow</li>
-<li>Further exploration: GR module (self-paced)</li>
+<li>Baseline provided: <em>Home/Dashboard</em> &amp; <em>PR module</em> (list/create/detail pages and backend APIs)</li>
+<li>Participant backlog: <em>PO module</em> (list/create/detail pages and backend APIs)</li>
+<li>Optional extension: <em>Bookmark feature</em> (for PR, PO, &amp; GR modules) via GitHub Issue workflow</li>
+<li>Further exploration: <em>GR module</em> (self-paced)</li>
 </ul>
 <p>Tech stack:</p>
 <ul>
@@ -45,36 +52,115 @@
 <li>Testing: Jest + Playwright</li>
 <li>Design: Figma + Figma MCP</li>
 </ul>
-<aside class="special"><p>You can access the slide deck at <a href="https://stghuniverse.z45.web.core.windows.net/#0" target="_blank">https://stghuniverse.z45.web.core.windows.net/#0</a> or <a href="https://bit.ly/GitHubRecapJkt2025" target="_blank">https://bit.ly/GitHubRecapJkt2025</a></p>
+<aside class="special"><p>You can access the slide deck at <a href="link" target="_blank">text</a></p>
 </aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="AI, LLM, and Context Basics" duration="15">
-        <p>Before hands-on coding, align on AI context:</p>
+      <google-codelab-step label="The example app: Procurement system MVP" duration="10">
+        <p>In this workshop we are going to build a procurement system MVP (minimum viable product). A procurement system manages how a company buys things, with control and traceability from request to receiving.</p>
+<p>In simple terms, it helps answer:</p>
 <ul>
-<li>AI -&gt; ML -&gt; Deep Learning -&gt; Transformer -&gt; LLM</li>
-<li>LLMs predict the next token based on context</li>
-<li>Better context gives better output quality</li>
+<li>Who requested what?</li>
+<li>Who approved it?</li>
+<li>What was ordered from which vendor?</li>
+<li>What quantity has been received so far?</li>
+<li>What is still open or pending?</li>
 </ul>
-<p>Prompt anatomy in Copilot:</p>
+<p>In this app, the workflow chain would be:</p>
+<ol type="1">
+<li>Purchase Requisition (PR) → internal request for goods/items</li>
+<li>Purchase Order (PO) → official order sent to supplier to buy goods/items</li>
+<li>Goods Receipt (GR) → record that goods/items were received</li>
+</ol>
+<p class="image-container"><img alt="Flow" src="img/a2f74db48de28743.png"></p>
+<h2 is-upgraded>Definitions and Functions</h2>
+<h3 is-upgraded>Purchase Requisition (PR)</h3>
+<p>An internal document created by a requester (employee/department) to ask for goods or services.</p>
+<p>Main function:</p>
 <ul>
-<li>System instructions: global behavior and constraints</li>
-<li>User message: immediate task objective</li>
-<li>Repository context: code, docs, config, commit history</li>
+<li>Capture business need (item, quantity, required date, budget context).</li>
+<li>Run internal approvals before spending commitment.</li>
+<li>Does not go to vendor directly.</li>
+<li>Typical statuses: <code>DRAFT</code> → <code>SUBMITTED</code> → <code>APPROVED</code></li>
 </ul>
-<p>Working rule for this workshop:</p>
+<h3 is-upgraded>Purchase Order (PO)</h3>
+<p>A commercial document issued to a vendor after PR approval.</p>
+<p>Main function:</p>
 <ul>
-<li>Always attach relevant docs (<code>docs/plan.md</code>, runbook, schema notes)</li>
-<li>Ask for a plan first, then implement in small checkpoints</li>
-<li>Use validation prompts before merge</li>
+<li>Formally commit to buy specific items, quantities, and prices.</li>
+<li>Serve as the legal/operational ordering reference.</li>
+<li>Track what has been ordered and what remains open.</li>
+<li>In this workshop logic: PO lines are allocated from approved PR lines, and allocation cannot exceed PR remaining quantity.</li>
+<li>Typical statuses: <code>DRAFT</code> → <code>SUBMITTED</code></li>
 </ul>
+<h3 is-upgraded>Goods Receipt (GR)</h3>
+<p>A record that goods (or service delivery) were actually received against a PO.</p>
+<p>Main function:</p>
+<ul>
+<li>Confirm physical receipt (or service completion).</li>
+<li>Update received quantities.</li>
+<li>Provide proof for downstream matching/invoicing/payment.</li>
+<li>In this workshop logic: received quantity cannot exceed PO open quantity.</li>
+<li>Typical statuses: <code>DRAFT</code> → <code>POSTED</code></li>
+</ul>
+<h3 is-upgraded>One practical example</h3>
+<ol type="1">
+<li>PR: Maintenance team requests 10 safety helmets.</li>
+<li>PO: Purchasing orders 10 helmets from Vendor A at agreed unit price.</li>
+<li>GR: Warehouse receives 6 helmets today and records GR; later receives remaining 4 and records another GR.</li>
+</ol>
+<p>Result: system shows requested = 10, ordered = 10, received = 10, open = 0.</p>
+<p>So, a procurement app is essentially a controlled pipeline for spending:</p>
+<pre><code>request → approve → order → receive
+</code></pre>
+<p>with quantities and statuses enforced at each step.</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Prerequisites" duration="5">
+      <google-codelab-step label="AI, LLM, and Context Basics" duration="5">
+        <p class="image-container"><img alt="AI" src="img/84be88684a8df669.png"></p>
+<p>How does LLM&#39;s, like GPT or Claude work? LLMs predict the next token based on the context provided to it. So, better context gives better output quality.</p>
+<p>Prompt anatomy in GitHub Copilot:</p>
+<ul>
+<li>System instructions: global behavior and constraints</li>
+<li>User message: immediate task objective, the prompt written by the user</li>
+<li>Repository context: code, docs, config, the information available in the repo/workspace</li>
+</ul>
+<p>Working rule for this workshop:</p>
+<ol type="1">
+<li>If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt</li>
+<li>When working on something new, ask for a plan first. Afterwards, implement in small checkpoints</li>
+<li>Always validate the agent&#39;s work. You can outsource your code, but you must not outsource your understanding.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Why context matters - Part 1" duration="5">
+        <p>Open your favorite online LLM application (eg. ChatGPT, Claude, Gemini, etc.) and write a  prompt to recreate this image:</p>
+<p class="image-container"><img alt="target picture" src="img/4ba4b66e4d376b12.jpeg"></p>
+<p>Be as specific as you can.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Why context matters - Part 2" duration="10">
+        <p>When working with an AI model, the problem (almost always) is not the AI. It is the brief you gave the AI. The gap is not technical—it is communicative. Prompting—communicating with an AI model—is a skill that we need to master so we can provide AI models with the best direction for it to complete its task. You have to make your intention as clear as possible.</p>
+<ul>
+<li>Lead with WHAT you need and WHY it matters. Let the agent work out the HOW.</li>
+<li>In human communication, brevity is a virtue; with AI agents, it is a liability. Be as comprehensive as you can.</li>
+<li>The devil is in the details. Leave nothing to chance. Let the model know every last tiny bit of information that you can provide.</li>
+</ul>
+<aside class="special"><p>Share your result with everyone. What do you think you can improve in your prompt to make your picture looks as similar as the target picture? Do you think you share the responsibility if the result looks nothing like the target picture?</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prerequisites" duration="10">
         <ul>
 <li>VS Code latest</li>
 <li>GitHub account + Copilot license</li>
@@ -83,6 +169,7 @@
 <li>Git</li>
 <li>GitHub Copilot extension</li>
 </ul>
+<p class="image-container"><img alt="vscode" src="img/ad794efd9837bb06.png"></p>
 <p>Optional MCP tools:</p>
 <ul>
 <li>GitHub MCP Server</li>
@@ -92,11 +179,24 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Fork the Repository" duration="5">
-        <p>Open the project URL: <a href="https://github.com/eComindo/2026-github-copilot-workshop/issues" target="_blank">https://github.com/eComindo/2026-github-copilot-workshop/issues</a></p>
+      <google-codelab-step label="Break and Discussion (#1)" duration="5">
+        <ul>
+<li>What context gave Copilot the best responses so far?</li>
+<li>Where do participants usually lose time in project setup?</li>
+<li>Quick sharing: one AI-assisted workflow from your current team</li>
+</ul>
+<h2 is-upgraded>Success story</h2>
+<p><strong>&#34;The trust: How Singapore&#39;s largest bank builds AI with confidence&#34;</strong> (March 12, 2026) <a href="https://cloud.google.com/transform/how-dbs-singapores-largest-bank-builds-ai-with-confidence" target="_blank">Link</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Clone the Repository" duration="5">
+        <p>Open the project URL: <a href="https://github.com/eComindo/2026-github-copilot-workshop" target="_blank">https://github.com/eComindo/2026-github-copilot-workshop</a></p>
+<p class="image-container"><img alt="github repo" src="img/f1b9a46d68f21b0c.png"></p>
 <ol type="1">
 <li>Open the project URL in your browser</li>
-<li>Click <strong>Fork</strong> in the top right</li>
+<li>Clone the repo. You can click <strong>Code</strong> button, the green button on the top right</li>
 </ol>
 
 
@@ -128,21 +228,6 @@ git checkout -b feature/procurement-mvp
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (Hour 1)" duration="5">
-        <p>Facilitator prompts:</p>
-<ul>
-<li>What context gave Copilot the best responses so far?</li>
-<li>Where do participants usually lose time in project setup?</li>
-<li>Quick sharing: one AI-assisted workflow from your current team</li>
-</ul>
-<p>Story prompt:</p>
-<ul>
-<li>DBS AI transformation headline and what changed in engineering culture</li>
-</ul>
-
-
-      </google-codelab-step>
-    
       <google-codelab-step label="Database Bootstrap using Docker" duration="10">
         <p>Bootstrap workshop database (schema + sample data):</p>
 <pre><code language="language-bash" class="language-bash">chmod +x docker/postgres/init/00-init-mvp-db.sh
@@ -163,19 +248,20 @@ docker compose up -d db
       </google-codelab-step>
     
       <google-codelab-step label="Configure Local Credentials" duration="10">
-        <h2 is-upgraded>TO-DO</h2>
-<ul>
-<li>Run <code>npm install</code> in backend, frontend, and root (if monorepo scripts used)</li>
-<li><code>npm run dev</code> can be run from root if preconfigured</li>
-</ul>
+        <h2 is-upgraded>1. Start the backend server</h2>
 <p>Create backend <code>.env</code>:</p>
 <pre><code language="language-env" class="language-env">PORT=3000
 DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 </code></pre>
+<ul>
+<li>Run <code>npm install</code> in backend, frontend, and root (if monorepo scripts used)</li>
+<li><code>npm run dev</code> can be run from root if preconfigured</li>
+</ul>
+<h2 is-upgraded>2. Start the frontend server</h2>
 <p>Create frontend <code>.env</code>:</p>
 <pre><code language="language-env" class="language-env">VITE_API_BASE_URL=http://localhost:3000
 </code></pre>
-<p>Baseline expectation:</p>
+<h2 is-upgraded>3. Baseline expectation:</h2>
 <ul>
 <li>Home/Dashboard works</li>
 <li>PR list/create/detail works</li>
@@ -201,26 +287,39 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 <ul>
 <li>Copilot responses become more consistent with project standards</li>
 </ul>
+<aside class="special"><p>What makes a good copilot-instructions.md? You have to, at least, make sure it contains the product context &amp; tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the <code>.env</code> file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.</p>
+<p>And it is an evolving file. So you can always improve this file alongside the project.</p>
+</aside>
+<p>Example of the <code>copilot-instructions.md</code> file we are using for this project:</p>
+<p class="image-container"><img alt="instruction" src="img/d9db341d0439f9cc.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="SDD and Guardrail Documents" duration="15">
-        <p>Why this matters:</p>
+      <google-codelab-step label="Concept: Spec-Driven Development (SDD)" duration="15">
+        <p>Spec-driven development (SDD) is a software engineering approach where <strong>structured, human-readable specifications</strong> are the primary artifact and &#34;source of truth&#34;.</p>
+<p>Why SDD matters:</p>
 <ul>
-<li>Vibe-coded output is fast, but often inconsistent</li>
-<li>Product-grade output needs explicit software design documents (SDD)</li>
+<li>Vibe-coded output is fast, but often inconsistent and unmaintainable</li>
+<li>Product-grade output needs explicit design documents (&#34;specs&#34;)</li>
 </ul>
-<p>Recommended pattern:</p>
+<p>There are various libraries and frameworks that help you create an SDD pattern. But you can always setup your own favorable pattern. What you need to make sure your development follows spec-driven development guidelines are:</p>
 <ul>
-<li>Create and maintain spec docs before large features</li>
-<li>Keep guardrail docs for architecture, naming, and patterns</li>
-<li>Keep stack decisions and coding conventions in a dedicated docs folder</li>
+<li>Create and maintain spec docs before large features. You can store it in a specific folder called <code>plans/</code> or <code>docs/</code> in your repo/workspace.</li>
+<li>Keep guardrail docs for architecture, naming, and patterns, eg. in a <code>guidelines/</code> folder.</li>
+<li>If required, you can create a dedicated document that explains the tech-stack decisions and coding conventions.</li>
 </ul>
-<p>Copilot alignment:</p>
-<ul>
-<li>Point <code>.github/copilot-instructions.md</code> to these guardrail docs</li>
-<li>Ask Copilot to validate plan alignment before implementation</li>
+<aside class="special"><p> Make sure <code>.github/copilot-instructions.md</code> are aware of the locations of these spec documents. This will ensure that the documents can be invoked as relatable context.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Break and Discussion (#2)" duration="5">
+        <ul>
+<li>What is your ideal <code>copilot-instructions.md</code> file?</li>
+<li>What documents do you want to store in your repo/workspace?</li>
+<li>What enhancement ideas were realistic for your current team?</li>
 </ul>
 
 
@@ -247,106 +346,103 @@ Keep workshop scope unchanged and mark each as out-of-scope for today.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (Hour 2)" duration="5">
-        <p>Facilitator prompts:</p>
-<ul>
-<li>What info is best stored in Spaces vs in repository docs?</li>
-<li>Which onboarding summary output was most reusable?</li>
-<li>What enhancement ideas were realistic for your current team?</li>
-</ul>
-<p>Story prompt:</p>
-<ul>
-<li>Forrester + DBS billion-dollar AI result and operating model changes</li>
-</ul>
-
-
-      </google-codelab-step>
-    
       <google-codelab-step label="Finalize Plan" duration="15">
-        <p>Use Copilot <strong>Plan</strong> mode with <code>docs/plan.md</code> attached.</p>
-<p>Prompt:</p>
+        <p>To start this project, we use an already created plan document, the spec for the MVP. Use Copilot <strong>Plan</strong> mode with <code>docs/plan.md</code> attached and enter the following prompt.</p>
+<p class="image-container"><img alt="plan" src="img/c3d1bad4653cb48f.png"></p>
 <pre><code language="language-text" class="language-text">Validate this plan for an MVP.
 Return a strict task sequence with checkpoints.
 Focus implementation on PO backlog.
 </code></pre>
-<p>Then switch to <strong>Agent</strong> mode:</p>
+<p>Once you are satisfied with the plan, switch to <strong>Agent</strong> mode:</p>
+<p class="image-container"><img alt="agent" src="img/1442183f562939e9.png"></p>
 <pre><code language="language-text" class="language-text">Save the refined checklist to docs/runbook.md.
 </code></pre>
+<p>Here we are creating another &#34;spec&#34; document, a document that contains all the items the agent needs to implement in order to create the MVP.</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Agent Skills for Delivery" duration="15">
-        <p>Create a dedicated slide for agent skills in Copilot.</p>
-<p>What to cover:</p>
+      <google-codelab-step label="Agent Skills" duration="15">
+        <p>Agent skills are folders of instructions, scripts, and resources that Copilot can load when relevant to improve its performance in specialized tasks. The Agent Skills specification is an open standard, used by a range of different AI systems.</p>
+<p>You can create your own skills to teach Copilot to perform tasks in a specific, repeatable way—or use skills shared online, for example in the <a href="https://github.com/anthropics/skills" target="_blank">anthropics/skills</a> repository or GitHub&#39;s community-created <a href="https://github.com/github/awesome-copilot" target="_blank">github/awesome-copilot</a> collection.</p>
+<aside class="special"><p> Skill files <strong>must</strong> be named SKILL.md</p>
+</aside>
+<h2 is-upgraded>1. Adding &#34;skills&#34; support</h2>
+<p>Create a new folder <code>.github/skills</code></p>
+<p>This will be the location for all the skill configurations.</p>
+<h2 is-upgraded>2. Add a Vue.js best practices skill</h2>
 <ul>
-<li>How to add skills to the project</li>
-<li>Where to find available skills</li>
-<li>How to decide when to use a skill vs regular prompts</li>
+<li>Create a new folder <code>.github/skills/vue-best-practices</code></li>
+<li>In that folder, create a new file <code>SKILL.md</code></li>
+<li>Copy the raw content of the markdown document in <a href="https://github.com/vuejs-ai/skills/blob/main/skills/vue-best-practices/SKILL.md?plain=1" target="_blank">this link</a> to that file you have just created.</li>
 </ul>
-<p>Examples:</p>
+<h2 is-upgraded>3. Add a Figma design implementation skill</h2>
+<p>Sometimes skill include other configuration files, not just the <code>SKILL.md</code> file.</p>
 <ul>
-<li>README/documentation skill</li>
-<li>Vue frontend implementation skill</li>
-<li>Backend API/service skill</li>
-<li>Figma implementation skill</li>
+<li>Create a new folder <code>.github/skills/figma-implement-design</code></li>
+<li>As usual, in that folder, create a new file <code>SKILL.md</code></li>
+<li>Copy the raw content of the markdown document in <a href="https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md?plain=1" target="_blank">this link</a> to that file you have just created.</li>
+<li>Download or recreate the rest of the files in the <a href="https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design" target="_blank">https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design</a> folder.</li>
 </ul>
-<p>Reference:</p>
-<ul>
-<li>Figma skill: https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md</li>
-</ul>
+<aside class="special"><p> You can learn more about adding skills in this <a href="https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills" target="_blank">official Github page</a></p>
+</aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="API Readiness Check" duration="15">
-        <p>Goal:</p>
-<ul>
-<li>Validate backend API before PO implementation</li>
-<li>Let participants practice generating API docs with Copilot</li>
-</ul>
-<p>Participant task:</p>
-<ol type="1">
-<li>Ask Copilot to add Swagger/OpenAPI support</li>
-<li>Start backend and open Swagger UI</li>
-<li>Verify baseline PR endpoints are listed and callable</li>
-</ol>
-<p>Prompt example:</p>
+      <google-codelab-step label="API Documentation &amp; Readiness Check" duration="15">
+        <p>Before we start with with the PO module implementation in our procurement system MVP, let&#39;s validate the backend API first. Use the <strong>Agent</strong> mode and enter this prompt:</p>
 <pre><code language="language-text" class="language-text">Add Swagger/OpenAPI support to this Fastify JavaScript backend.
 Use @fastify/swagger and @fastify/swagger-ui.
 Register plugins in the main bootstrap file and expose docs at /docs.
 </code></pre>
+<p>The goal is:</p>
+<ol type="1">
+<li>Add Swagger/OpenAPI support</li>
+<li>Start backend and open Swagger UI</li>
+<li>Verify baseline PR endpoints are listed and callable</li>
+</ol>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Figma MCP Setup" duration="15">
-        <p>Checklist:</p>
+        <p>Figma is the default tool in designing frontend pages and user interfaces. Adding Figma MCP allows the AI model to access Figma file directly.</p>
+<h2 is-upgraded>Modify the MCP config</h2>
+<ol type="1">
+<li>Use the Command Palette, open the MCP configuration file <code>mcp.json</code>.</li>
+</ol>
+<p class="image-container"><img alt="mcp-config" src="img/599f4d081f0d4f77.png"></p>
+<ol type="1" start="2">
+<li>Add Figma configuration in the <code>mcp.json</code> file.</li>
+</ol>
+<p class="image-container"><img alt="mcp-figma" src="img/aa599198fa8d61bc.png"></p>
+<h2 is-upgraded>Important Note</h2>
+<p>Before you ask Copilot to access a Figma file, make sure that:</p>
 <ul>
-<li>Confirm Figma MCP is available in current Copilot environment</li>
-<li>Add MCP config in <code>mcp.json</code> if needed</li>
-<li>Confirm user is logged in to Figma</li>
-<li>Confirm workshop file and node IDs are accessible</li>
+<li>you are logged in to Figma</li>
+<li>confirm workshop file and node IDs are accessible</li>
+<li>confirm that the Figma file owner already assign access to you</li>
 </ul>
-<p>Expected result:</p>
+<aside class="special"><p> To make sure the frontend codes implement the Figma design as accurate as possible, we need at least two things:</p>
 <ul>
-<li>Everyone can generate PO Create UI from the same source</li>
+<li>Figma implementation skill</li>
+<li>Figma file that implements best practices</li>
 </ul>
+<p>Check <a href="https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f" target="_blank">this article</a> to learn about the best practices in designing UI&#39;s in Figma for AI interpretation.</p>
+</aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (Hour 3)" duration="5">
-        <p>Facilitator prompts:</p>
-<ul>
+      <google-codelab-step label="Break and Discussion (#3)" duration="5">
+        <ul>
 <li>What should be generated from design vs handwritten in project style?</li>
 <li>How do skills change prompt quality for implementation?</li>
-<li>Where did participants get blocked in API and MCP setup?</li>
+<li>Did you get blocked in API and MCP setup?</li>
 </ul>
-<p>Story prompt:</p>
-<ul>
-<li>Grab 2024 AI acceleration and impact on product iteration speed</li>
-</ul>
+<h2 is-upgraded>Success story</h2>
+<p><strong>&#34;How AI accelerated product innovation at Grab in 2024&#34;</strong>, (December 19, 2024) <a href="https://www.grab.com/inside-grab/stories/how-ai-accelerated-product-innovation-at-grab-in-2024/" target="_blank">Link</a></p>
 
 
       </google-codelab-step>

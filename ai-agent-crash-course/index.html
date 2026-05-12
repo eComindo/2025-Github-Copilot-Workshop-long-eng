@@ -1,0 +1,395 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>AI Agent Adaptation Crash Course</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="ai-agent-crash-course"
+                  title="AI Agent Adaptation Crash Course"
+                  environment="web"
+                  feedback-link="https://example.com/feedback">
+    
+      <google-codelab-step label="About this crash course" duration="8">
+        <p>This crash course helps participants adapt to a new software development workflow where AI agents are active collaborators.</p>
+<p>Concept:</p>
+<ul>
+<li>Traditional workflow: humans do most drafting and execution manually</li>
+<li>AI-agent workflow: humans provide direction, constraints, and quality checks</li>
+<li>Main skill shift: from only writing code to also orchestrating decision quality</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Instead of writing a feature from scratch, ask an agent to generate a plan, then implement in controlled steps</li>
+<li>Instead of manually exploring a large codebase, ask the agent to map architecture and risks first</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Write a 3-sentence personal goal for this workshop: <ol type="1">
+<li>What part of your current workflow is slow?</li>
+<li>What do you want AI agents to help with?</li>
+<li>What quality bar must still be owned by you?</li>
+</ol>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="The new operating model" duration="7">
+        <p>Concept:</p>
+<ul>
+<li>Strong outcomes come from a loop: Frame -&gt; Delegate -&gt; Verify -&gt; Iterate</li>
+<li>AI speed does not remove the need for engineering judgment</li>
+<li>Better context reduces hallucination and rework</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Frame: provide repo context, target files, acceptance criteria, constraints</li>
+<li>Delegate: choose Ask for explanation, Plan for strategy, Agent for execution</li>
+<li>Verify: run tests, inspect diffs, validate assumptions</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Map one of your daily tasks into this loop in 4 bullets: <ol type="1">
+<li>Framing input</li>
+<li>Delegation mode</li>
+<li>Verification checks</li>
+<li>Iteration trigger</li>
+</ol>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 1 overview: execution foundation" duration="8">
+        <p>Concept:</p>
+<ul>
+<li>Phase 1 builds operational control before deeper architecture tasks</li>
+<li>Two foundations: <ol type="1">
+<li>Prompt mastery</li>
+<li>Tool mastery</li>
+</ol>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Prompt mastery reduces ambiguous instructions and off-target outputs</li>
+<li>Tool mastery improves throughput by selecting the right mode at the right time</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Define one success criterion for each Phase 1 item: <ul>
+<li>Prompt mastery success criterion</li>
+<li>Tool mastery success criterion</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 1 item: Prompt mastery" duration="15">
+        <p>Concept:</p>
+<ul>
+<li>Good prompts are precise, constrained, and measurable</li>
+<li>Effective prompt structure: <ol type="1">
+<li>Goal</li>
+<li>Context</li>
+<li>Constraints</li>
+<li>Output format</li>
+<li>Done criteria</li>
+</ol>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Weak prompt: &#34;improve this feature&#34;</li>
+<li>Strong prompt: &#34;In file X, refactor function Y to reduce duplication without behavior changes. Keep API unchanged. Add tests for edge cases A and B.&#34;</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Rewrite this weak prompt into a strong one: <ul>
+<li>Weak prompt: &#34;fix performance issues in this module&#34;</li>
+</ul>
+</li>
+<li>Your final prompt must include: <ul>
+<li>target scope (specific files or symbols)</li>
+<li>non-goals</li>
+<li>measurable done criteria</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 1 item: Tool mastery" duration="15">
+        <p>Concept:</p>
+<ul>
+<li>Tool mastery is choosing Ask, Plan, or Agent intentionally</li>
+<li>Decision guidance: <ul>
+<li>Ask: understanding, trade-offs, explanation</li>
+<li>Plan: multi-step approach and alignment</li>
+<li>Agent: implementation and execution</li>
+</ul>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Ask: &#34;Explain this error and likely root causes&#34;</li>
+<li>Plan: &#34;Propose migration steps with risk controls&#34;</li>
+<li>Agent: &#34;Apply the approved plan and run verification&#34;</li>
+<li>Optimization tip: explicitly mention filenames and symbols to improve relevance and reduce cost</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>For each scenario below, select Ask, Plan, or Agent and explain why: <ol type="1">
+<li>New teammate needs architecture orientation</li>
+<li>Legacy service needs phased refactor</li>
+<li>You already approved approach and now need concrete edits</li>
+</ol>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 1 checkpoint (non-exercise)" duration="7">
+        <p>Concept:</p>
+<ul>
+<li>Prompt quality and tool selection are multiplicative</li>
+<li>If either is weak, output quality drops quickly</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Strong prompt + wrong tool = slow progress</li>
+<li>Weak prompt + right tool = fast but misaligned output</li>
+<li>Strong prompt + right tool = high-quality throughput</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Self-assessment score (1-5) for: <ul>
+<li>Prompt precision</li>
+<li>Mode selection confidence</li>
+<li>Context completeness</li>
+</ul>
+</li>
+<li>Write one immediate behavior change you will apply after this session</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 2 overview: solution architecture" duration="8">
+        <p>Concept:</p>
+<ul>
+<li>Phase 2 focuses on moving from execution quality to solution quality</li>
+<li>Three capabilities: <ol type="1">
+<li>Problem solving</li>
+<li>Creating specifications</li>
+<li>Creating system designs</li>
+</ol>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Problem solving: identify root cause and choose feasible strategy</li>
+<li>Specification: turn ambiguous intent into verifiable requirements</li>
+<li>System design: map components, contracts, and trade-offs</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Pick one ongoing initiative from your team and write: <ul>
+<li>the main problem statement</li>
+<li>one missing specification area</li>
+<li>one design question still unresolved</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 2 item: Problem solving with AI" duration="14">
+        <p>Concept:</p>
+<ul>
+<li>High-quality problem solving requires separating symptoms from causes</li>
+<li>AI helps generate options, but humans must evaluate constraints and risk</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Symptom: API latency spike</li>
+<li>Possible causes: DB lock contention, cache miss storm, inefficient query path</li>
+<li>AI-assisted approach: ask for hypotheses, then request a validation plan and ranked mitigations</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Use this template on a real problem: <ol type="1">
+<li>Problem statement (one sentence)</li>
+<li>Top 3 hypotheses</li>
+<li>Evidence needed for each hypothesis</li>
+<li>Decision and next experiment</li>
+</ol>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 2 item: Specification creation with AI" duration="14">
+        <p>Concept:</p>
+<ul>
+<li>Specifications convert intent into an executable shared contract</li>
+<li>Good specs are testable, scoped, and explicit about non-goals</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Product spec sections: <ul>
+<li>user problem</li>
+<li>target users</li>
+<li>requirements</li>
+<li>acceptance criteria</li>
+<li>metrics</li>
+</ul>
+</li>
+<li>Feature spec sections: <ul>
+<li>API contract</li>
+<li>edge cases</li>
+<li>rollout strategy</li>
+<li>test plan</li>
+</ul>
+</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Draft a one-page feature spec using AI support with these required headings: <ul>
+<li>Problem</li>
+<li>Scope</li>
+<li>Requirements</li>
+<li>Non-goals</li>
+<li>Acceptance criteria</li>
+<li>Risks</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Phase 2 item: System design with AI" duration="14">
+        <p>Concept:</p>
+<ul>
+<li>System design is choosing component boundaries and trade-offs under constraints</li>
+<li>AI can accelerate option generation, but architecture decisions must remain intentional</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Ask AI to produce 2 architectures: monolith-first vs service-split</li>
+<li>Compare them by latency, operational overhead, team skill fit, and migration risk</li>
+<li>Ask for a sequence diagram and data model draft to validate interaction flow</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Produce a mini design package for one feature: <ol type="1">
+<li>Context diagram</li>
+<li>Key components and responsibilities</li>
+<li>Data model outline</li>
+<li>Two trade-offs with chosen direction</li>
+</ol>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Capstone: integrated workflow challenge" duration="8">
+        <p>Concept:</p>
+<ul>
+<li>Real value comes from combining all five capabilities in one flow</li>
+<li>Sequence: <ol type="1">
+<li>Frame with prompt mastery</li>
+<li>Route with tool mastery</li>
+<li>Solve problem</li>
+<li>Write spec</li>
+<li>Produce system design</li>
+</ol>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Scenario: &#34;Add approval workflow to purchasing system with audit trail&#34;</li>
+<li>Required outputs: <ul>
+<li>problem breakdown</li>
+<li>feature spec</li>
+<li>architecture sketch</li>
+</ul>
+</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>In small groups, produce a single shared artifact pack containing: <ul>
+<li>final prompt set</li>
+<li>mode selection log (Ask/Plan/Agent)</li>
+<li>concise feature spec</li>
+<li>system design summary</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Wrap-up and adoption commitments" duration="2">
+        <p>Concept:</p>
+<ul>
+<li>Sustainable AI adoption is a behavior change, not a single tool upgrade</li>
+<li>The most durable improvement is consistent workflow discipline</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Daily improvement: always define done criteria before asking an agent to implement</li>
+<li>Team improvement: keep specs and design notes as first-class artifacts</li>
+</ul>
+<p>Task:</p>
+<ul>
+<li>Write one 14-day adoption commitment: <ul>
+<li>one workflow you will change</li>
+<li>one metric you will track</li>
+<li>one weekly checkpoint with your team</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-04-28T09:13:18+07:00",
+  "id": "ai-agent-crash-course",
+  "duration": 120,
+  "title": "AI Agent Adaptation Crash Course",
+  "summary": "Crash Course - Adapting Software Development with AI Agents",
+  "source": "crash-course-ai-agent.md",
+  "theme": "",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "ai",
+    "development"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://example.com/feedback",
+  "url": "ai-agent-crash-course"
+}
