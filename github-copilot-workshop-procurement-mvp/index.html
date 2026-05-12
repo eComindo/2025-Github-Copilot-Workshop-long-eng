@@ -468,22 +468,18 @@ Do not implement API calls yet. Keep structure simple.
     
       <google-codelab-step label="Add Tests with Copilot" duration="15">
         <p>Ask Copilot to help us create unit tests for the pages we have just created. Enter this prompt:</p>
-<pre><code language="language-text" class="language-text">Create unit tests for Vue PO Create components and Jest tests for PO service validation.
-Focus on rendering, line add/remove behavior, over-allocation validation, and status transition rules.
+<pre><code language="language-text" class="language-text">Create unit tests for important backend functions.
+Focus on services that provide lists to the frontend.
+
+Create Jest tests for frontend validations.
+Focus on rendering of pages and components.
+
 Keep tests readable.
 </code></pre>
-<p>UI component test targets:</p>
-<ol type="1">
-<li>Header component renders required fields</li>
-<li>Line table component adds/removes rows</li>
-<li>Allocation input blocks invalid values</li>
-</ol>
-<p>Service/Jest test targets:</p>
-<ol type="1">
-<li>Reject over-allocation in PO creation</li>
-<li>Reject invalid PO status transition</li>
-<li>Accept valid allocation and status transition path</li>
-</ol>
+<p>Unit test result: <img alt="tests" src="img/f227931a259b8cea.png"></p>
+<p>Unit test coverage report: <img alt="coverage" src="img/590d673a7d780c9.png"></p>
+<aside class="warning"><p>One of the problems of AI models is that they are eager to please. Make sure your tests are actually producing good assessments, not just reinforcing mistakes in your code.</p>
+</aside>
 
 
       </google-codelab-step>
@@ -499,8 +495,10 @@ Document the latest state of the project in `docs/progress.md`.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (#4)" duration="5">
-        <ul>
+      <google-codelab-step label="Break and Discussion (#4)" duration="10">
+        <p>Before taking a break, don&#39;t forget to commit and push your recent work. Using Copilot, you can ask it to create a comprehensive commit message based on the staged files.</p>
+<p class="image-container"><img alt="commit-message" src="img/f723ff8067aa771c.png"></p>
+<ul>
 <li>Which tests caught real defects before integration?</li>
 <li>Have you added other documentation that you think can improve Copilot&#39;s result?</li>
 <li>Have you recognize what kind of prompt generates the most maintainable code?</li>
@@ -551,225 +549,307 @@ Connect the new pages with the existing backend API endpoints for PO module.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Git Hooks Mini Demo" duration="10">
-        <p>Small demo before GitHub Actions discussion.</p>
-<p>Objective:</p>
-<ul>
-<li>Show local pre-push checks can block low-quality pushes quickly</li>
-</ul>
-<p>Demo flow:</p>
+      <google-codelab-step label="Git Hooks Demo (OPTIONAL)" duration="20">
+        <p>GitHub offers various features to make sure our project is secure and reliable. But before we take a look into those features, let&#39;s try something we can implement locally.</p>
+<p>Git Hooks let&#39;s us do a lot of things. It is triggered by the <code>git</code> command. In this example we will make a hook that does pre-push checks, that can block low-quality pushes quickly.</p>
+<h2 is-upgraded>Create the hook</h2>
+<p>Create a new <code>.git/hooks/pre-push</code> file.</p>
+<p>Then enter this prompt:</p>
+<pre><code language="language-text" class="language-text">Create a git hook pre-push script that runs npm test and blocks the push if there&#39;s a failed test.
+</code></pre>
+<p>Copy the script provided by Copilot to the file you have just created.</p>
+<p>Below is an example of a simple pre-push script that runs <code>npm run test:unit</code>:</p>
+<pre><code language="language-text" class="language-text">#!/bin/sh
+
+set -eu
+
+echo &#34;Running unit tests before push...&#34;
+cd app
+npm run test:unit
+</code></pre>
+<p>Make sure you implement a script that runs the unit tests and cancel the push if an error was found.</p>
+<h2 is-upgraded>Test the hook</h2>
+<p>Before testing the hook, make sure the hook file is executable:</p>
+<pre><code language="language-text" class="language-text">chmod +x .githooks/pre-push
+</code></pre>
+<p>Then:</p>
 <ol type="1">
-<li>Show <code>.githooks/pre-push</code></li>
-<li>Push with failing tests to show block</li>
-<li>Fix tests and push again</li>
+<li>Create a failing test</li>
+<li>Create a git commit</li>
+<li>Push the commit and check the result</li>
 </ol>
-<p>Key message:</p>
-<ul>
-<li>Combining local hooks and GitHub Actions gives stronger quality gates</li>
-</ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Code Quality Primer" duration="10">
-        <p>What to explain before CodeQL demo:</p>
+      <google-codelab-step label="Code Quality" duration="10">
+        <p>Code Quality is a feature from GitHub that allow scanning of the codes in your repository.</p>
+<p>GitHub Code Quality helps you ensure your codebase is reliable, maintainable, and efficient. It provides actionable insights and automated fixes so you can improve and maintain the code health of your repository efficiently.</p>
+<p class="image-container"><img alt="code quality" src="img/24e16f186a27365c.png"></p>
+<p>Code Quality performs rule-based analysis of the following languages using CodeQL:</p>
 <ul>
-<li>Code quality checks in GitHub</li>
-<li>Code scanning concepts</li>
-<li>Why semantic analysis (CodeQL) catches deeper problems</li>
+<li>C#</li>
+<li>Go</li>
+<li>Java</li>
+<li>JavaScript</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>TypeScript</li>
 </ul>
-<p>Also cover:</p>
-<ul>
-<li>Where participants read action logs</li>
-<li>How to interpret security severity and remediation guidance</li>
-</ul>
+<aside class="special"><p>Combining local hooks and GitHub Actions gives stronger quality gates</p>
+</aside>
+<p>We can check the progress and result of Code Quality in the Actions tab of the repository:</p>
+<p class="image-container"><img alt="actions" src="img/692d228c777a4b62.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Code Quality, Code Scanning, CodeQL" duration="20">
-        <p>Enable and run checks:</p>
+      <google-codelab-step label="Code Quality, Code Scanning, CodeQL" duration="15">
+        <p>To enable and run checks:</p>
 <ul>
-<li>Enable Code quality and Code scanning features in GitHub</li>
-<li>Ensure CodeQL analysis is available in your environment</li>
+<li>Enable the Code Quality and Code Scanning features in the Settings</li>
+<li>Ensure CodeQL analysis is available in your codebase</li>
 </ul>
-<p>Very important demo:</p>
-<ol type="1">
-<li>Attempt to commit or push a hardcoded API key (demo branch only)</li>
-<li>Show secret scanning push protection block</li>
-<li>Run CodeQL on intentionally vulnerable code</li>
-<li>Open Security tab and review findings</li>
-<li>Show how findings flow into PR remediation conversation</li>
-</ol>
-<p>Actions walkthrough:</p>
-<ul>
-<li>Open <code>Actions</code> tab and inspect scan jobs</li>
-<li>Explain server-side enforcement and audit trail</li>
-</ul>
-<p>Branch note:</p>
-<ul>
-<li>Make sure <code>.github/workflows/codeql.yml</code> is not pre-existing on <code>main</code> before the demo if your scenario requires generating it during workshop.</li>
-</ul>
-<p>Prompt to generate workflow (if not present):</p>
+<p class="image-container"><img alt="codeql" src="img/f46afdef5c1750b.png"></p>
+<p>We can ask Copilot to create the workflow file:</p>
 <pre><code language="language-text" class="language-text">Create a GitHub Actions workflow for JavaScript CodeQL analysis.
 Run on push and pull_request for main and feature branches.
 </code></pre>
+<p>Code Scanning scans your codebase and commits for vulnerabilities like hardcoded API key and secrets.</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (Hour 6)" duration="5">
-        <p>Facilitator prompts:</p>
-<ul>
+      <google-codelab-step label="Break and Discussion (#6)" duration="5">
+        <ul>
 <li>What belongs in local hooks vs cloud checks?</li>
-<li>What scan result would you fix first in MVP context?</li>
-<li>How do you avoid demo-only vulnerabilities leaking to mainline?</li>
+<li>What scan result did you find?</li>
+<li>How do you avoid vulnerabilities from development leaking to production?</li>
 </ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Copilot PR summary, review, and commit message" duration="15">
-        <p>Use GitHub Copilot for:</p>
-<ul>
-<li>VS Code commit message generation</li>
-<li>PR summary generation</li>
-<li>PR review comments</li>
-</ul>
-<p>Suggested flow:</p>
+        <p>Copilot is also available on Github&#39;s website. Click on <a href="https://github.com/copilot/" target="_blank">this link</a> to open Copilot on Github.</p>
+<p class="image-container"><img alt="copilot home" src="img/a7c200d9745d6129.png"></p>
+<p>Let&#39;s see some of the things Copilot can do for us in the Github website.</p>
+<h2 is-upgraded>1. Add PR Summary</h2>
+<p>We can ask Copilot to add Pull Request description.</p>
 <ol type="1">
-<li>Stage changes in VS Code Source Control</li>
-<li>Generate commit message with Copilot button</li>
-<li>Push branch and open PR</li>
-<li>Generate PR summary with Copilot</li>
-<li>Request Copilot as reviewer</li>
-<li>Triage comments and apply follow-up commit</li>
+<li>Commit the changes from the previous slide.</li>
+<li>Push to your repo.</li>
+<li>Open your Github repo page, create a new Pull Request.</li>
 </ol>
+<p class="image-container"><img alt="generate summary" src="img/18ffabfac342e07b.png"></p>
+<p>The summary from Copilot: <img alt="summary" src="img/a2714b4422d1b988.png"></p>
+<p>It will create a comprehensive PR description based on the commits in the branch that we wanted to merge.</p>
+<h2 is-upgraded>2. Add As PR Reviewer</h2>
+<p>We can also add Copilot as a reviewer to a Pull Request. Very handy if you&#39;re working solo on a project.</p>
+<p>After pushing, let&#39;s create a Pull Request on GitHub.com and utilize Copilot&#39;s code review functionality.</p>
+<ol type="1">
+<li>Access your repository on GitHub</li>
+<li>Click <strong>Open a pull request</strong></li>
+<li>On the Pull Request creation screen, click <strong>Copilot icon</strong> » <strong>Summary</strong></li>
+</ol>
+<p class="image-container"><img alt="PR Reviewer" src="img/a8929f219cf37bb6.png"></p>
+<p>In the <strong>Reviewers</strong> section, you can assign <strong>Copilot</strong> as a reviewer to request code review from Copilot.</p>
+<p>Copilot would check all the files in the PR and make appropriate comments.</p>
+<aside class="special"><p><strong>Auto-assign Setting</strong>: By checking Settings » Branches » Rulesets » Require a pull request before merging » Automatically request Copilot code review, Copilot will be automatically assigned when opening Pull Requests.</p>
+</aside>
+<p>After the Pull Request is opened, you can view Copilot Code Review results:</p>
+<ul>
+<li><strong>Pull Request Overview</strong>: Summary of code changes</li>
+<li><strong>Issues Identified</strong>: Pointing out potential problems</li>
+<li><strong>Improvement Suggestions</strong>: Specific suggestions for improving code quality</li>
+</ul>
+<p class="image-container"><img alt="copilot comment" src="img/13cd54346ae64a55.png"></p>
+<aside class="warning"><p><strong>Note</strong>: Depending on the PR size, you might need to wait for Copilot to finish creating a summary or adding PR reviews.</p>
+</aside>
+<aside class="special"><p><strong>Pro Tip</strong>: not confidence about your PR? Anxious that the senior devs are going to roast your PR? Let Copilot review your PR first, before you add other reviewers.</p>
+</aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="GitHub Issue (Security Hardening)" duration="15">
-        <p>Create issue example:</p>
-<ul>
-<li>Title: <code>Security Hardening: Remove hardcoded secrets and tighten validation</code></li>
-</ul>
-<p>Include in issue description:</p>
-<ul>
-<li>Problem statement</li>
-<li>Current risk</li>
-<li>Proposed remediation</li>
-<li>Acceptance criteria</li>
-</ul>
-<p>Then:</p>
-<ul>
-<li>Assign to Copilot</li>
-<li>Review generated branch/PR</li>
-<li>Link issue to remediation PR and security findings</li>
-</ul>
+      <google-codelab-step label="GitHub Issue (OPTIONAL)" duration="20">
+        <p>Let&#39;s use the website version of GitHub Copilot to assign the Coding Agent to work on a new feature using the Issues feature.</p>
+<p>First, make sure <strong>Issues</strong> is enabled in your Github repository&#39;s <strong>Settings</strong>.</p>
+<p class="image-container"><img alt="issues enabled" src="img/c72d012588dd9e2e.png"></p>
+<h2 is-upgraded>Automatic Issue Creation with GitHub Copilot</h2>
+<p>In this section we want to implement a new feature: bookmarks.</p>
+<ol type="1">
+<li>Access <strong>GitHub.com</strong> and click the <strong>Copilot</strong> icon in the top right</li>
+<li>Confirm your repository is added to the Chat context</li>
+<li>Enter the following prompt:</li>
+</ol>
+<pre><code language="language-text" class="language-text">I want the user to be able to bookmark an item in this app and then see all the bookmarks in a &#34;Bookmarks&#34; page.
+
+Create a feature which allows user to bookmark any item in the PR, PO, and GR list.
+
+Create the necessary API endpoints, database migration scripts, and frontend page/components.
+</code></pre>
+<ol type="1" start="4">
+<li>Assign the issue to Copilot</li>
+</ol>
+<p class="image-container"><img alt="assign issues" src="img/ef1ef7ccd6229530.png"></p>
+<ol type="1" start="5">
+<li>Wait for the agent to finish creating the PR. Once it is done, review generated branch/PR.</li>
+</ol>
+<p class="image-container"><img alt="issue pr" src="img/238409b759c88629.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (Hour 7)" duration="5">
-        <p>Facilitator prompts:</p>
-<ul>
+      <google-codelab-step label="Break and Discussion (#7)" duration="5">
+        <ul>
 <li>What PR review comments from Copilot were most useful?</li>
 <li>How should teams triage security findings into issue backlog?</li>
-<li>Which guardrails gave the highest confidence today?</li>
+<li>Are ypou satisfied with the work of the Coding Agent working on your issue?</li>
 </ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Creating E2E test with Copilot" duration="15">
-        <p>Create dedicated Playwright spec:</p>
-<ul>
-<li><code>tests/e2e/po-module.spec.js</code></li>
-</ul>
-<p>Required scenarios:</p>
+        <p>Now we create an end-to-end test using Playwright.</p>
+<p>The required scenarios for this end-to-end test</p>
 <ol type="1">
 <li>Happy path: create + submit PO from approved PR data</li>
 <li>Negative path: reject over-allocation qty</li>
 </ol>
-<p>Prompt:</p>
-<pre><code language="language-text" class="language-text">Create tests/e2e/po-module.spec.js using @playwright/test.
+<p>For this we need to create a dedicated Playwright spec. Let&#39;s do that using this prompt:</p>
+<pre><code language="language-text" class="language-text">Create tests/e2e/po-module.spec.js using the Playwright library.
 Add happy path and negative over-allocation path with stable selectors and clear assertions.
+
+The required artifacts:
+- HTML report (`playwright-report/index.html`)
+- screenshots/traces/videos - store them in `test-results/`
 </code></pre>
-<p>Artifacts:</p>
-<ul>
-<li>HTML report: <code>playwright-report/index.html</code></li>
-<li>Screenshots/traces/videos: <code>test-results/</code></li>
-</ul>
+<p class="image-container"><img alt="playwright" src="img/b0bb60e489dd66a4.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Product Documentation" duration="10">
-        <p>In Agent mode, ask Copilot to generate implementation docs with diagrams.</p>
+        <p>Make sure Copilot Chat is in <strong>Agent</strong> mode then ask Copilot to generate implementation docs with diagrams.</p>
 <p>Prompt:</p>
 <pre><code language="language-text" class="language-text">Create documentation for how the current application works.
 Add a user flow chart and sequence diagram in Mermaid.
 Save as markdown.
 </code></pre>
+<p>We can use your favorite markdown viewer plugin to check the result, including the charts.</p>
+<p>Because the charts are created using <a href="https://mermaid.js.org/" target="_blank">Mermaid format</a>, you can also copy-paste the Mermaid code into Mermaid&#39;s tool.</p>
+<aside class="warning"><p>Below are some screenshots of documentation created by Copilot for a simple Pomodoro app. Our procurement MVP app would have a more complex documentation.</p>
+</aside>
+<p class="image-container"><img alt="App documentation" src="img/af32d8f4c778e3ab.png"></p>
+<p class="image-container"><img alt="App documentation" src="img/409e46bf3650b89c.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Prompt Files and Custom Agents (Optional)" duration="10">
-        <p>Optional extension:</p>
-<ul>
-<li>Create prompt files for reusable tasks</li>
-<li>Create custom agents for repeated work patterns</li>
-</ul>
-<p>Example prompt file:</p>
-<ul>
-<li><code>.github/prompts/explain-code.prompt.md</code></li>
-</ul>
-<p>Example custom agent:</p>
-<ul>
-<li><code>.github/agents/readme-creator-agent.md</code></li>
-</ul>
+      <google-codelab-step label="Prompt Files and Custom Agents (OPTIONAL)" duration="10">
+        <h2 is-upgraded>Prompt Files</h2>
+<p>Prompt files define reusable prompts for specific tasks that you can invoke when needed.</p>
+<h3 is-upgraded>Create a &#34;code explainer&#34; agent</h3>
+<ol type="1">
+<li>Create a file: <code>.github/prompts/explain-code.prompt.md</code></li>
+<li>Add this into the file:</li>
+</ol>
+<pre><code language="language-text" class="language-text">---
+agent: &#39;agent&#39;
+description: &#39;Generate a clear code explanation with examples&#39;
+---
+
+Explain the following code in a clear, beginner-friendly way:
+
+Code to explain: ${input:code:Paste your code here}
+Target audience: ${input:audience:Who is this explanation for? (e.g., beginners, intermediate developers, etc.)}
+
+Please provide:
+
+* A brief overview of what the code does
+* A step-by-step breakdown of the main parts
+* Explanation of any key concepts or terminology
+* A simple example showing how it works
+* Common use cases or when you might use this approach
+
+Use clear, simple language and avoid unnecessary jargon.
+</code></pre>
+<p class="image-container"><img alt="Explainer" src="img/c7952b98bf7adc56.png"></p>
+<h2 is-upgraded>Custom Agents</h2>
+<p>Other than the default agent provided by Copilot, you can create your own custom agent for specific use case.</p>
+<h3 is-upgraded>Create a &#34;readme creator&#34; agent</h3>
+<ol type="1">
+<li>Create a file: <code>.github/agents/readme-creator-agent.md</code></li>
+<li>Add this into the file:</li>
+</ol>
+<pre><code language="language-text" class="language-text">---
+name: readme-creator
+description: Agent specializing in creating and improving README files
+---
+
+You are a documentation specialist focused on README files. Your scope is limited to README files or other related documentation files only - DO NOT modify or analyze code files.
+
+Focus on the following instructions:
+- Create and update README.md files with clear project descriptions
+- Structure README sections logically: overview, installation, usage, contributing
+- Write scannable content with proper headings and formatting
+- Add appropriate badges, links, and navigation elements
+- Use relative links (e.g., `docs/CONTRIBUTING.md`) instead of absolute URLs for files within the repository
+- Make links descriptive and add alt text to images
+</code></pre>
+<aside class="special"><p>You can create as many specific agents as you want.</p>
+</aside>
+<p>You will be able to access your custom agent in Copilot Chat.</p>
+<p class="image-container"><img alt="Copilot VSCode" src="img/fe65896ab474425c.png"></p>
+<p>And once you&#39;ve committed the agent definition to <code>main</code> branch, you can also access the agent in Copilot Online.</p>
+<p class="image-container"><img alt="Copilot Online" src="img/abd8e6bc75c1dabc.png"></p>
+<aside class="special"><p>Be creative, try creating some custom prompts and agents.</p>
+</aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Further Exploration: GR Module" duration="10">
-        <p>Not part of mandatory workshop backlog.</p>
-<p>Self-paced challenge:</p>
-<ul>
-<li>Implement GR create/detail/post endpoints</li>
-<li>Build GR list/create/detail pages</li>
-<li>Add validation: received qty &lt;= PO open qty</li>
-</ul>
+      <google-codelab-step label="Further Exploration: GR Module" duration="20">
+        <p>With the knowledge you have gathered from the previous slides, implement the GR module of this procurement system.</p>
+<p>Some of the key items you need to remember:</p>
+<ol type="1">
+<li>Start with planning first. Save the plan as a spec document.</li>
+<li>Always ask for unit tests to maintaint the project&#39;s reliability.</li>
+<li>Use available resources (eg. the migration script) to add more context for Copilot.</li>
+</ol>
+<p class="image-container"><img alt="gr" src="img/92c30c06c2c818a.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Wrap-up, Retrospective, and Next Steps" duration="10">
-        <p>What participants accomplished:</p>
+        <p>In this workshop, we learned using Github Copilot to do the following:</p>
 <ul>
-<li>Started from a working baseline with JavaScript stack</li>
-<li>Delivered PO backlog module end-to-end</li>
-<li>Used Copilot Spaces for onboarding and brainstorming</li>
-<li>Added PO-focused unit/Jest/Playwright tests</li>
+<li>Using specifications to develop an application</li>
+<li>Started from a working baseline</li>
+<li>Delivered a new module end-to-end</li>
+<li>Utilizing agent functionality</li>
 <li>Practiced PR review and CodeQL security workflow</li>
+<li>Adding issues and development of new features</li>
+<li>and many others</li>
 </ul>
-<p>Suggested next iteration:</p>
+<h2 is-upgraded>Next Steps</h2>
 <ul>
-<li>Add role-based authorization</li>
-<li>Add pagination and filtering</li>
-<li>Add better error boundary handling</li>
-<li>Add CI for Jest + Playwright in GitHub Actions</li>
+<li>Try using Copilot in actual projects</li>
+<li>Challenge more complex application development</li>
+<li>Keep up with new Copilot features</li>
 </ul>
-<p>Resources:</p>
+<h2 is-upgraded>Resources</h2>
 <ul>
-<li>GitHub Copilot docs: https://docs.github.com/copilot</li>
-<li>Copilot Spaces: https://github.com/copilot/spaces</li>
-<li>CodeQL docs: https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-codeql</li>
-<li>Playwright docs: https://playwright.dev</li>
+<li><a href="https://docs.github.com/copilot" target="_blank">GitHub Copilot Documentation</a></li>
+<li><a href="https://docs.github.com/copilot/using-github-copilot/best-practices-for-using-github-copilot" target="_blank">GitHub Copilot Best Practices</a></li>
+<li><a href="https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-codeql" target="_blank">CodeQL docs</a></li>
+<li><a href="https://github.com/copilot/spaces" target="_blank">Copilot Spaces</a></li>
+<li><a href="https://playwright.dev" target="_blank">Playwright docs</a></li>
 </ul>
-<p>Great work!</p>
+<p>Great work! 🎉</p>
 
 
       </google-codelab-step>

@@ -601,20 +601,24 @@ Ask Copilot to help us create unit tests for the pages we have just created.
 Enter this prompt:
 
 ```text
-Create unit tests for Vue PO Create components and Jest tests for PO service validation.
-Focus on rendering, line add/remove behavior, over-allocation validation, and status transition rules.
+Create unit tests for important backend functions.
+Focus on services that provide lists to the frontend.
+
+Create Jest tests for frontend validations.
+Focus on rendering of pages and components.
+
 Keep tests readable.
 ```
 
-UI component test targets:
-1. Header component renders required fields
-2. Line table component adds/removes rows
-3. Allocation input blocks invalid values
+Unit test result:
+![tests](github-copilot-workshop-procurement-mvp/img-source/tests.png)
 
-Service/Jest test targets:
-1. Reject over-allocation in PO creation
-2. Reject invalid PO status transition
-3. Accept valid allocation and status transition path
+Unit test coverage report:
+![coverage](github-copilot-workshop-procurement-mvp/img-source/coverage.png)
+
+> aside negative
+>
+> One of the problems of AI models is that they are eager to please. Make sure your tests are actually producing good assessments, not just reinforcing mistakes in your code.
 
 ---
 
@@ -622,7 +626,7 @@ Service/Jest test targets:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Project progress review
-Duration: 10
+Duration: 5
 
 It is best practice to have a document that track the status of the project. This can help Copilot get a context of the overall status of the system we are building.
 Use the **Agent** and enter this prompt:
@@ -641,7 +645,12 @@ The goal here is to make Copilot aware of what has been done and avoid redundanc
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Break and Discussion (#4)
-Duration: 5
+Duration: 10
+
+Before taking a break, don't forget to commit and push your recent work.
+Using Copilot, you can ask it to create a comprehensive commit message based on the staged files.
+
+![commit-message](github-copilot-workshop-procurement-mvp/img-source/commit-message.png)
 
 - Which tests caught real defects before integration?
 - Have you added other documentation that you think can improve Copilot's result?
@@ -710,38 +719,81 @@ Duration: 5
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Git Hooks Mini Demo
-Duration: 10
+## Git Hooks Demo (OPTIONAL)
+Duration: 20
 
-Small demo before GitHub Actions discussion.
+GitHub offers various features to make sure our project is secure and reliable.
+But before we take a look into those features, let's try something we can implement locally.
 
-Objective:
-- Show local pre-push checks can block low-quality pushes quickly
+Git Hooks let's us do a lot of things. It is triggered by the `git` command.
+In this example we will make a hook that does pre-push checks, that can block low-quality pushes quickly.
 
-Demo flow:
-1. Show `.githooks/pre-push`
-2. Push with failing tests to show block
-3. Fix tests and push again
+### Create the hook
+Create a new `.git/hooks/pre-push` file.
 
-Key message:
-- Combining local hooks and GitHub Actions gives stronger quality gates
+Then enter this prompt:
+```text
+Create a git hook pre-push script that runs npm test and blocks the push if there's a failed test.
+```
+
+Copy the script provided by Copilot to the file you have just created.
+
+Below is an example of a simple pre-push script that runs `npm run test:unit`:
+```text
+#!/bin/sh
+
+set -eu
+
+echo "Running unit tests before push..."
+cd app
+npm run test:unit
+```
+
+Make sure you implement a script that runs the unit tests and cancel the push if an error was found.
+
+### Test the hook
+Before testing the hook, make sure the hook file is executable:
+
+```text
+chmod +x .githooks/pre-push
+```
+
+Then:
+1. Create a failing test
+2. Create a git commit
+3. Push the commit and check the result
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Code Quality Primer
+## Code Quality
 Duration: 10
 
-What to explain before CodeQL demo:
-- Code quality checks in GitHub
-- Code scanning concepts
-- Why semantic analysis (CodeQL) catches deeper problems
+Code Quality is a feature from GitHub that allow scanning of the codes in your repository.
 
-Also cover:
-- Where participants read action logs
-- How to interpret security severity and remediation guidance
+GitHub Code Quality helps you ensure your codebase is reliable, maintainable, and efficient.
+It provides actionable insights and automated fixes so you can improve and maintain the code health of your repository efficiently.
+
+![code quality](github-copilot-workshop-procurement-mvp/img-source/code-quality.png)
+
+Code Quality performs rule-based analysis of the following languages using CodeQL:
+- C#
+- Go
+- Java
+- JavaScript
+- Python
+- Ruby
+- TypeScript
+
+> aside positive
+> 
+> Combining local hooks and GitHub Actions gives stronger quality gates
+
+We can check the progress and result of Code Quality in the Actions tab of the repository:
+
+![actions](github-copilot-workshop-procurement-mvp/img-source/github-actions.png)
 
 ---
 
@@ -749,45 +801,33 @@ Also cover:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Code Quality, Code Scanning, CodeQL
-Duration: 20
+Duration: 15
 
-Enable and run checks:
-- Enable Code quality and Code scanning features in GitHub
-- Ensure CodeQL analysis is available in your environment
+To enable and run checks:
+- Enable the Code Quality and Code Scanning features in the Settings
+- Ensure CodeQL analysis is available in your codebase
 
-Very important demo:
-1. Attempt to commit or push a hardcoded API key (demo branch only)
-2. Show secret scanning push protection block
-3. Run CodeQL on intentionally vulnerable code
-4. Open Security tab and review findings
-5. Show how findings flow into PR remediation conversation
+![codeql](github-copilot-workshop-procurement-mvp/img-source/codeql.png)
 
-Actions walkthrough:
-- Open `Actions` tab and inspect scan jobs
-- Explain server-side enforcement and audit trail
-
-Branch note:
-- Make sure `.github/workflows/codeql.yml` is not pre-existing on `main` before the demo if your scenario requires generating it during workshop.
-
-Prompt to generate workflow (if not present):
-
+We can ask Copilot to create the workflow file:
 ```text
 Create a GitHub Actions workflow for JavaScript CodeQL analysis.
 Run on push and pull_request for main and feature branches.
 ```
+
+Code Scanning scans your codebase and commits for vulnerabilities like hardcoded API key and secrets.
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (Hour 6)
+## Break and Discussion (#6)
 Duration: 5
 
-Facilitator prompts:
 - What belongs in local hooks vs cloud checks?
-- What scan result would you fix first in MVP context?
-- How do you avoid demo-only vulnerabilities leaking to mainline?
+- What scan result did you find?
+- How do you avoid vulnerabilities from development leaking to production?
 
 ---
 
@@ -797,53 +837,115 @@ Facilitator prompts:
 ## Copilot PR summary, review, and commit message
 Duration: 15
 
-Use GitHub Copilot for:
-- VS Code commit message generation
-- PR summary generation
-- PR review comments
+Copilot is also available on Github's website. Click on [this link](https://github.com/copilot/) to open Copilot on Github.
 
-Suggested flow:
-1. Stage changes in VS Code Source Control
-2. Generate commit message with Copilot button
-3. Push branch and open PR
-4. Generate PR summary with Copilot
-5. Request Copilot as reviewer
-6. Triage comments and apply follow-up commit
+![copilot home](github-copilot-workshop-procurement-mvp/img-source/github-copilot-home.png)
+
+
+Let's see some of the things Copilot can do for us in the Github website.
+
+### 1. Add PR Summary
+
+We can ask Copilot to add Pull Request description.
+
+1. Commit the changes from the previous slide.
+2. Push to your repo.
+3. Open your Github repo page, create a new Pull Request.
+
+![generate summary](github-copilot-workshop-procurement-mvp/img-source/generate-summary.png)
+
+The summary from Copilot:
+![summary](github-copilot-workshop-procurement-mvp/img-source/copilot-pr-review.png)
+
+
+It will create a comprehensive PR description based on the commits in the branch that we wanted to merge.
+
+
+### 2. Add As PR Reviewer
+
+We can also add Copilot as a reviewer to a Pull Request. Very handy if you're working solo on a project.
+
+After pushing, let's create a Pull Request on GitHub.com and utilize Copilot's code review functionality.
+
+1. Access your repository on GitHub
+2. Click **Open a pull request**
+3. On the Pull Request creation screen, click **Copilot icon** >> **Summary**
+
+![PR Reviewer](github-copilot-workshop-procurement-mvp/img-source/request-copilot-review.png)
+
+In the **Reviewers** section, you can assign **Copilot** as a reviewer to request code review from Copilot.
+
+Copilot would check all the files in the PR and make appropriate comments.
+
+> aside positive
+>
+> **Auto-assign Setting**: By checking Settings >> Branches >> Rulesets >> Require a pull request before merging >> Automatically request Copilot code review, Copilot will be automatically assigned when opening Pull Requests.
+
+After the Pull Request is opened, you can view Copilot Code Review results:
+
+- **Pull Request Overview**: Summary of code changes
+- **Issues Identified**: Pointing out potential problems
+- **Improvement Suggestions**: Specific suggestions for improving code quality
+
+![copilot comment](github-copilot-workshop-procurement-mvp/img-source/copilot-pr-comment.png)
+
+> aside negative
+>
+> **Note**: Depending on the PR size, you might need to wait for Copilot to finish creating a summary or adding PR reviews.
+
+> aside positive
+>
+> **Pro Tip**: not confidence about your PR? Anxious that the senior devs are going to roast your PR? Let Copilot review your PR first, before you add other reviewers.
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## GitHub Issue (Security Hardening)
-Duration: 15
+## GitHub Issue (OPTIONAL)
+Duration: 20
 
-Create issue example:
-- Title: `Security Hardening: Remove hardcoded secrets and tighten validation`
+Let's use the website version of GitHub Copilot to assign the Coding Agent to work on a new feature using the Issues feature.
 
-Include in issue description:
-- Problem statement
-- Current risk
-- Proposed remediation
-- Acceptance criteria
+First, make sure **Issues** is enabled in your Github repository's **Settings**.
 
-Then:
-- Assign to Copilot
-- Review generated branch/PR
-- Link issue to remediation PR and security findings
+![issues enabled](github-copilot-workshop-procurement-mvp/img-source/issues-enabled.png)
+
+### Automatic Issue Creation with GitHub Copilot
+
+In this section we want to implement a new feature: bookmarks.
+
+1. Access **GitHub.com** and click the **Copilot** icon in the top right
+2. Confirm your repository is added to the Chat context
+3. Enter the following prompt:
+
+```text
+I want the user to be able to bookmark an item in this app and then see all the bookmarks in a "Bookmarks" page.
+
+Create a feature which allows user to bookmark any item in the PR, PO, and GR list.
+
+Create the necessary API endpoints, database migration scripts, and frontend page/components.
+```
+
+4. Assign the issue to Copilot
+
+![assign issues](github-copilot-workshop-procurement-mvp/img-source/assign-issue-to-copilot.png)
+
+5. Wait for the agent to finish creating the PR. Once it is done, review generated branch/PR.
+
+![issue pr](github-copilot-workshop-procurement-mvp/img-source/issue-pr.png)
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (Hour 7)
+## Break and Discussion (#7)
 Duration: 5
 
-Facilitator prompts:
 - What PR review comments from Copilot were most useful?
 - How should teams triage security findings into issue backlog?
-- Which guardrails gave the highest confidence today?
+- Are ypou satisfied with the work of the Coding Agent working on your issue?
 
 ---
 
@@ -853,23 +955,24 @@ Facilitator prompts:
 ## Creating E2E test with Copilot
 Duration: 15
 
-Create dedicated Playwright spec:
-- `tests/e2e/po-module.spec.js`
+Now we create an end-to-end test using Playwright.
 
-Required scenarios:
+The required scenarios for this end-to-end test
 1. Happy path: create + submit PO from approved PR data
 2. Negative path: reject over-allocation qty
 
-Prompt:
+For this we need to create a dedicated Playwright spec. Let's do that using this prompt:
 
 ```text
-Create tests/e2e/po-module.spec.js using @playwright/test.
+Create tests/e2e/po-module.spec.js using the Playwright library.
 Add happy path and negative over-allocation path with stable selectors and clear assertions.
+
+The required artifacts:
+- HTML report (`playwright-report/index.html`)
+- screenshots/traces/videos - store them in `test-results/`
 ```
 
-Artifacts:
-- HTML report: `playwright-report/index.html`
-- Screenshots/traces/videos: `test-results/`
+![playwright](github-copilot-workshop-procurement-mvp/img-source/pw.png)
 
 ---
 
@@ -879,7 +982,7 @@ Artifacts:
 ## Product Documentation
 Duration: 10
 
-In Agent mode, ask Copilot to generate implementation docs with diagrams.
+Make sure Copilot Chat is in **Agent** mode then ask Copilot to generate implementation docs with diagrams.
 
 Prompt:
 
@@ -889,23 +992,100 @@ Add a user flow chart and sequence diagram in Mermaid.
 Save as markdown.
 ```
 
+We can use your favorite markdown viewer plugin to check the result, including the charts.
+
+Because the charts are created using [Mermaid format](https://mermaid.js.org/), you can also copy-paste the Mermaid code into Mermaid's tool.
+
+> aside negative
+> 
+> Below are some screenshots of documentation created by Copilot for a simple Pomodoro app. Our procurement MVP app would have a more complex documentation.
+
+![App documentation](github-copilot-workshop-id/img/__docs-1.png)
+
+![App documentation](github-copilot-workshop-id/img/__docs-2.png)
+
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Prompt Files and Custom Agents (Optional)
+## Prompt Files and Custom Agents (OPTIONAL)
 Duration: 10
 
-Optional extension:
-- Create prompt files for reusable tasks
-- Create custom agents for repeated work patterns
+### Prompt Files
 
-Example prompt file:
-- `.github/prompts/explain-code.prompt.md`
+Prompt files define reusable prompts for specific tasks that you can invoke when needed.
 
-Example custom agent:
-- `.github/agents/readme-creator-agent.md`
+#### Create a "code explainer" agent
+
+1. Create a file: `.github/prompts/explain-code.prompt.md`
+2. Add this into the file:
+
+```text
+---
+agent: 'agent'
+description: 'Generate a clear code explanation with examples'
+---
+
+Explain the following code in a clear, beginner-friendly way:
+
+Code to explain: ${input:code:Paste your code here}
+Target audience: ${input:audience:Who is this explanation for? (e.g., beginners, intermediate developers, etc.)}
+
+Please provide:
+
+* A brief overview of what the code does
+* A step-by-step breakdown of the main parts
+* Explanation of any key concepts or terminology
+* A simple example showing how it works
+* Common use cases or when you might use this approach
+
+Use clear, simple language and avoid unnecessary jargon.
+```
+
+![Explainer](github-copilot-workshop-id/img/__explainer.png)
+
+### Custom Agents
+
+Other than the default agent provided by Copilot, you can create your own custom agent for specific use case.
+
+#### Create a "readme creator" agent
+
+1. Create a file: `.github/agents/readme-creator-agent.md`
+2. Add this into the file:
+
+```text
+---
+name: readme-creator
+description: Agent specializing in creating and improving README files
+---
+
+You are a documentation specialist focused on README files. Your scope is limited to README files or other related documentation files only - DO NOT modify or analyze code files.
+
+Focus on the following instructions:
+- Create and update README.md files with clear project descriptions
+- Structure README sections logically: overview, installation, usage, contributing
+- Write scannable content with proper headings and formatting
+- Add appropriate badges, links, and navigation elements
+- Use relative links (e.g., `docs/CONTRIBUTING.md`) instead of absolute URLs for files within the repository
+- Make links descriptive and add alt text to images
+```
+
+> aside positive
+>
+> You can create as many specific agents as you want.
+
+You will be able to access your custom agent in Copilot Chat.
+
+![Copilot VSCode](github-copilot-workshop-id/img/__agent-vsc.png)
+
+And once you've committed the agent definition to `main` branch, you can also access the agent in Copilot Online.
+
+![Copilot Online](github-copilot-workshop-id/img/__agent-cpo.png)
+
+> aside positive
+>
+> Be creative, try creating some custom prompts and agents.
 
 ---
 
@@ -913,14 +1093,16 @@ Example custom agent:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Further Exploration: GR Module
-Duration: 10
+Duration: 20
 
-Not part of mandatory workshop backlog.
+With the knowledge you have gathered from the previous slides, implement the GR module of this procurement system.
 
-Self-paced challenge:
-- Implement GR create/detail/post endpoints
-- Build GR list/create/detail pages
-- Add validation: received qty <= PO open qty
+Some of the key items you need to remember:
+1. Start with planning first. Save the plan as a spec document.
+2. Always ask for unit tests to maintaint the project's reliability.
+3. Use available resources (eg. the migration script) to add more context for Copilot.
+
+![gr](github-copilot-workshop-procurement-mvp/img-source/gr.png)
 
 ---
 
@@ -930,23 +1112,27 @@ Self-paced challenge:
 ## Wrap-up, Retrospective, and Next Steps
 Duration: 10
 
-What participants accomplished:
-- Started from a working baseline with JavaScript stack
-- Delivered PO backlog module end-to-end
-- Used Copilot Spaces for onboarding and brainstorming
-- Added PO-focused unit/Jest/Playwright tests
+In this workshop, we learned using Github Copilot to do the following:
+- Using specifications to develop an application
+- Started from a working baseline
+- Delivered a new module end-to-end
+- Utilizing agent functionality
 - Practiced PR review and CodeQL security workflow
+- Adding issues and development of new features
+- and many others
 
-Suggested next iteration:
-- Add role-based authorization
-- Add pagination and filtering
-- Add better error boundary handling
-- Add CI for Jest + Playwright in GitHub Actions
+### Next Steps
 
-Resources:
-- GitHub Copilot docs: https://docs.github.com/copilot
-- Copilot Spaces: https://github.com/copilot/spaces
-- CodeQL docs: https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-codeql
-- Playwright docs: https://playwright.dev
+- Try using Copilot in actual projects
+- Challenge more complex application development
+- Keep up with new Copilot features
 
-Great work!
+### Resources
+
+- [GitHub Copilot Documentation](https://docs.github.com/copilot)
+- [GitHub Copilot Best Practices](https://docs.github.com/copilot/using-github-copilot/best-practices-for-using-github-copilot)
+- [CodeQL docs](https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-codeql)
+- [Copilot Spaces](https://github.com/copilot/spaces)
+- [Playwright docs](https://playwright.dev)
+
+Great work! 🎉
