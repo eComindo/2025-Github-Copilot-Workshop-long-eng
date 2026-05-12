@@ -228,7 +228,7 @@ git checkout -b feature/procurement-mvp
 
       </google-codelab-step>
     
-      <google-codelab-step label="Database Bootstrap using Docker" duration="10">
+      <google-codelab-step label="Database Bootstrap using Docker" duration="20">
         <p>Bootstrap workshop database (schema + sample data):</p>
 <pre><code language="language-bash" class="language-bash">chmod +x docker/postgres/init/00-init-mvp-db.sh
 docker compose down -v
@@ -247,7 +247,7 @@ docker compose up -d db
 
       </google-codelab-step>
     
-      <google-codelab-step label="Configure Local Credentials" duration="10">
+      <google-codelab-step label="Configure Local Credentials" duration="15">
         <h2 is-upgraded>1. Start the backend server</h2>
 <p>Create backend <code>.env</code>:</p>
 <pre><code language="language-env" class="language-env">PORT=3000
@@ -362,7 +362,7 @@ Focus implementation on PO backlog.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Agent Skills" duration="15">
+      <google-codelab-step label="Agent Skills" duration="20">
         <p>Agent skills are folders of instructions, scripts, and resources that Copilot can load when relevant to improve its performance in specialized tasks. The Agent Skills specification is an open standard, used by a range of different AI systems.</p>
 <p>You can create your own skills to teach Copilot to perform tasks in a specific, repeatable way—or use skills shared online, for example in the <a href="https://github.com/anthropics/skills" target="_blank">anthropics/skills</a> repository or GitHub&#39;s community-created <a href="https://github.com/github/awesome-copilot" target="_blank">github/awesome-copilot</a> collection.</p>
 <aside class="special"><p> Skill files <strong>must</strong> be named SKILL.md</p>
@@ -447,29 +447,31 @@ Register plugins in the main bootstrap file and expose docs at /docs.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Generate Page using Figma MCP" duration="20">
-        <p>Participants start PO module by generating <strong>PO Create page</strong> from Figma using MCP.</p>
+      <google-codelab-step label="Using Figma MCP" duration="20">
+        <p>Let&#39;s start creating the development of PO module by generating <strong>Create PO</strong> page for the PO module. We will be using a design in Figma to create the frontend codes.</p>
+<p>Enter the prompt below:</p>
+<pre><code language="language-text" class="language-text">Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&amp;t=isYVX9I2o61eq0Vu-6.
+Include reusable components for header form and line allocation table.
+Do not implement API calls yet. Keep structure simple.
+</code></pre>
+<aside class="special"><p>The Figma file: https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot–Workshop-?m=auto&amp;t=isYVX9I2o61eq0Vu-6</p>
+</aside>
 <p>Scope for generated page:</p>
 <ul>
 <li>Header section (vendor, PO date, notes)</li>
 <li>Line table section (approved PR open lines, allocate qty, unit price)</li>
 <li>Actions (save draft, submit)</li>
 </ul>
-<p>Figma file:</p>
-<ul>
-<li>https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot–Workshop-?m=auto&amp;t=isYVX9I2o61eq0Vu-6.</li>
-</ul>
-<p>Prompt:</p>
-<pre><code language="language-text" class="language-text">Using Figma MCP, generate Vue code for the PO Create page from this Figma file.
-Include reusable components for header form and line allocation table.
-Do not implement API calls yet. Keep structure simple.
-</code></pre>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="PO Testing with Copilot (Unit &#43; Jest)" duration="20">
-        <p>Merged testing segment.</p>
+      <google-codelab-step label="Add Tests with Copilot" duration="15">
+        <p>Ask Copilot to help us create unit tests for the pages we have just created. Enter this prompt:</p>
+<pre><code language="language-text" class="language-text">Create unit tests for Vue PO Create components and Jest tests for PO service validation.
+Focus on rendering, line add/remove behavior, over-allocation validation, and status transition rules.
+Keep tests readable.
+</code></pre>
 <p>UI component test targets:</p>
 <ol type="1">
 <li>Header component renders required fields</li>
@@ -482,86 +484,69 @@ Do not implement API calls yet. Keep structure simple.
 <li>Reject invalid PO status transition</li>
 <li>Accept valid allocation and status transition path</li>
 </ol>
-<p>Prompt:</p>
-<pre><code language="language-text" class="language-text">Create unit tests for Vue PO Create components and Jest tests for PO service validation.
-Focus on rendering, line add/remove behavior, over-allocation validation, and status transition rules.
-Keep tests readable.
-</code></pre>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Baseline Review &#43; PO Backlog Start" duration="25">
-        <p>Task:</p>
-<ul>
-<li>Explore project structure</li>
-<li>Identify extension points for PO routes/services/pages</li>
-<li>Confirm API client and routing patterns</li>
-</ul>
-<p>Prompt:</p>
+      <google-codelab-step label="Project progress review" duration="10">
+        <p>It is best practice to have a document that track the status of the project. This can help Copilot get a context of the overall status of the system we are building. Use the <strong>Agent</strong> and enter this prompt:</p>
 <pre><code language="language-text" class="language-text">Analyze this repository and summarize what is already implemented.
-Propose a minimal implementation plan for PO list/create/detail pages and PO endpoints only.
+Identify the available API endpoints for PO module.
+Document the latest state of the project in `docs/progress.md`.
 </code></pre>
+<p>The goal here is to make Copilot aware of what has been done and avoid redundancy.</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (Hour 4)" duration="5">
-        <p>Facilitator prompts:</p>
-<ul>
+      <google-codelab-step label="Break and Discussion (#4)" duration="5">
+        <ul>
 <li>Which tests caught real defects before integration?</li>
-<li>What was hardest in PO backlog decomposition?</li>
-<li>Which prompts generated the most maintainable code?</li>
+<li>Have you added other documentation that you think can improve Copilot&#39;s result?</li>
+<li>Have you recognize what kind of prompt generates the most maintainable code?</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Implement PO Module" duration="45">
-        <p>PO endpoints (participant scope):</p>
-<ul>
-<li><code>POST /api/purchase-orders</code></li>
-<li><code>POST /api/purchase-orders/:id/submit</code></li>
-<li><code>GET /api/purchase-orders/:id</code></li>
-<li><code>GET /api/purchase-orders/:id/open-lines</code></li>
-</ul>
-<p>Required rule:</p>
-<ul>
-<li>PO allocation qty &lt;= PR line remaining qty</li>
-</ul>
-<p>Prompt:</p>
-<pre><code language="language-text" class="language-text">Implement Purchase Order module.
-Create PO service + routes for create, submit, detail, and open-lines.
-Enforce over-allocation validation against PR remaining quantities.
-Return 422 for rule violations with clear messages.
+      <google-codelab-step label="Implement &#34;Create PO&#34; page" duration="30">
+        <p>Enter this prompt to start the integration of the Create PO page. Don&#39;t forget to attach the related documents to provide context to Copilot.</p>
+<pre><code language="language-text" class="language-text">Integrate the available PO endpoints with the &#34;Create PO&#34; page.
+Leep generated Figma components and wire them to purchase order APIs.
+Special request for the module functionality:
+- enforce over-allocation validation against PR remaining quantities
+- return 422 for rule violations with clear messages
 </code></pre>
+<p>The end result should be a working PO Create page.</p>
+<p class="image-container"><img alt="create po" src="img/8fbee6e79ab8f9f9.png"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Break and Discussion (Hour 5)" duration="5">
-        <p>Facilitator prompts:</p>
-<ul>
-<li>Which PO validation rule should always be server-side?</li>
-<li>Where should business-rule tests live: route or service?</li>
-<li>How do we keep generated code aligned with API contracts?</li>
-</ul>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Build PO Pages" duration="35">
-        <p>Build and connect:</p>
+      <google-codelab-step label="Complete the PO Module" duration="30">
+        <p>Create the rest of the PO module pages and connect them to the PO module API endpoints. We don&#39;t have Figma file for these pages, so ask Copilot to follow the existing design rules (using available codes as context).</p>
+<pre><code language="language-text" class="language-text">Finish the PO module.
+Implement PO list and detail pages in Vue using existing patterns.
+Keep UI simple for clarity and follow the existing design system.
+Use existing components when possible. Only create components that aren&#39;t already available.
+Connect the new pages with the existing backend API endpoints for PO module.
+</code></pre>
+<p>The end result should be</p>
 <ul>
 <li>PO List page</li>
-<li>PO Create page (generated from Figma MCP, now wired to APIs)</li>
 <li>PO Detail page</li>
 </ul>
-<p>Prompt:</p>
-<pre><code language="language-text" class="language-text">Implement PO list/detail pages in Vue using existing patterns.
-For PO Create page, keep generated Figma components and wire them to purchase order APIs.
-Keep UI simple for clarity.
-</code></pre>
+<p class="image-container"><img alt="po detail" src="img/80a1d509b417bd1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Break and Discussion (#5)" duration="5">
+        <ul>
+<li>Did Copilot add validation rules? If yes, here did it put it: on the back-end or front-end?</li>
+<li>Where should business-rule tests live: route or service? What did Copilot decide? Did it ask for your input?</li>
+<li>What do yout think the best way to keep generated code aligned with API contracts?</li>
+</ul>
 
 
       </google-codelab-step>

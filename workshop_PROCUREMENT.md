@@ -266,7 +266,7 @@ Cross-OS readiness note:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Database Bootstrap using Docker
-Duration: 10
+Duration: 20
 
 Bootstrap workshop database (schema + sample data):
 
@@ -293,7 +293,7 @@ docker compose exec -T db psql -U workshop -d procurement_mvp -c "SELECT COUNT(*
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Configure Local Credentials
-Duration: 10
+Duration: 15
 
 ### 1. Start the backend server
 
@@ -456,7 +456,7 @@ Here we are creating another "spec" document, a document that contains all the i
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Agent Skills
-Duration: 15
+Duration: 20
 
 Agent skills are folders of instructions, scripts, and resources that Copilot can load when relevant to improve its performance in specialized tasks. The Agent Skills specification is an open standard, used by a range of different AI systems.
 
@@ -566,36 +566,45 @@ Duration: 5
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Generate Page using Figma MCP
+## Using Figma MCP
 Duration: 20
 
-Participants start PO module by generating **PO Create page** from Figma using MCP.
+Let's start creating the development of PO module by generating **Create PO** page for the PO module.
+We will be using a design in Figma to create the frontend codes.
+
+Enter the prompt below:
+```text
+Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6.
+Include reusable components for header form and line allocation table.
+Do not implement API calls yet. Keep structure simple.
+```
+
+> aside positive
+>
+> The Figma file:
+> https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6
 
 Scope for generated page:
 - Header section (vendor, PO date, notes)
 - Line table section (approved PR open lines, allocate qty, unit price)
 - Actions (save draft, submit)
 
-Figma file:
-- https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6.
-
-Prompt:
-
-```text
-Using Figma MCP, generate Vue code for the PO Create page from this Figma file.
-Include reusable components for header form and line allocation table.
-Do not implement API calls yet. Keep structure simple.
-```
-
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## PO Testing with Copilot (Unit + Jest)
-Duration: 20
+## Add Tests with Copilot
+Duration: 15
 
-Merged testing segment.
+Ask Copilot to help us create unit tests for the pages we have just created.
+Enter this prompt:
+
+```text
+Create unit tests for Vue PO Create components and Jest tests for PO service validation.
+Focus on rendering, line add/remove behavior, over-allocation validation, and status transition rules.
+Keep tests readable.
+```
 
 UI component test targets:
 1. Header component renders required fields
@@ -607,106 +616,94 @@ Service/Jest test targets:
 2. Reject invalid PO status transition
 3. Accept valid allocation and status transition path
 
-Prompt:
-
-```text
-Create unit tests for Vue PO Create components and Jest tests for PO service validation.
-Focus on rendering, line add/remove behavior, over-allocation validation, and status transition rules.
-Keep tests readable.
-```
-
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Baseline Review + PO Backlog Start
-Duration: 25
+## Project progress review
+Duration: 10
 
-Task:
-- Explore project structure
-- Identify extension points for PO routes/services/pages
-- Confirm API client and routing patterns
-
-Prompt:
+It is best practice to have a document that track the status of the project. This can help Copilot get a context of the overall status of the system we are building.
+Use the **Agent** and enter this prompt:
 
 ```text
 Analyze this repository and summarize what is already implemented.
-Propose a minimal implementation plan for PO list/create/detail pages and PO endpoints only.
+Identify the available API endpoints for PO module.
+Document the latest state of the project in `docs/progress.md`.
 ```
 
+The goal here is to make Copilot aware of what has been done and avoid redundancy.
+
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (Hour 4)
+## Break and Discussion (#4)
 Duration: 5
 
-Facilitator prompts:
 - Which tests caught real defects before integration?
-- What was hardest in PO backlog decomposition?
-- Which prompts generated the most maintainable code?
+- Have you added other documentation that you think can improve Copilot's result?
+- Have you recognize what kind of prompt generates the most maintainable code?
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Implement PO Module
-Duration: 45
+## Implement "Create PO" page
+Duration: 30
 
-PO endpoints (participant scope):
-- `POST /api/purchase-orders`
-- `POST /api/purchase-orders/:id/submit`
-- `GET /api/purchase-orders/:id`
-- `GET /api/purchase-orders/:id/open-lines`
-
-Required rule:
-- PO allocation qty <= PR line remaining qty
-
-Prompt:
+Enter this prompt to start the integration of the Create PO page. Don't forget to attach the related documents to provide context to Copilot.
 
 ```text
-Implement Purchase Order module.
-Create PO service + routes for create, submit, detail, and open-lines.
-Enforce over-allocation validation against PR remaining quantities.
-Return 422 for rule violations with clear messages.
+Integrate the available PO endpoints with the "Create PO" page.
+Leep generated Figma components and wire them to purchase order APIs.
+Special request for the module functionality:
+- enforce over-allocation validation against PR remaining quantities
+- return 422 for rule violations with clear messages
 ```
 
----
+The end result should be a working PO Create page.
 
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (Hour 5)
-Duration: 5
-
-Facilitator prompts:
-- Which PO validation rule should always be server-side?
-- Where should business-rule tests live: route or service?
-- How do we keep generated code aligned with API contracts?
+![create po](github-copilot-workshop-procurement-mvp/img-source/create-po-page.png)
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Build PO Pages
-Duration: 35
+## Complete the PO Module
+Duration: 30
 
-Build and connect:
+Create the rest of the PO module pages and connect them to the PO module API endpoints. We don't have Figma file for these pages, so ask Copilot to follow the existing design rules (using available codes as context).
+
+```text
+Finish the PO module.
+Implement PO list and detail pages in Vue using existing patterns.
+Keep UI simple for clarity and follow the existing design system.
+Use existing components when possible. Only create components that aren't already available.
+Connect the new pages with the existing backend API endpoints for PO module.
+```
+
+The end result should be
 - PO List page
-- PO Create page (generated from Figma MCP, now wired to APIs)
 - PO Detail page
 
-Prompt:
+![po detail](github-copilot-workshop-procurement-mvp/img-source/po-detail.png)
 
-```text
-Implement PO list/detail pages in Vue using existing patterns.
-For PO Create page, keep generated Figma components and wire them to purchase order APIs.
-Keep UI simple for clarity.
-```
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (#5)
+Duration: 5
+
+- Did Copilot add validation rules? If yes, here did it put it: on the back-end or front-end?
+- Where should business-rule tests live: route or service? What did Copilot decide? Did it ask for your input?
+- What do yout think the best way to keep generated code aligned with API contracts?
 
 ---
 
