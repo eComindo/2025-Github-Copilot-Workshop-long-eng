@@ -3,12 +3,12 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2026-05-12T15:37:46+07:00",
+  "updated": "2026-05-18T21:25:32+07:00",
   "id": "github-copilot-workshop-procurement-mvp",
-  "duration": 500,
+  "duration": 660,
   "title": "GitHub Copilot Workshop: Build a Procurement System MVP",
   "summary": "GitHub Copilot Workshop - Procurement MVP",
-  "source": "workshop_PROCUREMENT.md",
+  "source": "workshop_PROC_btpns.md",
   "theme": "",
   "status": [
     "published"

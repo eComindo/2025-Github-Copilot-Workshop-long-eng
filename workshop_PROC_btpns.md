@@ -15,18 +15,15 @@ feedback link:
 ## About this workshop
 Duration: 10
 
-### TO-DO:
-#### 2. ADD SPEC-KIT SPECIFIC CONTENT
-
 Welcome. In this workshop, participants build a real-world procurement system MVP using GitHub Copilot in VS Code and GitHub.
 
 ![Octocat](github-copilot-workshop-procurement-mvp/img-source/octocat-copilot.png)
 
 We are going to work on an existing procurement system. This system already has two main modules/pages:
 - Dashboard
-- PR (Purchase Requisition)
+- **PR (Purchase Requisition)** module
 
-The aim is to build the PO (Purchase Order) module. Another module GR (Goods Receipts) is open for exploration. The tables for PO and GR modules are already in the database (after migration).
+The aim is to build the **PO (Purchase Order)** module. Another module **GR (Goods Receipts)** is open for exploration. The tables for PO and GR modules are already in the database (after migration).
 
 Application scope:
 - Baseline provided: *Home/Dashboard* & *PR module* (list/create/detail pages and backend APIs)
@@ -40,10 +37,11 @@ Tech stack:
 - Database: PostgreSQL in Docker
 - Testing: Jest + Playwright
 - Design: Figma + Figma MCP
+- Support: Python
 
-> aside positive
+<!-- > aside positive
 >
-> You can access the slide deck at [text](link)
+> You can access the slide deck at [text](link) -->
 
 
 <!--
@@ -56,18 +54,18 @@ TO-DO = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## The example app: Procurement system MVP
-Duration: 10
+## The project: Procurement system MVP
+Duration: 15
 
 In this workshop we are going to build a procurement system MVP (minimum viable product). A procurement system manages how a company buys things, with control and traceability from request to receiving.
 
 In simple terms, it helps answer:
 
-- Who requested what?
-- Who approved it?
-- What was ordered from which vendor?
-- What quantity has been received so far?
-- What is still open or pending?
+- *Who requested what?*
+- *Who approved it?*
+- *What was ordered from which vendor?*
+- *What quantity has been received so far?*
+- *What is still open or pending?*
 
 In this app, the workflow chain would be:
 
@@ -128,7 +126,7 @@ with quantities and statuses enforced at each step.
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## AI, LLM, and Context Basics
-Duration: 5
+Duration: 10
 
 
 ![AI](github-copilot-workshop-procurement-mvp/img-source/ai.png)
@@ -151,13 +149,15 @@ Working rule for this workshop:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Why context matters - Part 1
-Duration: 5
+Duration: 10
 
 Open your favorite online LLM application (eg. ChatGPT, Claude, Gemini, etc.) and write a  prompt to recreate this image:
 
 ![target picture](github-copilot-workshop-procurement-mvp/img-source/target-picture.jpeg)
 
-Be as specific as you can.
+> aside positive
+> 
+> Be as specific as you can.
 
 ---
 
@@ -165,7 +165,7 @@ Be as specific as you can.
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Why context matters - Part 2
-Duration: 10
+Duration: 20
 
 When working with an AI model, the problem (almost always) is not the AI. It is the brief you gave the AI.
 The gap is not technical—it is communicative. Prompting—communicating with an AI model—is a skill that we need to master so we can provide AI models with the best direction for it to complete its task. You have to make your intention as clear as possible.
@@ -195,6 +195,7 @@ Duration: 10
 - Node.js 20+
 - Git
 - Figma account (recommended)
+- Python
 - [uv Python package and project manager](https://github.com/astral-sh/uv) (recommended)
 
 ![vscode](github-copilot-workshop-procurement-mvp/img-source/vscode.png)
@@ -226,7 +227,7 @@ Duration: 5
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Clone the Repository
-Duration: 5
+Duration: 10
 
 Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop](https://github.com/eComindo/2026-github-copilot-workshop)
 
@@ -364,16 +365,56 @@ Example of the `copilot-instructions.md` file we are using for this project:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## The Problem with Vibe-Driven Development
+Duration: 10
+
+![vcdead](github-copilot-workshop-procurement-mvp/img-source/vcdead.webp)
+*Image source: [Vibe Coding Is Dead. Here’s What Replaced It.](https://ai.plainenglish.io/vibe-coding-is-dead-heres-what-replaced-it-aa7d2889b05a)*
+
+
+You probably have experienced this pattern:
+- You write a prompt describing roughly what you want
+- Copilot generates something plausible
+- You iterate — adjusting, correcting, re-running
+- Eventually it looks right
+
+This works for fast prototyping. It does not work for production-grade, maintainable, auditable software — especially in a regulated banking environment. The output is only as precise as your prompt, and prompts are inherently imprecise.
+
+### What is a Spec?
+
+A spec is a structured, human-readable document that defines:
+
+| Section | What it captures |
+|---|---|
+| **Intent** | What this feature is meant to accomplish — in one sentence |
+| **Behavior** | Inputs, expected outputs, state changes |
+| **Constraints** | Performance requirements, security boundaries, architecture rules |
+| **Edge cases** | Boundary conditions, failure scenarios, unexpected inputs |
+| **Acceptance criteria** | Testable, unambiguous, one per line |
+| **Data** | What data is touched, its classification, handling requirements |
+
+A spec is not code. It is not a design document. It is the *contract* between intent and implementation.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Concept: Spec-Driven Development (SDD)
 Duration: 15
 
+### 1. What is SDD
 Spec-driven development (SDD) is a software engineering approach where **structured, human-readable specifications** are the primary artifact and "source of truth".
 
 Why SDD matters:
 - Vibe-coded output is fast, but often inconsistent and unmaintainable
 - Product-grade output needs explicit design documents ("specs")
+- Reduces ambiguous prompts and rework
+- Makes requirements and edge-cases visible before coding
+- Produces artifacts that are easier to review by dev, QA, and product
 
-There are various libraries and frameworks that help you create an SDD pattern. But you can always setup your own favorable pattern.
+### 2. How to start using SDD
+There are various libraries and frameworks that help you create an SDD pattern (we will discuss it at the end of the workshop). We can start by setting up your own favorable pattern.
 What you need to make sure your development follows spec-driven development guidelines are:
 
 - Create and maintain spec docs before large features. You can store it in a specific folder called `plans/` or `docs/` in your repo/workspace.
@@ -394,38 +435,6 @@ Duration: 5
 - What is your ideal `copilot-instructions.md` file?
 - What documents do you want to store in your repo/workspace?
 - What enhancement ideas were realistic for your current team?
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## GitHub Spaces
-Duration: 10
-
-Use Copilot Spaces for onboarding and product brainstorming.
-
-Create a space:
-- Name: `Procurement MVP Onboarding`
-- Attach: `README.md`, `docs/plan.md`
-
-Prompt 1 (onboarding):
-
-```text
-Create a new team member onboarding summary for this repository.
-Explain the business flow (PR -> PO -> GR), tech stack, and first 3 tasks.
-```
-
-Prompt 2 (brainstorming):
-
-```text
-For this procurement MVP, suggest 5 realistic enhancements for a future version.
-Keep workshop scope unchanged and mark each as out-of-scope for today.
-```
-
-> aside positive
->
-> Copilot Space is optional but useful for keeping planning context reusable across the team.
 
 ---
 
@@ -461,7 +470,7 @@ Here we are creating another "spec" document, a document that contains all the i
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Agent Skills
-Duration: 20
+Duration: 10
 
 Agent skills are folders of instructions, scripts, and resources that Copilot can load when relevant to improve its performance in specialized tasks. The Agent Skills specification is an open standard, used by a range of different AI systems.
 
@@ -469,6 +478,18 @@ You can create your own skills to teach Copilot to perform tasks in a specific, 
 
 > aside positive
 > Skill files **must** be named SKILL.md
+
+### How a skill works
+
+A SKILL.md file contains structured instructions that tell Copilot how to behave when the skill is invoked — what inputs to look for, what outputs to produce, what format to follow, and what constraints to apply. Copilot reads the skill as context before responding, which makes its output consistent and predictable across team members and sessions.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Adding an agent Skill
+Duration: 20
 
 ### 1. Adding "skills" support
 Create a new folder `.github/skills`
@@ -586,8 +607,7 @@ Do not implement API calls yet. Keep structure simple.
 
 > aside positive
 >
-> The Figma file:
-> https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6
+> [Link to the Figma file](https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-782&p=f&t=kto9reqIhe3VcQZi-0)
 
 Scope for generated page:
 - Header section (vendor, PO date, notes)
@@ -631,7 +651,7 @@ Unit test coverage report:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Project progress review
-Duration: 5
+Duration: 10
 
 It is best practice to have a document that track the status of the project. This can help Copilot get a context of the overall status of the system we are building.
 Use the **Agent** and enter this prompt:
@@ -830,14 +850,14 @@ Because the charts are created using [Mermaid format](https://mermaid.js.org/), 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Prompt Files and Custom Agents (OPTIONAL)
+## Creating Custom Prompts and Agents (OPTIONAL)
 Duration: 10
 
 ### Prompt Files
 
-Prompt files define reusable prompts for specific tasks that you can invoke when needed.
+Prompt files define reusable **prompts for specific tasks** that you can invoke when needed. We define it in a markdown file inside the `.github/prompts/` folder.
 
-#### Create a "code explainer" agent
+#### 1. Create a "code explainer" agent
 
 1. Create a file: `.github/prompts/explain-code.prompt.md`
 2. Add this into the file:
@@ -866,13 +886,14 @@ Use clear, simple language and avoid unnecessary jargon.
 
 ![Explainer](github-copilot-workshop-id/img/__explainer.png)
 
-### Custom Agents
 
-Other than the default agent provided by Copilot, you can create your own custom agent for specific use case.
+### 2. Custom Agents
+
+Other than the default agent provided by Copilot, you can create your own custom agent for specific use case. Like custom prompts, we define custom agents in a markdown file inside a specific folder, in this case the `.github/agents/` folder.
 
 #### Create a "readme creator" agent
 
-1. Create a file: `.github/agents/readme-creator-agent.md`
+1. Create a file: `.github/agents/readme-creator.agent.md`
 2. Add this into the file:
 
 ```text
@@ -892,21 +913,13 @@ Focus on the following instructions:
 - Make links descriptive and add alt text to images
 ```
 
-> aside positive
->
-> You can create as many specific agents as you want.
-
 You will be able to access your custom agent in Copilot Chat.
 
 ![Copilot VSCode](github-copilot-workshop-id/img/__agent-vsc.png)
 
-And once you've committed the agent definition to `main` branch, you can also access the agent in Copilot Online.
-
-![Copilot Online](github-copilot-workshop-id/img/__agent-cpo.png)
-
 > aside positive
 >
-> Be creative, try creating some custom prompts and agents.
+> You can create as many custom prompts and agents as you want. Be creative, try creating some custom prompts and agents for your specific needs.
 
 ---
 
@@ -923,21 +936,308 @@ Duration: 5
 
 ---
 
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Exploration
+Duration: 30
+
+Using what you have learn so far, let's try to implement the last module in this procurement app: Good Receipts (GR) module.
+You have **30 minutes** to explore on your own, plan well.
+
+> aside positive
+>
+> Reminders:
+> - planning is crucial
+> - specification documents steer the agent to achieve the goal
+> - provide as much context as possible
+
+![gr](github-copilot-workshop-procurement-mvp/img-source/gr.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## SDD frameworks
+Duration: 20
+
+### 1. Why use framework
+
+SDD frameworks can help us create a standardized specifications throughout the organization.
+
+Why use a ready-made framework:
+- developing your own SDD standarad takes time and resource
+- you can use ready-made custom prompts, agents, and spec templates
+- with a supportive community, the framework can continue to improve
+
+![SpecKit](github-copilot-workshop-procurement-mvp/img-source/speckit.png)
+
+> aside positive
+>
+> A framework is helpful, but not mandatory. You can still run SDD using your own templates and process.
+
+Common SDD framework options:
+- Homegrown docs in `docs/` or `specs/` and custom prompts/agents
+- [Spec-Kit](https://github.com/github/spec-kit)
+- [OpenSpec](https://openspec.dev/)
+- [Intent by Augment Code](https://www.augmentcode.com/product/intent)
+- [Superpowers](https://github.com/obra/superpowers)
+- [MUSUBI](https://github.com/nahisaho/musubi)
+
+
+### 2. Why spec matters in AI-enabled SDLC
+
+A good spec does not die when the code is written. It becomes:
+
+- The reference for PR reviewers: *does this implementation match the spec?*
+- The source for test generation: *do the tests cover all acceptance criteria?*
+- The input for the next feature: *what was built, and where are the boundaries?*
+- The onboarding guide for new engineers: *what was this module intended to do?*
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Spec-Kit: SDD Framework from GitHub
+Duration: 15
+
+Spec-Kit provides reusable building blocks for spec-first development:
+- A set of custom prompts and agents
+- Specification templates and workflow conventions
+- A repeatable pattern so teams do not reinvent SDD from zero
+
+### Installing Spec-Kit
+
+The recommended method to install Spec-Kit is using `uv`, a Python package manager.
+
+Once uv is installed, run from your project root:
+
+```bash
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.8.11
+```
+
+![specify-cli](github-copilot-workshop-procurement-mvp/img-source/specify-cli.png)
+
+Alternative setup: download template/package from the [release page](https://github.com/github/spec-kit/releases)
+
+
+![scf](github-copilot-workshop-procurement-mvp/img-source/scf.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (#7)
+Duration: 5
+
+- What is the difference between a Spec Kit spec and a user story?
+- Why does the constitution need to come before the specification?
+- In your current team, who would run /speckit.constitution — the engineer, the tech lead, or the product owner?
+- What would happen if two engineers ran /speckit.implement on the same spec at the same time?
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Getting Started with Spec-Kit
+Duration: 15
+
+Let's initiate Spec-Kit in our project using the Specify CLI. Open terminal, move to project root, then initialize Spec-Kit.
+
+For an existing project we can use this command:
+
+```bash
+specify init --here
+```
+
+Expected outcome:
+- Spec-Kit folder/files are initialized
+- Repository is ready for `/speckit.specify` and `/speckit.plan` workflow. You can try it out in the Copilot prompt.
+
+![specs](github-copilot-workshop-procurement-mvp/img-source/specs.png)
+
+We can also use Specify CLI For a new project:
+
+```bash
+specify init <new-project-folder-name>
+```
+
+If the directory already contains files, skip confirmation:
+
+```bash
+# Skip confirmation when the directory already has files
+specify init . --force
+# or
+specify init --here --force
+```
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Spec-Kit agents
+Duration: 10
+
+The GitHub Spec Kit is a set of **Agents** installed into the `.github/agents/` folder of your repository. Each agent has a specific & repeatable skill in the spec-driven workflow. When you invoke a command, Copilot loads the corresponding agent skill and executes it using your codebase and spec documents as context.
+
+![sk-agents](github-copilot-workshop-procurement-mvp/img-source/sk-agents.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Constitution: Guardrails for the project
+Duration: 20
+
+The file `constitution.md` is the baseline rulebook for your project behavior and quality standards.
+
+The constitution is the document that governs everything that follows. It captures:
+
+- Project purpose — what this codebase is and who uses it
+- Tech stack decisions — stack, frameworks, and why they were chosen
+- Coding conventions — naming, file structure, patterns to follow
+- Architecture rules — what is and is not allowed (ADR references)
+- Quality standards — test requirements, coverage thresholds, DoD
+
+When the constitution exists, every `/speckit.specify`, `/speckit.plan`, and `/speckit.implement` call respects it automatically — because the skill is designed to reference `.speckit/constitution.md` as context. You define the rules once; Copilot follows them consistently.
+
+Use Copilot Agent to fill the constitution from template and existing project context:
+
+```text
+/speckit.constitution Fill in the constitution with the bare minimum requirements for a procurement management system, based on the template in constitution.md. Check the current codebase and README.md to get a context of the current state of the project.
+```
+
+Typical constitution content:
+- Business-critical rules (PR -> PO -> GR flow integrity)
+- Quality and testing baseline
+- Architecture and convention constraints
+
+This file becomes a stable reference for all future specs.
+
+![constitution](github-copilot-workshop-procurement-mvp/img-source/constitution.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Create the GR Spec
+Duration: 10
+
+Create a functional specification for the GR module using Spec-Kit's `/speckit.specify` command:
+
+```text
+/speckit.specify add a GR (Goods Receipts) module on this application
+```
+
+What to verify after running:
+- A new branch is created for the spec work
+- New specification files appear in `specs/`
+- Functional requirements cover list/create/detail and validation logic
+
+![specs-result](github-copilot-workshop-procurement-mvp/img-source/specs-result.png)
+
+Suggested GR spec checks:
+- Cannot receive more than PO open quantity
+- Supports partial receipts and cumulative tracking
+- Includes status transitions (`DRAFT` -> `POSTED`)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Technical Plan
+Duration: 10
+
+Convert the functional spec into technical implementation steps using Spec-Kit's `/speckit.plan` command:
+
+```text
+/speckit.plan use the existing API endpoints and database (check the script in /db/migrations) to start developing the GR module. Make updates to existing files as necessary.
+```
+
+Review outputs in `specs/` (eg. `specs/001-add-gr-module/`):
+- `plan.md`
+- task breakdown and implementation notes
+
+Execution guidance:
+1. Implement GR backend APIs following the generated plan
+2. Implement GR frontend pages using existing project patterns
+3. Add unit/integration tests for business rules and edge cases
+4. Validate with realistic sample data from migration/seed context
+
+Final checkpoint: GR module is implemented end-to-end and aligned with spec + constitution
+
+![plans](github-copilot-workshop-procurement-mvp/img-source/plans.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## The Full Spec-Kit Workflow
+Duration: 10
+
+Below is a description of the full Spec-Kit workflow using its custom agents
+
+```
+/speckit.constitution
+    ↓  Establishes project principles, tech stack rules, and coding guidelines
+
+/speckit.specify
+    ↓  Captures requirements and user stories for the feature
+
+/speckit.plan
+    ↓  Produces a technical implementation plan for the chosen stack
+
+/speckit.tasks
+    ↓  Breaks the plan into a concrete, actionable task list
+
+/speckit.taskstoissues          ← optional
+    ↓  Converts task list into GitHub Issues for tracking
+
+/speckit.implement
+       Executes all tasks and builds the feature
+```
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (#8)
+Duration: 15
+
+- How did the constitution change what `/speckit.specify` produced compared to writing a spec from scratch?
+- At which step did Copilot surface an edge case or constraint you had not considered?
+- Would a new engineer on your team be able to verify the GR implementation against the spec without asking you?
+- Which command in the chain added the most value? Which felt like overhead?
+- Where would you introduce the Spec Kit workflow first in your actual team — new features, bug fixes, or refactors?
+
+---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Further Exploration: GR Module
-Duration: 20
+Duration: 40
 
-With the knowledge you have gathered from the previous slides, implement the GR module of this procurement system.
+Use this session to implement the **GR (Goods Receipt)** module based on the specifications from the previous Spec-Kit slides.
+You have **30 minutes**. You can also explore Spec-Kit's custom prompts and agents.
 
-Some of the key items you need to remember:
-1. Start with planning first. Save the plan as a spec document.
-2. Always ask for unit tests to maintaint the project's reliability.
-3. Use available resources (eg. the migration script) to add more context for Copilot.
+SDD frameworks like Spec-Kit helps the implementation to start from a clear, reviewable specification, before moving into technical planning and execution.
 
-![gr](github-copilot-workshop-procurement-mvp/img-source/gr.png)
+![grmod](github-copilot-workshop-procurement-mvp/img-source/grmod.png)
+
+> aside positive
+> 
+> Check this recommended [guideline video on using Spec-Kit](https://www.youtube.com/watch?v=a9eR1xsfvHg) delivered by the creator of Spec-Kit himself.
 
 ---
 
@@ -952,8 +1252,7 @@ In this workshop, we learned using Github Copilot to do the following:
 - Started from a working baseline
 - Delivered a new module end-to-end
 - Utilizing agent functionality
-- Practiced PR review and CodeQL security workflow
-- Adding issues and development of new features
+- Using Spec-Kit as an SDD framework
 - and many others
 
 ### Next Steps
