@@ -131,7 +131,7 @@ Duration: 10
 
 ![AI](github-copilot-workshop-procurement-mvp/img-source/ai.png)
 
-How does LLM's, like GPT or Claude work? LLMs predict the next token based on the context provided to it. So, better context gives better output quality.
+How do LLMs like GPT or Claude work? LLMs predict the next token based on the context provided to them. So, better context gives better output quality.
 
 Prompt anatomy in GitHub Copilot:
 - System instructions: global behavior and constraints
@@ -151,7 +151,7 @@ Working rule for this workshop:
 ## Why context matters - Part 1
 Duration: 10
 
-Open your favorite online LLM application (eg. ChatGPT, Claude, Gemini, etc.) and write a  prompt to recreate this image:
+Open your favorite online LLM application (e.g., ChatGPT, Claude, Gemini, etc.) and write a prompt to recreate this image:
 
 ![target picture](github-copilot-workshop-procurement-mvp/img-source/target-picture.jpeg)
 
@@ -177,7 +177,7 @@ The gap is not technical—it is communicative. Prompting—communicating with a
 
 > aside positive
 >
-> Share your result with everyone. What do you think you can improve in your prompt to make your picture looks as similar as the target picture? Do you think you share the responsibility if the result looks nothing like the target picture?
+> Share your result with everyone. What do you think you can improve in your prompt to make your picture look as similar as the target picture? Do you think you share the responsibility if the result looks nothing like the target picture?
 
 
 ---
@@ -188,7 +188,7 @@ The gap is not technical—it is communicative. Prompting—communicating with a
 ## Prerequisites
 Duration: 10
 
-- VS Code latest
+- Latest VS Code
 - GitHub Copilot extension
 - GitHub account + Copilot license
 - Docker Desktop running
@@ -234,7 +234,7 @@ Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop]
 ![github repo](github-copilot-workshop-procurement-mvp/img-source/github-repo.png)
 
 1. Open the project URL in your browser
-2. Clone the repo. You can click **Code** button, the green button on the top right
+2. Clone the repo. You can click the **Code** button, the green button on the top right
 
 ---
 
@@ -244,7 +244,7 @@ Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop]
 ## Setup the Project Locally
 Duration: 20
 
-### 1. Setup the repo
+### 1. Set up the repo
 
 ```bash
 git clone https://github.com/<your-org-or-user>/<repo>.git
@@ -414,11 +414,11 @@ Why SDD matters:
 - Produces artifacts that are easier to review by dev, QA, and product
 
 ### 2. How to start using SDD
-There are various libraries and frameworks that help you create an SDD pattern (we will discuss it at the end of the workshop). We can start by setting up your own favorable pattern.
-What you need to make sure your development follows spec-driven development guidelines are:
+There are various libraries and frameworks that help you create an SDD pattern (we will discuss them at the end of the workshop). We can start by setting up your own preferred pattern.
+To make sure your development follows spec-driven development guidelines:
 
 - Create and maintain spec docs before large features. You can store it in a specific folder called `plans/` or `docs/` in your repo/workspace.
-- Keep guardrail docs for architecture, naming, and patterns, eg. in a `guidelines/` folder.
+- Keep guardrail docs for architecture, naming, and patterns, e.g., in a `guidelines/` folder.
 - If required, you can create a dedicated document that explains the tech-stack decisions and coding conventions.
 
 > aside positive
@@ -502,7 +502,7 @@ This will be the location for all the skill configurations.
 - Copy the raw content of the markdown document in [this link](https://github.com/vuejs-ai/skills/blob/main/skills/vue-best-practices/SKILL.md?plain=1) to that file you have just created.
 
 ### 3. Add a Figma design implementation skill
-Sometimes skill include other configuration files, not just the `SKILL.md` file.
+Sometimes skills include other configuration files, not just the `SKILL.md` file.
 
 - Create a new folder `.github/skills/figma-implement-design`
 - As usual, in that folder, create a new file `SKILL.md`
@@ -510,7 +510,7 @@ Sometimes skill include other configuration files, not just the `SKILL.md` file.
 - Download or recreate the rest of the files in the [https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design](https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design) folder.
 
 > aside positive
-> You can learn more about adding skills in this [official Github page](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
+> You can learn more about adding skills on this [official GitHub page](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
 
 ---
 
@@ -520,7 +520,7 @@ Sometimes skill include other configuration files, not just the `SKILL.md` file.
 ## API Documentation & Readiness Check
 Duration: 15
 
-Before we start with with the PO module implementation in our procurement system MVP, let's validate the backend API first.
+Before we start with the PO module implementation in our procurement system MVP, let's validate the backend API first.
 Use the **Agent** mode and enter this prompt:
 
 ```text
@@ -542,7 +542,7 @@ The goal is:
 ## Figma MCP Setup
 Duration: 15
 
-Figma is the default tool in designing frontend pages and user interfaces. Adding Figma MCP allows the AI model to access Figma file directly.
+Figma is the default tool for designing frontend pages and user interfaces. Adding Figma MCP allows the AI model to access a Figma file directly.
 
 ### Modify the MCP config
 1. Use the Command Palette, open the MCP configuration file `mcp.json`.
@@ -559,14 +559,14 @@ Figma is the default tool in designing frontend pages and user interfaces. Addin
 Before you ask Copilot to access a Figma file, make sure that:
 - you are logged in to Figma
 - confirm workshop file and node IDs are accessible
-- confirm that the Figma file owner already assign access to you
+- confirm that the Figma file owner has already assigned access to you
 
 > aside positive
 > To make sure the frontend codes implement the Figma design as accurate as possible, we need at least two things:
 > - Figma implementation skill
 > - Figma file that implements best practices
 >
-> Check [this article](https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f) to learn about the best practices in designing UI's in Figma for AI interpretation.
+> Check [this article](https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f) to learn about best practices for designing UIs in Figma for AI interpretation.
 
 ---
 
@@ -595,7 +595,7 @@ Duration: 5
 ## Using Figma MCP
 Duration: 20
 
-Let's start creating the development of PO module by generating **Create PO** page for the PO module.
+Start developing the PO module by generating the **Create PO** page.
 We will be using a design in Figma to create the frontend codes.
 
 Enter the prompt below:
@@ -653,8 +653,8 @@ Unit test coverage report:
 ## Project progress review
 Duration: 10
 
-It is best practice to have a document that track the status of the project. This can help Copilot get a context of the overall status of the system we are building.
-Use the **Agent** and enter this prompt:
+It is best practice to have a document that tracks the status of the project. This can help Copilot get context on the overall status of the system we are building.
+Use **Agent** mode and enter this prompt:
 
 ```text
 Analyze this repository and summarize what is already implemented.
@@ -679,7 +679,7 @@ Using Copilot, you can ask it to create a comprehensive commit message based on 
 
 - Which tests caught real defects before integration?
 - Have you added other documentation that you think can improve Copilot's result?
-- Have you recognize what kind of prompt generates the most maintainable code?
+- Have you recognized what kind of prompt generates the most maintainable code?
 
 ---
 
@@ -689,11 +689,11 @@ Using Copilot, you can ask it to create a comprehensive commit message based on 
 ## Implement "Create PO" page
 Duration: 30
 
-Enter this prompt to start the integration of the Create PO page. Don't forget to attach the related documents to provide context to Copilot.
+Use this prompt to start integrating the Create PO page. Attach the related documents to provide context to Copilot.
 
 ```text
 Integrate the available PO endpoints with the "Create PO" page.
-Leep generated Figma components and wire them to purchase order APIs.
+Keep generated Figma components and wire them to purchase order APIs.
 Special request for the module functionality:
 - enforce over-allocation validation against PR remaining quantities
 - return 422 for rule violations with clear messages
@@ -735,9 +735,9 @@ The end result should be
 ## Break and Discussion (#5)
 Duration: 5
 
-- Did Copilot add validation rules? If yes, here did it put it: on the back-end or front-end?
+- Did Copilot add validation rules? If yes, where did it put them: on the back end or front end?
 - Where should business-rule tests live: route or service? What did Copilot decide? Did it ask for your input?
-- What do yout think the best way to keep generated code aligned with API contracts?
+- What do you think is the best way to keep generated code aligned with API contracts?
 
 ---
 
@@ -750,7 +750,7 @@ Duration: 20
 GitHub offers various features to make sure our project is secure and reliable.
 But before we take a look into those features, let's try something we can implement locally.
 
-Git Hooks let's us do a lot of things. It is triggered by the `git` command.
+Git hooks let us do a lot of things. They are triggered by the `git` command.
 In this example we will make a hook that does pre-push checks, that can block low-quality pushes quickly.
 
 ### Create the hook
@@ -774,7 +774,7 @@ cd app
 npm run test:unit
 ```
 
-Make sure you implement a script that runs the unit tests and cancel the push if an error was found.
+Make sure you implement a script that runs the unit tests and cancels the push if an error is found.
 
 ### Test the hook
 Before testing the hook, make sure the hook file is executable:
@@ -798,11 +798,11 @@ Duration: 15
 
 Now we create an end-to-end test using Playwright.
 
-The required scenarios for this end-to-end test
+The required scenarios for this end-to-end test:
 1. Happy path: create + submit PO from approved PR data
 2. Negative path: reject over-allocation qty
 
-For this we need to create a dedicated Playwright spec. Let's do that using this prompt:
+Create a dedicated Playwright spec using this prompt:
 
 ```text
 Create tests/e2e/po-module.spec.js using the Playwright library.
@@ -823,7 +823,7 @@ The required artifacts:
 ## Product Documentation
 Duration: 10
 
-Make sure Copilot Chat is in **Agent** mode then ask Copilot to generate implementation docs with diagrams.
+Set Copilot Chat to **Agent** mode, then ask Copilot to generate implementation docs with diagrams.
 
 Prompt:
 
@@ -833,7 +833,7 @@ Add a user flow chart and sequence diagram in Mermaid.
 Save as markdown.
 ```
 
-We can use your favorite markdown viewer plugin to check the result, including the charts.
+Use your favorite markdown viewer plugin to check the result, including the charts.
 
 Because the charts are created using [Mermaid format](https://mermaid.js.org/), you can also copy-paste the Mermaid code into Mermaid's tool.
 
@@ -889,7 +889,7 @@ Use clear, simple language and avoid unnecessary jargon.
 
 ### 2. Custom Agents
 
-Other than the default agent provided by Copilot, you can create your own custom agent for specific use case. Like custom prompts, we define custom agents in a markdown file inside a specific folder, in this case the `.github/agents/` folder.
+Other than the default agent provided by Copilot, you can create your own custom agent for specific use cases. Like custom prompts, we define custom agents in a markdown file inside a specific folder, in this case the `.github/agents/` folder.
 
 #### Create a "readme creator" agent
 
@@ -930,9 +930,9 @@ You will be able to access your custom agent in Copilot Chat.
 ## Break and Discussion (#6)
 Duration: 5
 
-- What kind of custom agents and prompts do you think will helpful to your workflow?
+- What kind of custom agents and prompts do you think will be helpful to your workflow?
 - Do you think the test scenarios added by Copilot helpful?
-- Explore the type of Mermaid charts to help you create better documentations.
+- Explore the types of Mermaid charts to help you create better documentation.
 
 ---
 
@@ -942,7 +942,7 @@ Duration: 5
 ## Exploration
 Duration: 30
 
-Using what you have learn so far, let's try to implement the last module in this procurement app: Good Receipts (GR) module.
+Using what you have learned so far, let's try to implement the last module in this procurement app: Goods Receipts (GR) module.
 You have **30 minutes** to explore on your own, plan well.
 
 > aside positive
@@ -967,7 +967,7 @@ Duration: 20
 SDD frameworks can help us create a standardized specifications throughout the organization.
 
 Why use a ready-made framework:
-- developing your own SDD standarad takes time and resource
+- developing your own SDD standard takes time and resources
 - you can use ready-made custom prompts, agents, and spec templates
 - with a supportive community, the framework can continue to improve
 
@@ -1033,7 +1033,7 @@ Alternative setup: download template/package from the [release page](https://git
 ## Break and Discussion (#7)
 Duration: 5
 
-- What is the difference between a Spec Kit spec and a user story?
+- What is the difference between a Spec-Kit spec and a user story?
 - Why does the constitution need to come before the specification?
 - In your current team, who would run /speckit.constitution — the engineer, the tech lead, or the product owner?
 - What would happen if two engineers ran /speckit.implement on the same spec at the same time?
@@ -1046,7 +1046,7 @@ Duration: 5
 ## Getting Started with Spec-Kit
 Duration: 15
 
-Let's initiate Spec-Kit in our project using the Specify CLI. Open terminal, move to project root, then initialize Spec-Kit.
+Initialize Spec-Kit in your project using the Specify CLI. Open a terminal, move to the project root, then initialize Spec-Kit.
 
 For an existing project we can use this command:
 
@@ -1060,7 +1060,7 @@ Expected outcome:
 
 ![specs](github-copilot-workshop-procurement-mvp/img-source/specs.png)
 
-We can also use Specify CLI For a new project:
+We can also use the Specify CLI for a new project:
 
 ```bash
 specify init <new-project-folder-name>
@@ -1083,7 +1083,7 @@ specify init --here --force
 ## Spec-Kit agents
 Duration: 10
 
-The GitHub Spec Kit is a set of **Agents** installed into the `.github/agents/` folder of your repository. Each agent has a specific & repeatable skill in the spec-driven workflow. When you invoke a command, Copilot loads the corresponding agent skill and executes it using your codebase and spec documents as context.
+GitHub Spec-Kit is a set of **agents** installed into the `.github/agents/` folder of your repository. Each agent has a specific and repeatable skill in the spec-driven workflow. When you invoke a command, Copilot loads the corresponding agent skill and executes it using your codebase and spec documents as context.
 
 ![sk-agents](github-copilot-workshop-procurement-mvp/img-source/sk-agents.png)
 
@@ -1218,7 +1218,7 @@ Duration: 15
 - At which step did Copilot surface an edge case or constraint you had not considered?
 - Would a new engineer on your team be able to verify the GR implementation against the spec without asking you?
 - Which command in the chain added the most value? Which felt like overhead?
-- Where would you introduce the Spec Kit workflow first in your actual team — new features, bug fixes, or refactors?
+- Where would you introduce the Spec-Kit workflow first in your actual team — new features, bug fixes, or refactors?
 
 ---
 
@@ -1231,7 +1231,7 @@ Duration: 40
 Use this session to implement the **GR (Goods Receipt)** module based on the specifications from the previous Spec-Kit slides.
 You have **30 minutes**. You can also explore Spec-Kit's custom prompts and agents.
 
-SDD frameworks like Spec-Kit helps the implementation to start from a clear, reviewable specification, before moving into technical planning and execution.
+SDD frameworks like Spec-Kit help implementation start from a clear, reviewable specification before moving into technical planning and execution.
 
 ![grmod](github-copilot-workshop-procurement-mvp/img-source/grmod.png)
 
@@ -1247,7 +1247,7 @@ SDD frameworks like Spec-Kit helps the implementation to start from a clear, rev
 ## Wrap-up, Retrospective, and Next Steps
 Duration: 10
 
-In this workshop, we learned using Github Copilot to do the following:
+In this workshop, we learned to use GitHub Copilot to do the following:
 - Using specifications to develop an application
 - Started from a working baseline
 - Delivered a new module end-to-end
