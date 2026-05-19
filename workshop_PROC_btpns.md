@@ -201,6 +201,7 @@ Duration: 10
 ![vscode](github-copilot-workshop-procurement-mvp/img-source/vscode.png)
 
 Optional MCP tools:
+- VS Code extension Markdown Preview Enhanced
 - GitHub MCP Server
 - Figma MCP integration available in Copilot/agent environment
 
@@ -212,7 +213,7 @@ Optional MCP tools:
 ## Break and Discussion (#1)
 Duration: 5
 
-- What context gave Copilot the best responses so far?
+- What context gave AI model the best responses so far?
 - Where do participants usually lose time in project setup?
 - Quick sharing: one AI-assisted workflow from your current team
 
@@ -226,7 +227,7 @@ Duration: 5
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Clone the Repository
+## Fork the Repository
 Duration: 10
 
 Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop](https://github.com/eComindo/2026-github-copilot-workshop)
@@ -234,7 +235,9 @@ Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop]
 ![github repo](github-copilot-workshop-procurement-mvp/img-source/github-repo.png)
 
 1. Open the project URL in your browser
-2. Clone the repo. You can click the **Code** button, the green button on the top right
+2. Fork the repo. You can click the **Fork** button, on the top right
+
+![fork](github-copilot-workshop-procurement-mvp/img-source/fork.png)
 
 ---
 
@@ -244,12 +247,14 @@ Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop]
 ## Setup the Project Locally
 Duration: 20
 
+Go to your forked repo and clone it to your local machine.
+
 ### 1. Set up the repo
 
 ```bash
-git clone https://github.com/<your-org-or-user>/<repo>.git
+git clone https://github.com/<your-username>/<forked-repo>.git
 cd <repo>
-git checkout -b feature/procurement-mvp
+git checkout -b feature/po-module
 ```
 
 Ensure project references:
@@ -293,6 +298,11 @@ Verification:
 docker compose exec -T db psql -U workshop -d procurement_mvp -c "SELECT COUNT(*) FROM purchase_requisitions;"
 ```
 
+> aside negative
+>
+> If you have another instance of PostgreSQL running in your machine, don't forget to turn it off first.
+> On Windows, you can check `services.msc`. On Mac, use the Activity Monitor.
+
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
@@ -301,26 +311,40 @@ docker compose exec -T db psql -U workshop -d procurement_mvp -c "SELECT COUNT(*
 ## Configure Local Credentials
 Duration: 15
 
-### 1. Start the backend server
+### 1. Install libraries
 
-Create backend `.env`:
+Run `npm install` in:
+1. project root
+2. `backend/`
+3. `frontend/`
+
+### 2. Config for backend server
+
+Create backend's environment variable: `backend/.env`:
 ```env
 PORT=3000
 DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 ```
 
-- Run `npm install` in backend, frontend, and root (if monorepo scripts used)
-- `npm run dev` can be run from root if preconfigured
+The backend server is running on port 3000.
 
+### 3. Config for frontend server
 
-### 2. Start the frontend server
-Create frontend `.env`:
+Create frontend's environment variable: `frontend/.env`:
 
 ```env
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
-### 3. Baseline expectation:
+This will tell the frontend the URL of the backend service.
+
+### 4. Start the application
+
+To run the app, execute `npm run dev` from root.
+
+Open the app (frontend server) on `http://localhost:5173`.
+
+Base expectations:
 - Home/Dashboard works
 - PR list/create/detail works
 - PR APIs connected to DB
@@ -335,13 +359,7 @@ Duration: 15
 
 Before implementation, update custom instructions to shape Copilot output quality.
 
-Open `.github/copilot-instructions.md` and add rules such as:
-- Always check `docs/plan.md` before large changes
-- Add tests for new logic
-- Use descriptive naming
-- Update docs when introducing new flows
-
-Prompt:
+Make sure you are in **Agent** mode, then enter this prompt:
 
 ```text
 Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
@@ -350,9 +368,15 @@ Review this repository instruction file and improve it with a concise checklist 
 Expected outcome:
 - Copilot responses become more consistent with project standards
 
+You can also manually open `.github/copilot-instructions.md` and add rules such as:
+- Always check `docs/plan.md` before large changes
+- Add tests for new logic
+- Use descriptive naming
+- Update docs when introducing new flows
+
 > aside positive
 >
-> What makes a good copilot-instructions.md? You have to, at least, make sure it contains the product context & tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the `.env` file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.
+> What makes a good `copilot-instructions.md`? You have to, at least, make sure it contains the product context & tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the `.env` file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.
 > 
 > And it is an evolving file. So you can always improve this file alongside the project.
 
@@ -365,7 +389,7 @@ Example of the `copilot-instructions.md` file we are using for this project:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## The Problem with Vibe-Driven Development
+## The Problem with Vibe Coding
 Duration: 10
 
 ![vcdead](github-copilot-workshop-procurement-mvp/img-source/vcdead.webp)
@@ -433,7 +457,7 @@ To make sure your development follows spec-driven development guidelines:
 Duration: 5
 
 - What is your ideal `copilot-instructions.md` file?
-- What documents do you want to store in your repo/workspace?
+- What spec documents do you want to store in your repo/workspace?
 - What enhancement ideas were realistic for your current team?
 
 ---
@@ -526,7 +550,7 @@ Use the **Agent** mode and enter this prompt:
 ```text
 Add Swagger/OpenAPI support to this Fastify JavaScript backend.
 Use @fastify/swagger and @fastify/swagger-ui.
-Register plugins in the main bootstrap file and expose docs at /docs.
+Expose API documentation at /api-docs.
 ```
 
 The goal is:
@@ -540,7 +564,7 @@ The goal is:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Figma MCP Setup
-Duration: 15
+Duration: 20
 
 Figma is the default tool for designing frontend pages and user interfaces. Adding Figma MCP allows the AI model to access a Figma file directly.
 
@@ -556,12 +580,16 @@ Figma is the default tool for designing frontend pages and user interfaces. Addi
 
 ### Important Note
 
+> aside positive
+>
+> [Link to the Figma file](https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-782&p=f&t=kto9reqIhe3VcQZi-0)
+
 Before you ask Copilot to access a Figma file, make sure that:
 - you are logged in to Figma
 - confirm workshop file and node IDs are accessible
 - confirm that the Figma file owner has already assigned access to you
 
-> aside positive
+> aside negative
 > To make sure the frontend codes implement the Figma design as accurate as possible, we need at least two things:
 > - Figma implementation skill
 > - Figma file that implements best practices
@@ -593,21 +621,17 @@ Duration: 5
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Using Figma MCP
-Duration: 20
+Duration: 15
 
 Start developing the PO module by generating the **Create PO** page.
 We will be using a design in Figma to create the frontend codes.
 
-Enter the prompt below:
+Use **Agent** mode in Copilot chat and enter the prompt below:
 ```text
-Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&t=isYVX9I2o61eq0Vu-6.
+Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-323&p=f&t=QJcJvfEN1Kpy8NGa-0
 Include reusable components for header form and line allocation table.
 Do not implement API calls yet. Keep structure simple.
 ```
-
-> aside positive
->
-> [Link to the Figma file](https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-782&p=f&t=kto9reqIhe3VcQZi-0)
 
 Scope for generated page:
 - Header section (vendor, PO date, notes)
@@ -953,6 +977,18 @@ You have **30 minutes** to explore on your own, plan well.
 > - provide as much context as possible
 
 ![gr](github-copilot-workshop-procurement-mvp/img-source/gr.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Demo using Spec-Kit
+Duration: 10
+
+> aside positive
+> 
+> Demo of developing the GR module using Spec-Kit.
 
 ---
 

@@ -175,6 +175,7 @@
 <p class="image-container"><img alt="vscode" src="img/ad794efd9837bb06.png"></p>
 <p>Optional MCP tools:</p>
 <ul>
+<li>VS Code extension Markdown Preview Enhanced</li>
 <li>GitHub MCP Server</li>
 <li>Figma MCP integration available in Copilot/agent environment</li>
 </ul>
@@ -184,7 +185,7 @@
     
       <google-codelab-step label="Break and Discussion (#1)" duration="5">
         <ul>
-<li>What context gave Copilot the best responses so far?</li>
+<li>What context gave AI model the best responses so far?</li>
 <li>Where do participants usually lose time in project setup?</li>
 <li>Quick sharing: one AI-assisted workflow from your current team</li>
 </ul>
@@ -194,22 +195,24 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Clone the Repository" duration="10">
+      <google-codelab-step label="Fork the Repository" duration="10">
         <p>Open the project URL: <a href="https://github.com/eComindo/2026-github-copilot-workshop" target="_blank">https://github.com/eComindo/2026-github-copilot-workshop</a></p>
 <p class="image-container"><img alt="github repo" src="img/f1b9a46d68f21b0c.png"></p>
 <ol type="1">
 <li>Open the project URL in your browser</li>
-<li>Clone the repo. You can click the <strong>Code</strong> button, the green button on the top right</li>
+<li>Fork the repo. You can click the <strong>Fork</strong> button, on the top right</li>
 </ol>
+<p class="image-container"><img alt="fork" src="img/936f0647b01a7ef9.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Setup the Project Locally" duration="20">
-        <h2 is-upgraded>1. Set up the repo</h2>
-<pre><code language="language-bash" class="language-bash">git clone https://github.com/&lt;your-org-or-user&gt;/&lt;repo&gt;.git
+        <p>Go to your forked repo and clone it to your local machine.</p>
+<h2 is-upgraded>1. Set up the repo</h2>
+<pre><code language="language-bash" class="language-bash">git clone https://github.com/&lt;your-username&gt;/&lt;forked-repo&gt;.git
 cd &lt;repo&gt;
-git checkout -b feature/procurement-mvp
+git checkout -b feature/po-module
 </code></pre>
 <p>Ensure project references:</p>
 <ul>
@@ -246,25 +249,35 @@ docker compose up -d db
 <p>Verification:</p>
 <pre><code language="language-bash" class="language-bash">docker compose exec -T db psql -U workshop -d procurement_mvp -c &#34;SELECT COUNT(*) FROM purchase_requisitions;&#34;
 </code></pre>
+<aside class="warning"><p>If you have another instance of PostgreSQL running in your machine, don&#39;t forget to turn it off first. On Windows, you can check <code>services.msc</code>. On Mac, use the Activity Monitor.</p>
+</aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Configure Local Credentials" duration="15">
-        <h2 is-upgraded>1. Start the backend server</h2>
-<p>Create backend <code>.env</code>:</p>
+        <h2 is-upgraded>1. Install libraries</h2>
+<p>Run <code>npm install</code> in:</p>
+<ol type="1">
+<li>project root</li>
+<li><code>backend/</code></li>
+<li><code>frontend/</code></li>
+</ol>
+<h2 is-upgraded>2. Config for backend server</h2>
+<p>Create backend&#39;s environment variable: <code>backend/.env</code>:</p>
 <pre><code language="language-env" class="language-env">PORT=3000
 DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 </code></pre>
-<ul>
-<li>Run <code>npm install</code> in backend, frontend, and root (if monorepo scripts used)</li>
-<li><code>npm run dev</code> can be run from root if preconfigured</li>
-</ul>
-<h2 is-upgraded>2. Start the frontend server</h2>
-<p>Create frontend <code>.env</code>:</p>
+<p>The backend server is running on port 3000.</p>
+<h2 is-upgraded>3. Config for frontend server</h2>
+<p>Create frontend&#39;s environment variable: <code>frontend/.env</code>:</p>
 <pre><code language="language-env" class="language-env">VITE_API_BASE_URL=http://localhost:3000
 </code></pre>
-<h2 is-upgraded>3. Baseline expectation:</h2>
+<p>This will tell the frontend the URL of the backend service.</p>
+<h2 is-upgraded>4. Start the application</h2>
+<p>To run the app, execute <code>npm run dev</code> from root.</p>
+<p>Open the app (frontend server) on <code>http://localhost:5173</code>.</p>
+<p>Base expectations:</p>
 <ul>
 <li>Home/Dashboard works</li>
 <li>PR list/create/detail works</li>
@@ -276,21 +289,21 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
     
       <google-codelab-step label="Copilot Instructions Checklist" duration="15">
         <p>Before implementation, update custom instructions to shape Copilot output quality.</p>
-<p>Open <code>.github/copilot-instructions.md</code> and add rules such as:</p>
-<ul>
-<li>Always check <code>docs/plan.md</code> before large changes</li>
-<li>Add tests for new logic</li>
-<li>Use descriptive naming</li>
-<li>Update docs when introducing new flows</li>
-</ul>
-<p>Prompt:</p>
+<p>Make sure you are in <strong>Agent</strong> mode, then enter this prompt:</p>
 <pre><code language="language-text" class="language-text">Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
 </code></pre>
 <p>Expected outcome:</p>
 <ul>
 <li>Copilot responses become more consistent with project standards</li>
 </ul>
-<aside class="special"><p>What makes a good copilot-instructions.md? You have to, at least, make sure it contains the product context &amp; tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the <code>.env</code> file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.</p>
+<p>You can also manually open <code>.github/copilot-instructions.md</code> and add rules such as:</p>
+<ul>
+<li>Always check <code>docs/plan.md</code> before large changes</li>
+<li>Add tests for new logic</li>
+<li>Use descriptive naming</li>
+<li>Update docs when introducing new flows</li>
+</ul>
+<aside class="special"><p>What makes a good <code>copilot-instructions.md</code>? You have to, at least, make sure it contains the product context &amp; tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the <code>.env</code> file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.</p>
 <p>And it is an evolving file. So you can always improve this file alongside the project.</p>
 </aside>
 <p>Example of the <code>copilot-instructions.md</code> file we are using for this project:</p>
@@ -299,7 +312,7 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 
       </google-codelab-step>
     
-      <google-codelab-step label="The Problem with Vibe-Driven Development" duration="10">
+      <google-codelab-step label="The Problem with Vibe Coding" duration="10">
         <p><img alt="vcdead" src="img/c893a79309758b1e.webp"><em>Image source: </em><a href="https://ai.plainenglish.io/vibe-coding-is-dead-heres-what-replaced-it-aa7d2889b05a" target="_blank"><em>Vibe Coding Is Dead. Here&#39;s What Replaced It.</em></a></p>
 <p>You probably have experienced this pattern:</p>
 <ul>
@@ -366,7 +379,7 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
       <google-codelab-step label="Break and Discussion (#2)" duration="5">
         <ul>
 <li>What is your ideal <code>copilot-instructions.md</code> file?</li>
-<li>What documents do you want to store in your repo/workspace?</li>
+<li>What spec documents do you want to store in your repo/workspace?</li>
 <li>What enhancement ideas were realistic for your current team?</li>
 </ul>
 
@@ -428,7 +441,7 @@ Focus implementation on PO backlog.
         <p>Before we start with the PO module implementation in our procurement system MVP, let&#39;s validate the backend API first. Use the <strong>Agent</strong> mode and enter this prompt:</p>
 <pre><code language="language-text" class="language-text">Add Swagger/OpenAPI support to this Fastify JavaScript backend.
 Use @fastify/swagger and @fastify/swagger-ui.
-Register plugins in the main bootstrap file and expose docs at /docs.
+Expose API documentation at /api-docs.
 </code></pre>
 <p>The goal is:</p>
 <ol type="1">
@@ -440,7 +453,7 @@ Register plugins in the main bootstrap file and expose docs at /docs.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Figma MCP Setup" duration="15">
+      <google-codelab-step label="Figma MCP Setup" duration="20">
         <p>Figma is the default tool for designing frontend pages and user interfaces. Adding Figma MCP allows the AI model to access a Figma file directly.</p>
 <h2 is-upgraded>Modify the MCP config</h2>
 <ol type="1">
@@ -452,13 +465,15 @@ Register plugins in the main bootstrap file and expose docs at /docs.
 </ol>
 <p class="image-container"><img alt="mcp-figma" src="img/aa599198fa8d61bc.png"></p>
 <h2 is-upgraded>Important Note</h2>
+<aside class="special"><p><a href="https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-782&p=f&t=kto9reqIhe3VcQZi-0" target="_blank">Link to the Figma file</a></p>
+</aside>
 <p>Before you ask Copilot to access a Figma file, make sure that:</p>
 <ul>
 <li>you are logged in to Figma</li>
 <li>confirm workshop file and node IDs are accessible</li>
 <li>confirm that the Figma file owner has already assigned access to you</li>
 </ul>
-<aside class="special"><p> To make sure the frontend codes implement the Figma design as accurate as possible, we need at least two things:</p>
+<aside class="warning"><p> To make sure the frontend codes implement the Figma design as accurate as possible, we need at least two things:</p>
 <ul>
 <li>Figma implementation skill</li>
 <li>Figma file that implements best practices</li>
@@ -481,15 +496,13 @@ Register plugins in the main bootstrap file and expose docs at /docs.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Using Figma MCP" duration="20">
+      <google-codelab-step label="Using Figma MCP" duration="15">
         <p>Start developing the PO module by generating the <strong>Create PO</strong> page. We will be using a design in Figma to create the frontend codes.</p>
-<p>Enter the prompt below:</p>
-<pre><code language="language-text" class="language-text">Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?m=auto&amp;t=isYVX9I2o61eq0Vu-6.
+<p>Use <strong>Agent</strong> mode in Copilot chat and enter the prompt below:</p>
+<pre><code language="language-text" class="language-text">Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-323&amp;p=f&amp;t=QJcJvfEN1Kpy8NGa-0
 Include reusable components for header form and line allocation table.
 Do not implement API calls yet. Keep structure simple.
 </code></pre>
-<aside class="special"><p><a href="https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-782&p=f&t=kto9reqIhe3VcQZi-0" target="_blank">Link to the Figma file</a></p>
-</aside>
 <p>Scope for generated page:</p>
 <ul>
 <li>Header section (vendor, PO date, notes)</li>
@@ -732,6 +745,13 @@ Focus on the following instructions:
 </ul>
 </aside>
 <p class="image-container"><img alt="gr" src="img/92c30c06c2c818a.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Demo using Spec-Kit" duration="10">
+        <aside class="special"><p>Demo of developing the GR module using Spec-Kit.</p>
+</aside>
 
 
       </google-codelab-step>
