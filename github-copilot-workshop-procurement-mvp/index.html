@@ -738,7 +738,9 @@ Focus on the following instructions:
       </google-codelab-step>
     
       <google-codelab-step label="Exploration" duration="30">
-        <p>Using what you have learned so far, let&#39;s try to implement the last module in this procurement app: Goods Receipts (GR) module. You have <strong>30 minutes</strong> to explore on your own, plan well.</p>
+        <aside class="warning"><p><strong>Important</strong>: Before continuing, create a new branch from the current branch.</p>
+</aside>
+<p>Using what you have learned so far, let&#39;s try to implement the last module in this procurement app: Goods Receipts (GR) module. You have <strong>30 minutes</strong> to explore on your own, plan well.</p>
 <aside class="special"><p>Reminders:</p>
 <ul>
 <li>planning is crucial</li>
@@ -751,7 +753,7 @@ Focus on the following instructions:
 
       </google-codelab-step>
     
-      <google-codelab-step label="SDD frameworks" duration="20">
+      <google-codelab-step label="SDD frameworks" duration="15">
         <p>Below is an example of spec documents created using an SDD framework &#34;Spec-Kit&#34; for the development of GR module:</p>
 <p class="image-container"><img alt="sk-files" src="img/c8b3d413a6981a28.png"></p>
 <aside class="special"><p>Spec-Kit is one of the most popular SDD frameworks in GitHub.</p>
@@ -788,8 +790,10 @@ Focus on the following instructions:
 
       </google-codelab-step>
     
-      <google-codelab-step label="Spec-Kit: SDD Framework from GitHub" duration="15">
-        <p>Spec-Kit provides reusable building blocks for spec-first development:</p>
+      <google-codelab-step label="Spec-Kit: SDD Framework from GitHub" duration="20">
+        <aside class="warning"><p><strong>Important</strong>: Check out to the branch before the Exploration slide</p>
+</aside>
+<p>Spec-Kit provides reusable building blocks for spec-first development:</p>
 <ul>
 <li>A set of custom prompts and agents</li>
 <li>Specification templates and workflow conventions</li>
@@ -803,17 +807,6 @@ Focus on the following instructions:
 <p class="image-container"><img alt="specify-cli" src="img/c04e3371e5d099ea.png"></p>
 <p>Alternative setup: download template/package from the <a href="https://github.com/github/spec-kit/releases" target="_blank">release page</a></p>
 <p class="image-container"><img alt="scf" src="img/418beb979ae0b0f2.png"></p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Break and Discussion (#7)" duration="5">
-        <ul>
-<li>What is the difference between a Spec-Kit spec and a user story?</li>
-<li>Why does the constitution need to come before the specification?</li>
-<li>In your current team, who would run /speckit.constitution — the engineer, the tech lead, or the product owner?</li>
-<li>What would happen if two engineers ran /speckit.implement on the same spec at the same time?</li>
-</ul>
 
 
       </google-codelab-step>
@@ -891,6 +884,16 @@ specify init --here --force
 <li>Cannot receive more than PO open quantity</li>
 <li>Supports partial receipts and cumulative tracking</li>
 <li>Includes status transitions (<code>DRAFT</code> -&gt; <code>POSTED</code>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Break and Discussion (#7)" duration="5">
+        <ul>
+<li>What is the difference between a Spec-Kit spec and a user story?</li>
+<li>Why does the constitution need to come before the specification?</li>
+<li>In your current team, who would run /speckit.constitution — the engineer, the tech lead, or the product owner?</li>
 </ul>
 
 
@@ -984,7 +987,6 @@ specify init --here --force
 <ul>
 <li><a href="https://docs.github.com/copilot" target="_blank">GitHub Copilot Documentation</a></li>
 <li><a href="https://docs.github.com/copilot/using-github-copilot/best-practices-for-using-github-copilot" target="_blank">GitHub Copilot Best Practices</a></li>
-<li><a href="https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-codeql" target="_blank">CodeQL docs</a></li>
 <li><a href="https://github.com/copilot/spaces" target="_blank">Copilot Spaces</a></li>
 <li><a href="https://playwright.dev" target="_blank">Playwright docs</a></li>
 </ul>

@@ -970,6 +970,10 @@ Duration: 5
 ## Exploration
 Duration: 30
 
+> aside negative
+>
+> **Important**: Before continuing, create a new branch from the current branch.
+
 Using what you have learned so far, let's try to implement the last module in this procurement app: Goods Receipts (GR) module.
 You have **30 minutes** to explore on your own, plan well.
 
@@ -988,7 +992,7 @@ You have **30 minutes** to explore on your own, plan well.
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## SDD frameworks
-Duration: 20
+Duration: 15
 
 Below is an example of spec documents created using an SDD framework "Spec-Kit" for the development of GR module:
 
@@ -1037,7 +1041,11 @@ A good spec does not die when the code is written. It becomes:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Spec-Kit: SDD Framework from GitHub
-Duration: 15
+Duration: 20
+
+> aside negative
+>
+> **Important**: Check out to the branch before the Exploration slide
 
 Spec-Kit provides reusable building blocks for spec-first development:
 - A set of custom prompts and agents
@@ -1060,19 +1068,6 @@ Alternative setup: download template/package from the [release page](https://git
 
 
 ![scf](github-copilot-workshop-procurement-mvp/img-source/scf.png)
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Break and Discussion (#7)
-Duration: 5
-
-- What is the difference between a Spec-Kit spec and a user story?
-- Why does the constitution need to come before the specification?
-- In your current team, who would run /speckit.constitution — the engineer, the tech lead, or the product owner?
-- What would happen if two engineers ran /speckit.implement on the same spec at the same time?
 
 ---
 
@@ -1183,6 +1178,18 @@ Suggested GR spec checks:
 - Cannot receive more than PO open quantity
 - Supports partial receipts and cumulative tracking
 - Includes status transitions (`DRAFT` -> `POSTED`)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Break and Discussion (#7)
+Duration: 5
+
+- What is the difference between a Spec-Kit spec and a user story?
+- Why does the constitution need to come before the specification?
+- In your current team, who would run /speckit.constitution — the engineer, the tech lead, or the product owner?
 
 ---
 
@@ -1301,7 +1308,6 @@ In this workshop, we learned to use GitHub Copilot to do the following:
 
 - [GitHub Copilot Documentation](https://docs.github.com/copilot)
 - [GitHub Copilot Best Practices](https://docs.github.com/copilot/using-github-copilot/best-practices-for-using-github-copilot)
-- [CodeQL docs](https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-codeql)
 - [Copilot Spaces](https://github.com/copilot/spaces)
 - [Playwright docs](https://playwright.dev)
 
