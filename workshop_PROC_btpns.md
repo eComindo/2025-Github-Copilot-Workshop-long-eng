@@ -774,6 +774,10 @@ Duration: 20
 GitHub offers various features to make sure our project is secure and reliable.
 But before we take a look into those features, let's try something we can implement locally.
 
+> aside positive
+>
+> Reference: [Git Hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
+
 Git hooks let us do a lot of things. They are triggered by the `git` command.
 In this example we will make a hook that does pre-push checks, that can block low-quality pushes quickly.
 
@@ -826,7 +830,7 @@ The required scenarios for this end-to-end test:
 1. Happy path: create + submit PO from approved PR data
 2. Negative path: reject over-allocation qty
 
-Create a dedicated Playwright spec using this prompt:
+Make sure Copilot chat is in **Agent** mode. Then, create a dedicated Playwright spec using this prompt:
 
 ```text
 Create tests/e2e/po-module.spec.js using the Playwright library.
@@ -865,9 +869,9 @@ Because the charts are created using [Mermaid format](https://mermaid.js.org/), 
 > 
 > Below are some screenshots of documentation created by Copilot for a simple Pomodoro app. Our procurement MVP app would have a more complex documentation.
 
-![App documentation](github-copilot-workshop-id/img/__docs-1.png)
+![App documentation](github-copilot-workshop-procurement-mvp/img-source/chart0.png)
 
-![App documentation](github-copilot-workshop-id/img/__docs-2.png)
+![App documentation](github-copilot-workshop-procurement-mvp/img-source/chart1.png)
 
 ---
 
@@ -983,20 +987,16 @@ You have **30 minutes** to explore on your own, plan well.
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Demo using Spec-Kit
-Duration: 10
+## SDD frameworks
+Duration: 20
+
+Below is an example of spec documents created using an SDD framework "Spec-Kit" for the development of GR module:
+
+![sk-files](github-copilot-workshop-procurement-mvp/img-source/sk-files.png)
 
 > aside positive
 > 
-> Demo of developing the GR module using Spec-Kit.
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## SDD frameworks
-Duration: 20
+> Spec-Kit is one of the most popular SDD frameworks in GitHub.
 
 ### 1. Why use framework
 

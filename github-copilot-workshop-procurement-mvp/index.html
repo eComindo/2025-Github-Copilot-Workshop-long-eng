@@ -598,6 +598,8 @@ Connect the new pages with the existing backend API endpoints for PO module.
     
       <google-codelab-step label="Git Hooks Demo (OPTIONAL)" duration="20">
         <p>GitHub offers various features to make sure our project is secure and reliable. But before we take a look into those features, let&#39;s try something we can implement locally.</p>
+<aside class="special"><p>Reference: <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks" target="_blank">Git Hooks</a></p>
+</aside>
 <p>Git hooks let us do a lot of things. They are triggered by the <code>git</code> command. In this example we will make a hook that does pre-push checks, that can block low-quality pushes quickly.</p>
 <h2 is-upgraded>Create the hook</h2>
 <p>Create a new <code>.git/hooks/pre-push</code> file.</p>
@@ -636,7 +638,7 @@ npm run test:unit
 <li>Happy path: create + submit PO from approved PR data</li>
 <li>Negative path: reject over-allocation qty</li>
 </ol>
-<p>Create a dedicated Playwright spec using this prompt:</p>
+<p>Make sure Copilot chat is in <strong>Agent</strong> mode. Then, create a dedicated Playwright spec using this prompt:</p>
 <pre><code language="language-text" class="language-text">Create tests/e2e/po-module.spec.js using the Playwright library.
 Add happy path and negative over-allocation path with stable selectors and clear assertions.
 
@@ -660,8 +662,8 @@ Save as markdown.
 <p>Because the charts are created using <a href="https://mermaid.js.org/" target="_blank">Mermaid format</a>, you can also copy-paste the Mermaid code into Mermaid&#39;s tool.</p>
 <aside class="warning"><p>Below are some screenshots of documentation created by Copilot for a simple Pomodoro app. Our procurement MVP app would have a more complex documentation.</p>
 </aside>
-<p class="image-container"><img alt="App documentation" src="img/af32d8f4c778e3ab.png"></p>
-<p class="image-container"><img alt="App documentation" src="img/409e46bf3650b89c.png"></p>
+<p class="image-container"><img alt="App documentation" src="img/a7015912a73a1ac.png"></p>
+<p class="image-container"><img alt="App documentation" src="img/93bc70641e1c2219.png"></p>
 
 
       </google-codelab-step>
@@ -749,15 +751,12 @@ Focus on the following instructions:
 
       </google-codelab-step>
     
-      <google-codelab-step label="Demo using Spec-Kit" duration="10">
-        <aside class="special"><p>Demo of developing the GR module using Spec-Kit.</p>
-</aside>
-
-
-      </google-codelab-step>
-    
       <google-codelab-step label="SDD frameworks" duration="20">
-        <h2 is-upgraded>1. Why use framework</h2>
+        <p>Below is an example of spec documents created using an SDD framework &#34;Spec-Kit&#34; for the development of GR module:</p>
+<p class="image-container"><img alt="sk-files" src="img/c8b3d413a6981a28.png"></p>
+<aside class="special"><p>Spec-Kit is one of the most popular SDD frameworks in GitHub.</p>
+</aside>
+<h2 is-upgraded>1. Why use framework</h2>
 <p>SDD frameworks can help us create a standardized specifications throughout the organization.</p>
 <p>Why use a ready-made framework:</p>
 <ul>
