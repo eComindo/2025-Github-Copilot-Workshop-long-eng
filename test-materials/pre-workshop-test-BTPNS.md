@@ -9,7 +9,7 @@ Each question has 5 options (A-E), with 1 correct answer and 4 distractors.
 ---
 
 ## Question 1 (AI in SDLC)
-In many software teams, people say AI-generated code is fast but inconsistent for production systems. Based on the workshop framing, which practice best reduces rework, ambiguity, and hidden assumptions before implementation starts?
+In many software teams, AI-generated output is fast but can be inconsistent for production systems. Based on this workshop, which practice best reduces ambiguity before implementation starts?
 
 A. Ask different models for the same feature and merge the outputs manually.
 B. Delay all documentation until after coding is complete and tested.
@@ -19,12 +19,12 @@ E. Focus only on UI speed and postpone business rule validation.
 
 **Correct answer:** C
 
-**Explanation:** The workshop emphasizes that structured specifications reduce ambiguity and create a clear contract between intent and implementation, which improves maintainability and review quality.
+**Explanation:** The workshop positions a specification as a contract between intent and implementation, helping teams reduce rework and misunderstandings.
 
 ---
 
 ## Question 2 (AI in SDLC)
-When a team adopts AI tools in development, who should be accountable if generated output misses important business logic or fails to match expected behavior in production workflows?
+When a team adopts AI tools in development, who remains accountable if generated output misses business logic in production workflows?
 
 A. Only the AI model vendor, because the model produced the code.
 B. Only QA engineers, because they run tests before release.
@@ -34,12 +34,12 @@ E. Nobody, because AI output is probabilistic by nature.
 
 **Correct answer:** D
 
-**Explanation:** The workshop explicitly states that teams can outsource code generation, but not understanding and validation. Human accountability remains essential.
+**Explanation:** The workshop explicitly says teams can outsource code generation, but not understanding and validation.
 
 ---
 
 ## Question 3 (AI in SDLC)
-A developer asks an LLM to generate a procurement module with almost no supporting context and gets a plausible but incorrect result. What is the most likely root cause according to the workshop’s context-first principle?
+A developer asks an LLM to generate a procurement module with minimal context and gets a plausible but incorrect result. According to the workshop, what is the most likely root cause?
 
 A. The model was unable to process domain terms like PR and PO.
 B. The request lacked sufficient context and specific constraints.
@@ -49,12 +49,12 @@ E. The user should have used dark mode in the editor.
 
 **Correct answer:** B
 
-**Explanation:** The workshop stresses that better context yields better outputs, and poor briefs are usually the biggest failure point, not the model itself.
+**Explanation:** The workshop emphasizes that the main failure is usually the brief, not the model.
 
 ---
 
 ## Question 4 (AI in SDLC)
-In a regulated environment such as banking procurement, why is “vibe-driven development” considered risky even when generated output appears to work during quick demonstrations?
+In a regulated procurement environment, why is vibe-driven development risky even when generated output looks correct in demos?
 
 A. It usually creates code that cannot be executed locally.
 B. It always fails UI rendering on mobile devices.
@@ -64,12 +64,12 @@ E. It requires a premium model for every commit.
 
 **Correct answer:** C
 
-**Explanation:** The workshop highlights that plausible output is not enough for production; regulated domains require traceability, clarity, and explicit handling of constraints and edge cases.
+**Explanation:** The workshop explains that plausible output is not enough for production-grade systems that require traceability and clear rules.
 
 ---
 
 ## Question 5 (AI in SDLC)
-A team wants AI support while keeping strong engineering discipline. Which workflow aligns most closely with the workshop’s recommended pattern for new features?
+A team wants AI support while maintaining engineering discipline. Which workflow matches the workshop pattern for new features?
 
 A. Generate full implementation first, then write requirements if needed.
 B. Ask for a plan from available docs, implement in checkpoints, validate continuously.
@@ -79,12 +79,12 @@ E. Limit context inputs to reduce token usage and speed up replies.
 
 **Correct answer:** B
 
-**Explanation:** The workshop advises attaching relevant docs, asking for plans first, implementing in small checkpoints, and validating each step.
+**Explanation:** The workshop guidance is: attach context, ask for plan first, implement in checkpoints, and validate continuously.
 
 ---
 
 ## Question 6 (Copilot Fundamentals)
-Before making larger repository changes with Copilot, the workshop recommends updating a repository-level instruction file. What is the main objective of this file in daily development?
+Before making larger repository changes, the workshop recommends improving a repository instruction file. What is the main objective of this file?
 
 A. To replace README files and become the only project documentation.
 B. To enforce operating system settings across all participant laptops.
@@ -94,12 +94,12 @@ E. To store private credentials for backend and frontend environments.
 
 **Correct answer:** C
 
-**Explanation:** The instruction file is used to guide Copilot with standards such as testing discipline, naming conventions, and required docs context.
+**Explanation:** This file aligns generated output with project standards such as naming, testing, and documentation practices.
 
 ---
 
 ## Question 7 (Copilot Fundamentals)
-In the workshop flow, participants are encouraged to use different Copilot modes for different activities. Which pairing best reflects the intended use during planning and implementation steps?
+In the workshop flow, participants use different Copilot modes for different activities. Which pairing is correct?
 
 A. Plan mode for refining task sequence, then Agent mode for executing and saving runbooks.
 B. Agent mode only for searching images, Plan mode only for terminal commands.
@@ -109,12 +109,12 @@ E. Plan mode and Agent mode are interchangeable with no practical difference.
 
 **Correct answer:** A
 
-**Explanation:** The material shows Plan mode for validating and sequencing work, then Agent mode for execution-oriented tasks like creating runbook artifacts.
+**Explanation:** The deck shows Plan mode for sequencing and Agent mode for execution tasks such as saving runbook outputs.
 
 ---
 
 ## Question 8 (Copilot Fundamentals)
-A team member wants better quality from Copilot but keeps sending short prompts with minimal repository context. According to workshop guidance, which adjustment is most likely to improve output quality quickly?
+A participant wants better Copilot output quality but keeps sending short prompts. Which change is most likely to improve results quickly?
 
 A. Add richer context: relevant files, docs, screenshots, and explicit constraints.
 B. Use fewer words and rely on Copilot to infer architecture from memory.
@@ -124,12 +124,12 @@ E. Turn off linting and tests to reduce noise in responses.
 
 **Correct answer:** A
 
-**Explanation:** The workshop emphasizes context-rich prompting. Including concrete artifacts and constraints improves relevance and reduces hallucinated assumptions.
+**Explanation:** Rich context and clear constraints improve relevance and reduce incorrect assumptions.
 
 ---
 
 ## Question 9 (Copilot Fundamentals)
-When participants are asked to verify baseline readiness before implementing PO, what practical benefit comes from adding Swagger/OpenAPI support to the backend first?
+Before implementing PO, the workshop asks participants to add Swagger/OpenAPI support. What is the practical benefit?
 
 A. It guarantees all future frontend code will be bug-free.
 B. It exposes discoverable, testable API contracts before deeper integration.
@@ -139,12 +139,12 @@ E. It automatically creates production monitoring dashboards.
 
 **Correct answer:** B
 
-**Explanation:** Swagger/OpenAPI helps teams inspect endpoints, verify expected behavior, and align frontend integration with explicit API contracts.
+**Explanation:** Swagger/OpenAPI makes endpoints visible and testable, reducing integration guesswork.
 
 ---
 
 ## Question 10 (Copilot Fundamentals)
-The workshop suggests project progress documentation (for example, a current-state summary file) while building modules. Why is this useful when working with Copilot over multiple sessions?
+The workshop suggests maintaining a project progress file (for example, docs/progress.md). Why is this useful with Copilot across sessions?
 
 A. It reduces token cost by deleting implementation details from history.
 B. It ensures Copilot ignores older architecture decisions.
@@ -154,4 +154,4 @@ E. It allows skipping tests if progress notes look complete.
 
 **Correct answer:** C
 
-**Explanation:** Progress documentation gives Copilot and developers a shared status snapshot, reducing redundant changes and improving continuity across iterations.
+**Explanation:** A current-state document helps both humans and Copilot keep continuity and avoid duplicate work.

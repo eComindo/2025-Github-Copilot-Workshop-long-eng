@@ -20,12 +20,12 @@ E. Allow over-allocation in draft mode and fix data during nightly jobs.
 
 **Correct answer:** C
 
-**Explanation:** The workshop explicitly requires over-allocation validation and clear 422 responses, which should be enforced reliably in backend logic.
+**Explanation:** The workshop specifically requests over-allocation validation with clear 422 responses, which belongs in reliable backend rule enforcement.
 
 ---
 
 ## Question 2 (Copilot Usage)
-When integrating generated Figma-based Vue components with live APIs, what is the most effective way to preserve maintainability while still moving quickly with Copilot assistance?
+When integrating Figma-generated Vue components with live APIs, which approach best preserves maintainability?
 
 A. Replace all existing components with generated ones for visual consistency.
 B. Keep reusable generated structure, then wire data and actions to existing API patterns.
@@ -35,12 +35,12 @@ E. Disable type and lint checks to minimize friction during integration.
 
 **Correct answer:** B
 
-**Explanation:** The workshop directs participants to keep generated components but integrate them with existing module patterns and API contracts for clarity and reuse.
+**Explanation:** The workshop asks participants to keep generated structure where useful but still follow existing module conventions and API contracts.
 
 ---
 
 ## Question 3 (Copilot Usage)
-After using Copilot to generate tests, what is the most important evaluation step before trusting those tests as a quality signal for procurement workflows?
+After Copilot generates tests, what is the most important check before trusting them as a quality signal?
 
 A. Confirm that test files were created and committed to the branch.
 B. Check whether assertions truly validate business behavior, not just implementation details.
@@ -50,12 +50,12 @@ E. Ignore negative paths if happy path coverage is above 80%.
 
 **Correct answer:** B
 
-**Explanation:** The workshop warns that AI can produce persuasive but weak tests; teams must verify that tests actually assess meaningful business rules.
+**Explanation:** The workshop warns that AI-generated tests can look convincing while missing real business validation.
 
 ---
 
 ## Question 4 (Copilot Usage)
-A participant asks Copilot to complete the PO list and detail pages without Figma references. Which instruction from the workshop should guide this request to reduce unnecessary divergence?
+A participant asks Copilot to complete PO list and detail pages without Figma references. Which instruction should guide the implementation?
 
 A. Build a completely new visual language independent of existing UI.
 B. Reuse available components and follow established project design patterns.
@@ -65,12 +65,12 @@ E. Skip backend integration until all pages are visually finalized.
 
 **Correct answer:** B
 
-**Explanation:** The workshop asks participants to follow existing design rules and reuse components whenever possible for consistency and maintainability.
+**Explanation:** The workshop says to follow established design rules and reuse existing components whenever possible.
 
 ---
 
 ## Question 5 (Copilot Usage)
-For end-to-end coverage of the PO module, the workshop requests both a happy path and a negative path. Why is including both scenarios especially important in AI-assisted feature development?
+The workshop asks for PO end-to-end tests with both happy path and negative over-allocation path. Why does this matter?
 
 A. It helps ensure core flow works and critical validation failures are also enforced.
 B. It guarantees no future refactoring will break unrelated modules.
@@ -80,7 +80,7 @@ E. It proves AI-generated selectors never become flaky over time.
 
 **Correct answer:** A
 
-**Explanation:** Happy-path plus negative-path testing checks that expected behavior works while invalid operations are correctly rejected, which is vital for business-rule confidence.
+**Explanation:** Both paths verify not only that valid flows succeed, but also that invalid operations are correctly blocked.
 
 ---
 
@@ -95,12 +95,12 @@ E. A script that automatically creates database tables.
 
 **Correct answer:** C
 
-**Explanation:** The workshop defines specs as structured contracts containing behavior, constraints, edge cases, and acceptance criteria that guide implementation and review.
+**Explanation:** The workshop defines a spec as a structured contract including behavior, constraints, edge cases, and acceptance criteria.
 
 ---
 
 ## Question 7 (SDD)
-Why does SDD generally improve collaboration across engineering, QA, and product stakeholders compared with purely prompt-driven coding for larger features?
+Why does SDD improve collaboration across engineering, QA, and product stakeholders compared with purely prompt-driven coding?
 
 A. Because it reduces the need for any written communication.
 B. Because it centralizes assumptions and acceptance criteria in a reviewable artifact.
@@ -110,12 +110,12 @@ E. Because it avoids the need for sequence or flow diagrams.
 
 **Correct answer:** B
 
-**Explanation:** Shared specs make intent and constraints explicit, enabling clearer handoffs and objective validation across roles.
+**Explanation:** Shared specs make assumptions and acceptance criteria explicit, enabling clearer reviews and handoffs.
 
 ---
 
 ## Question 8 (SDD)
-A team wants to improve quality without slowing delivery too much. According to the workshop’s SDD guidance, which sequence is most sensible for substantial new functionality?
+A team wants to improve quality without slowing delivery too much. According to the workshop, which sequence is most sensible for substantial new functionality?
 
 A. Code first, then infer requirements from implementation behavior.
 B. Write tests first without requirements, then adjust scope later.
@@ -125,12 +125,12 @@ E. Delay all documentation until post-mortem.
 
 **Correct answer:** C
 
-**Explanation:** The workshop advocates planning from spec, executing in checkpoints, and validating as work progresses to control quality and reduce rework.
+**Explanation:** The workshop promotes spec-first planning, iterative implementation checkpoints, and continuous validation.
 
 ---
 
 ## Question 9 (Spec-Kit)
-Within the Spec-Kit workflow presented in the workshop, what is the practical purpose of running the constitution step before specifying and planning a feature?
+In the Spec-Kit workflow, what is the practical purpose of running /speckit.constitution before /speckit.specify and /speckit.plan?
 
 A. It creates random tasks to stress-test team velocity.
 B. It defines project guardrails so later spec and plan outputs follow consistent rules.
@@ -140,19 +140,19 @@ E. It automatically approves pull requests based on template matching.
 
 **Correct answer:** B
 
-**Explanation:** The constitution establishes baseline principles, stack rules, and quality constraints that subsequent Spec-Kit steps should respect.
+**Explanation:** Constitution sets the baseline rules so downstream specification and planning outputs stay consistent.
 
 ---
 
 ## Question 10 (Spec-Kit)
-When using Spec-Kit commands for a new module such as GR, which command sequence best reflects the complete flow described in the workshop slides?
+For a new module such as GR, which Spec-Kit command sequence best matches the full flow in the workshop?
 
 A. /speckit.tasks -> /speckit.implement -> /speckit.constitution -> /speckit.specify
 B. /speckit.plan -> /speckit.specify -> /speckit.constitution -> /speckit.implement
 C. /speckit.specify -> /speckit.constitution -> /speckit.tasks -> /speckit.plan
-D. /speckit.constitution -> /speckit.specify -> /speckit.plan -> /speckit.tasks -> /speckit.implement
+D. /speckit.constitution -> /speckit.specify -> /speckit.plan -> /speckit.tasks -> /speckit.taskstoissues (optional) -> /speckit.implement
 E. /speckit.implement -> /speckit.plan -> /speckit.tasks -> /speckit.taskstoissues
 
 **Correct answer:** D
 
-**Explanation:** The workshop’s full sequence starts with constitution guardrails, then specification and technical planning, task breakdown, and implementation execution.
+**Explanation:** The workshop shows a full chain from guardrails to spec, plan, tasks, optional issue conversion, and implementation.
