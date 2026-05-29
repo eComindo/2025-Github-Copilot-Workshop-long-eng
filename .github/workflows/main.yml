@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout to the branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download claat binary
         run: |
@@ -35,5 +35,5 @@ jobs:
             --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
             --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN }}" \
             --destination '$web' \
-            --source ./github-copilot-workshop-id/ \
+            --source ./github-copilot-workshop-procurement-mvp/ \
             --overwrite
