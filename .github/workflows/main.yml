@@ -37,3 +37,15 @@ jobs:
             --destination '$web' \
             --source ./github-copilot-workshop-id/ \
             --overwrite
+
+      - name: Export codelab to HTML
+        run: ./claat export -o . -e web -f html workshop_PROC_btpns.md
+      
+      - name: Upload to Azure Storage
+        run: |
+          az storage blob upload-batch \
+            --account-name ${{ secrets.AZURE_STORAGE_GHCOPILOT_ACCOUNT }} \
+            --sas-token "${{ secrets.AZURE_STORAGE_GHCOPILOT_SAS_TOKEN }}" \
+            --destination '$web' \
+            --source ./github-copilot-workshop-procurement-mvp/ \
+            --overwrite
