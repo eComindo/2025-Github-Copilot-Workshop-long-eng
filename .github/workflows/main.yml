@@ -27,7 +27,7 @@ jobs:
           chmod +x claat
 
       - name: Export codelab to HTML
-        run: ./claat export -o . -e web -f html workshop_original.md.md
+        run: ./claat export -o . -e web -f html workshop_original.md
       
       - name: Upload to Azure Storage
         run: |
