@@ -39,10 +39,11 @@ Tech stack:
 - Design: Figma + Figma MCP
 - Support: Python
 
-<!-- > aside positive
+> aside positive
 >
-> You can access the slide deck at [text](link) -->
+> You can access the slide deck at [bit.ly/eComCopilotWorkshop2026](https://bit.ly/eComCopilotWorkshop2026)
 
+![slides](github-copilot-workshop-procurement-mvp/img-source/slides.png)
 
 <!--
 TO-DO = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -179,6 +180,115 @@ The gap is not technical—it is communicative. Prompting—communicating with a
 >
 > Share your result with everyone. What do you think you can improve in your prompt to make your picture look as similar as the target picture? Do you think you share the responsibility if the result looks nothing like the target picture?
 
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Reverse engineer an application - Part 1
+Duration: 30
+
+In this workshop we are going to learn how to use specifications to create an application. But before we do that, let's try the reverse process.
+
+In this exercise we are going to use Copilot to create specifications of an existing application.
+
+1. Open the web application at [https://simplydemo.secure.simplybook.me/v2/dashboard/new](https://simplydemo.secure.simplybook.me/v2/dashboard/new)
+2. Login using these credentials:
+- login: `admin`
+- password: `demo`
+
+![reverse](github-copilot-workshop-procurement-mvp/img-source/reverse.png)
+
+3. Learn and observe as much as you can from that web application.
+4. Create a new workspace.
+5. Open the workspace in VS Code.
+6. Enter this prompt in Copilot Chat:
+
+```
+Create specification documents in markdown format for a web application that:
+- <your observation>
+- <your observation>
+- <your observation>
+- <your observation>
+- <your observation>
+- <etc.>
+```
+
+Run the prompt and wait for Copilot to finish creating the specifications.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Reverse engineer an application - Part 2
+Duration: 20
+
+We are going to conduct the previous exercise, but with new tools to help Copilot create better result.
+
+### Install an MCP server
+
+An MCP Server (Model Context Protocol Server) is a universal adapter that securely bridges AI models with external tools, databases, and services.
+
+For this exercise we are going to use the `chrome-devtools` MCP. It allows Copilot to perform browsing actions on a headless browser.
+
+1. Open the MCP configuration file in VS Code.
+2. Copy this line to connect VS Code to the MCP server:
+```
+"chrome-devtools": {
+  "command": "npx",
+  "args": ["-y", "chrome-devtools-mcp@latest", "--slim", "--headless"]
+}
+```
+
+### Prompt
+
+Before executing the prompt, let's add a file to create a more comprehensive context.
+
+1. Create a new workspace.
+2. Open the workspace in VS Code.
+3. Create a file called `plan.md`
+4. Put the content below in `plan.md`:
+
+```
+Based on the following url https://simplydemo.secure.simplybook.me/v2/dashboard/new, create a comprehensive specification of a fully working web application with the following structure template.
+
+specs/
+└── features/
+    ├── README.md                          # Feature catalog / index
+    ├── _template/                         # Boilerplate for new features
+    │   └── feature-template.md
+    │
+    └── F-001-online-booking/              # One folder per feature
+        ├── overview.md                    # Summary, goals, value prop
+        ├── user-stories.md                # Stories + acceptance criteria
+        ├── screens.md                     # Screens involved + states
+        ├── wireframes/                    # Visual mockups
+        │   ├── 01-service-select.png
+        │   ├── 02-time-pick.png
+        │   └── 03-confirmation.png
+        ├── business-rules.md              # Logic, validations, policies
+        ├── data-model.md                  # Entities, fields, relationships
+        ├── edge-cases.md                  # Error states, empty, conflicts
+        ├── permissions.md                 # Who can do what (RBAC)
+        ├── notifications.md               # Emails, SMS, in-app triggers
+        ├── analytics.md                   # Events tracked, KPIs
+        ├── dependencies.md                # Other features, 3rd parties
+        ├── test-scenarios.md              # Gherkin / acceptance tests
+        └── open-questions.md
+
+1. Use [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) to access the web application above.
+2. Use the following credentials to access the application:
+  - login: `admin`
+  - password: `demo`
+```
+
+Once the file `plan.md` is ready, enter this prompt in Copilot Chat:
+
+```
+Use the file #plan.md to conduct a reverse engineering process, ie. from application to specification documents.
+```
 
 ---
 

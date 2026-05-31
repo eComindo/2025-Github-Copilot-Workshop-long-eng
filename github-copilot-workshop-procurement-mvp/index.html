@@ -53,6 +53,9 @@
 <li>Design: Figma + Figma MCP</li>
 <li>Support: Python</li>
 </ul>
+<aside class="special"><p>You can access the slide deck at <a href="https://bit.ly/eComCopilotWorkshop2026" target="_blank">bit.ly/eComCopilotWorkshop2026</a></p>
+</aside>
+<p class="image-container"><img alt="slides" src="img/1b8d657c9aef0b6b.png"></p>
 
 
       </google-codelab-step>
@@ -156,6 +159,97 @@
 </ul>
 <aside class="special"><p>Share your result with everyone. What do you think you can improve in your prompt to make your picture look as similar as the target picture? Do you think you share the responsibility if the result looks nothing like the target picture?</p>
 </aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Reverse engineer an application - Part 1" duration="30">
+        <p>In this workshop we are going to learn how to use specifications to create an application. But before we do that, let&#39;s try the reverse process.</p>
+<p>In this exercise we are going to use Copilot to create specifications of an existing application.</p>
+<ol type="1">
+<li>Open the web application at <a href="https://simplydemo.secure.simplybook.me/v2/dashboard/new" target="_blank">https://simplydemo.secure.simplybook.me/v2/dashboard/new</a></li>
+<li>Login using these credentials:</li>
+</ol>
+<ul>
+<li>login: <code>admin</code></li>
+<li>password: <code>demo</code></li>
+</ul>
+<p class="image-container"><img alt="reverse" src="img/1074633199817554.png"></p>
+<ol type="1" start="3">
+<li>Learn and observe as much as you can from that web application.</li>
+<li>Create a new workspace.</li>
+<li>Open the workspace in VS Code.</li>
+<li>Enter this prompt in Copilot Chat:</li>
+</ol>
+<pre><code>Create specification documents in markdown format for a web application that:
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;etc.&gt;
+</code></pre>
+<p>Run the prompt and wait for Copilot to finish creating the specifications.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Reverse engineer an application - Part 2" duration="20">
+        <p>We are going to conduct the previous exercise, but with new tools to help Copilot create better result.</p>
+<h2 is-upgraded>Install an MCP server</h2>
+<p>An MCP Server (Model Context Protocol Server) is a universal adapter that securely bridges AI models with external tools, databases, and services.</p>
+<p>For this exercise we are going to use the <code>chrome-devtools</code> MCP. It allows Copilot to perform browsing actions on a headless browser.</p>
+<ol type="1">
+<li>Open the MCP configuration file in VS Code.</li>
+<li>Copy this line to connect VS Code to the MCP server:</li>
+</ol>
+<pre><code>&#34;chrome-devtools&#34;: {
+  &#34;command&#34;: &#34;npx&#34;,
+  &#34;args&#34;: [&#34;-y&#34;, &#34;chrome-devtools-mcp@latest&#34;, &#34;--slim&#34;, &#34;--headless&#34;]
+}
+</code></pre>
+<h2 is-upgraded>Prompt</h2>
+<p>Before executing the prompt, let&#39;s add a file to create a more comprehensive context.</p>
+<ol type="1">
+<li>Create a new workspace.</li>
+<li>Open the workspace in VS Code.</li>
+<li>Create a file called <code>plan.md</code></li>
+<li>Put the content below in <code>plan.md</code>:</li>
+</ol>
+<pre><code>Based on the following url https://simplydemo.secure.simplybook.me/v2/dashboard/new, create a comprehensive specification of a fully working web application with the following structure template.
+
+specs/
+└── features/
+    ├── README.md                          # Feature catalog / index
+    ├── _template/                         # Boilerplate for new features
+    │   └── feature-template.md
+    │
+    └── F-001-online-booking/              # One folder per feature
+        ├── overview.md                    # Summary, goals, value prop
+        ├── user-stories.md                # Stories + acceptance criteria
+        ├── screens.md                     # Screens involved + states
+        ├── wireframes/                    # Visual mockups
+        │   ├── 01-service-select.png
+        │   ├── 02-time-pick.png
+        │   └── 03-confirmation.png
+        ├── business-rules.md              # Logic, validations, policies
+        ├── data-model.md                  # Entities, fields, relationships
+        ├── edge-cases.md                  # Error states, empty, conflicts
+        ├── permissions.md                 # Who can do what (RBAC)
+        ├── notifications.md               # Emails, SMS, in-app triggers
+        ├── analytics.md                   # Events tracked, KPIs
+        ├── dependencies.md                # Other features, 3rd parties
+        ├── test-scenarios.md              # Gherkin / acceptance tests
+        └── open-questions.md
+
+1. Use [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) to access the web application above.
+2. Use the following credentials to access the application:
+  - login: `admin`
+  - password: `demo`
+</code></pre>
+<p>Once the file <code>plan.md</code> is ready, enter this prompt in Copilot Chat:</p>
+<pre><code>Use the file #plan.md to conduct a reverse engineering process, ie. from application to specification documents.
+</code></pre>
 
 
       </google-codelab-step>
