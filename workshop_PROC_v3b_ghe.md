@@ -1,6 +1,6 @@
 author: Arie M. Prasetyo
 summary: GitHub Copilot Workshop - Procurement MVP
-id: github-copilot-workshop-proc-v3
+id: github-copilot-workshop-proc-v3-ghe
 categories: AI, Development
 environments: Web
 status: Published
@@ -13,6 +13,9 @@ change log:
     - mindset
     - RTK
     - Graphify
+
+25 June 2026
+- adding back GH enterprise content
 
 # GitHub Copilot Workshop: Build a Procurement System MVP
 
@@ -422,9 +425,9 @@ Optional MCP tools:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Fork the Repository
-Duration: 10
+Duration: 15
 
-*Dur: 10'*
+*Dur: 15'*
 
 Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop](https://github.com/eComindo/2026-github-copilot-workshop)
 
@@ -840,6 +843,40 @@ To make sure your development follows spec-driven development guidelines:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## GitHub Spaces (OPTIONAL)
+Duration: 10
+
+*Dur: 10'*
+
+Use Copilot Spaces for onboarding and product brainstorming.
+
+Create a space:
+- Name: `Procurement MVP Onboarding`
+- Attach: `README.md`, `docs/plan.md`
+
+Prompt 1 (onboarding):
+
+```text
+Create a new team member onboarding summary for this repository.
+Explain the business flow (PR -> PO -> GR), tech stack, and first 3 tasks.
+```
+
+Prompt 2 (brainstorming):
+
+```text
+For this procurement MVP, suggest 5 realistic enhancements for a future version.
+Keep workshop scope unchanged and mark each as out-of-scope for today.
+```
+
+> aside positive
+>
+> Copilot Space is optional but useful for keeping planning context reusable across the team.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Finalize Plan
 Duration: 10
 
@@ -1174,10 +1211,179 @@ Then:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Creating E2E test with Copilot
-Duration: 10
+## Code Quality
+Duration: 15
+
+*Dur: 15'*
+
+Code Quality is a feature from GitHub that allow scanning of the codes in your repository.
+
+GitHub Code Quality helps you ensure your codebase is reliable, maintainable, and efficient.
+It provides actionable insights and automated fixes so you can improve and maintain the code health of your repository efficiently.
+
+![code quality](image_source//code-quality.png)
+
+Code Quality performs rule-based analysis of the following languages using CodeQL:
+- C#
+- Go
+- Java
+- JavaScript
+- Python
+- Ruby
+- TypeScript
+
+> aside positive
+> 
+> Combining local hooks and GitHub Actions gives stronger quality gates
+
+We can check the progress and result of Code Quality in the Actions tab of the repository:
+
+![actions](image_source/github-actions.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Code Quality, Code Scanning, CodeQL
+Duration: 15
 
 *Dur: 10'*
+
+To enable and run checks:
+- Enable the Code Quality and Code Scanning features in the Settings
+- Ensure CodeQL analysis is available in your codebase
+
+![codeql](image_source/codeql.png)
+
+We can ask Copilot to create the workflow file:
+```text
+Create a GitHub Actions workflow for JavaScript CodeQL analysis.
+Run on push and pull_request for main and feature branches.
+```
+
+Code Scanning scans your codebase and commits for vulnerabilities like hardcoded API key and secrets.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Copilot PR summary, review, and commit message
+Duration: 20
+
+*Dur: 20'*
+
+Copilot is also available on Github's website. Click on [this link](https://github.com/copilot/) to open Copilot on Github.
+
+![copilot home](image_source/github-copilot-home.png)
+
+Let's see some of the things Copilot can do for us in the Github website.
+
+### 1. Add PR Summary
+
+We can ask Copilot to add Pull Request description.
+
+1. Commit the changes from the previous slide.
+2. Push to your repo.
+3. Open your Github repo page, create a new Pull Request.
+
+![generate summary](image_source/generate-summary.png)
+
+The summary from Copilot:
+![summary](image_source/copilot-pr-review.png)
+
+
+It will create a comprehensive PR description based on the commits in the branch that we wanted to merge.
+
+
+### 2. Add As PR Reviewer
+
+We can also add Copilot as a reviewer to a Pull Request. Very handy if you're working solo on a project.
+
+After pushing, let's create a Pull Request on GitHub.com and utilize Copilot's code review functionality.
+
+1. Access your repository on GitHub
+2. Click **Open a pull request**
+3. On the Pull Request creation screen, click **Copilot icon** >> **Summary**
+
+![PR Reviewer](image_source/request-copilot-review.png)
+
+In the **Reviewers** section, you can assign **Copilot** as a reviewer to request code review from Copilot.
+
+Copilot would check all the files in the PR and make appropriate comments.
+
+> aside positive
+>
+> **Auto-assign Setting**: By checking Settings >> Branches >> Rulesets >> Require a pull request before merging >> Automatically request Copilot code review, Copilot will be automatically assigned when opening Pull Requests.
+
+After the Pull Request is opened, you can view Copilot Code Review results:
+
+- **Pull Request Overview**: Summary of code changes
+- **Issues Identified**: Pointing out potential problems
+- **Improvement Suggestions**: Specific suggestions for improving code quality
+
+![copilot comment](image_source/copilot-pr-comment.png)
+
+> aside negative
+>
+> **Note**: Depending on the PR size, you might need to wait for Copilot to finish creating a summary or adding PR reviews.
+
+> aside positive
+>
+> **Pro Tip**: not confidence about your PR? Anxious that the senior devs are going to roast your PR? Let Copilot review your PR first, before you add other reviewers.
+
+You can go ahead ask Copilot to work on its proposed changes to the PR. It will automatically create a new separate PR that targets your working branch in the original PR.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## GitHub Issue (OPTIONAL)
+Duration: 20
+
+*Dur: 20'*
+
+Let's use the website version of GitHub Copilot to assign the Coding Agent to work on a new feature using the Issues feature.
+
+First, make sure **Issues** is enabled in your Github repository's **Settings**.
+
+![issues enabled](image_source/issues-enabled.png)
+
+### Automatic Issue Creation with GitHub Copilot
+
+In this section we want to implement a new feature: bookmarks.
+
+1. Access **GitHub.com** and click the **Copilot** icon in the top right
+2. Confirm your repository is added to the Chat context
+3. Enter the following prompt:
+
+```text
+I want the user to be able to bookmark an item in this app and then see all the bookmarks in a "Bookmarks" page.
+
+Create a feature which allows user to bookmark any item in the PR, PO, and GR list.
+
+Create the necessary API endpoints, database migration scripts, and frontend page/components.
+```
+
+4. Assign the issue to Copilot
+
+![assign issues](image_source/assign-issue-to-copilot.png)
+
+5. Wait for the agent to finish creating the PR. Once it is done, review generated branch/PR.
+
+![issue pr](image_source/issue-pr.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Creating E2E test with Copilot
+Duration: 15
+
+*Dur: 15'*
 
 Now we create an end-to-end test using Playwright.
 
@@ -1236,9 +1442,9 @@ Because the charts are created using [Mermaid format](https://mermaid.js.org/), 
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Creating Custom Prompts and Agents (OPTIONAL)
-Duration: 10
+Duration: 15
 
-*Dur: 10'*
+*Dur: 15'*
 
 ### Prompt Files
 

@@ -23,7 +23,7 @@
   <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid=""
                   codelab-ga4id=""
-                  id="github-copilot-workshop-proc-v3"
+                  id="github-copilot-workshop-proc-v3-ghe"
                   title="GitHub Copilot Workshop: Build a Procurement System MVP"
                   environment="web"
                   feedback-link="">
@@ -335,8 +335,8 @@ specs/
 
       </google-codelab-step>
     
-      <google-codelab-step label="Fork the Repository" duration="10">
-        <p><em>Dur: 10&#39;</em></p>
+      <google-codelab-step label="Fork the Repository" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
 <p>Open the project URL: <a href="https://github.com/eComindo/2026-github-copilot-workshop" target="_blank">https://github.com/eComindo/2026-github-copilot-workshop</a></p>
 <p class="image-container"><img alt="github repo" src="img/f1b9a46d68f21b0c.png"></p>
 <ol type="1">
@@ -637,6 +637,28 @@ You have access to a pre-computed AST knowledge graph of this repository at `gra
 
       </google-codelab-step>
     
+      <google-codelab-step label="GitHub Spaces (OPTIONAL)" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Use Copilot Spaces for onboarding and product brainstorming.</p>
+<p>Create a space:</p>
+<ul>
+<li>Name: <code>Procurement MVP Onboarding</code></li>
+<li>Attach: <code>README.md</code>, <code>docs/plan.md</code></li>
+</ul>
+<p>Prompt 1 (onboarding):</p>
+<pre><code language="language-text" class="language-text">Create a new team member onboarding summary for this repository.
+Explain the business flow (PR -&gt; PO -&gt; GR), tech stack, and first 3 tasks.
+</code></pre>
+<p>Prompt 2 (brainstorming):</p>
+<pre><code language="language-text" class="language-text">For this procurement MVP, suggest 5 realistic enhancements for a future version.
+Keep workshop scope unchanged and mark each as out-of-scope for today.
+</code></pre>
+<aside class="special"><p>Copilot Space is optional but useful for keeping planning context reusable across the team.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Finalize Plan" duration="10">
         <p><em>Dur: 10&#39;</em></p>
 <p>To start this project, we use an already created plan document, the spec for the MVP. Use Copilot <strong>Plan</strong> mode with <code>docs/plan.md</code> attached and enter the following prompt.</p>
@@ -859,8 +881,122 @@ npm run test:unit
 
       </google-codelab-step>
     
-      <google-codelab-step label="Creating E2E test with Copilot" duration="10">
+      <google-codelab-step label="Code Quality" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>Code Quality is a feature from GitHub that allow scanning of the codes in your repository.</p>
+<p>GitHub Code Quality helps you ensure your codebase is reliable, maintainable, and efficient. It provides actionable insights and automated fixes so you can improve and maintain the code health of your repository efficiently.</p>
+<p class="image-container"><img alt="code quality" src="img/24e16f186a27365c.png"></p>
+<p>Code Quality performs rule-based analysis of the following languages using CodeQL:</p>
+<ul>
+<li>C#</li>
+<li>Go</li>
+<li>Java</li>
+<li>JavaScript</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>TypeScript</li>
+</ul>
+<aside class="special"><p>Combining local hooks and GitHub Actions gives stronger quality gates</p>
+</aside>
+<p>We can check the progress and result of Code Quality in the Actions tab of the repository:</p>
+<p class="image-container"><img alt="actions" src="img/692d228c777a4b62.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Code Quality, Code Scanning, CodeQL" duration="15">
         <p><em>Dur: 10&#39;</em></p>
+<p>To enable and run checks:</p>
+<ul>
+<li>Enable the Code Quality and Code Scanning features in the Settings</li>
+<li>Ensure CodeQL analysis is available in your codebase</li>
+</ul>
+<p class="image-container"><img alt="codeql" src="img/f46afdef5c1750b.png"></p>
+<p>We can ask Copilot to create the workflow file:</p>
+<pre><code language="language-text" class="language-text">Create a GitHub Actions workflow for JavaScript CodeQL analysis.
+Run on push and pull_request for main and feature branches.
+</code></pre>
+<p>Code Scanning scans your codebase and commits for vulnerabilities like hardcoded API key and secrets.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Copilot PR summary, review, and commit message" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>Copilot is also available on Github&#39;s website. Click on <a href="https://github.com/copilot/" target="_blank">this link</a> to open Copilot on Github.</p>
+<p class="image-container"><img alt="copilot home" src="img/a7c200d9745d6129.png"></p>
+<p>Let&#39;s see some of the things Copilot can do for us in the Github website.</p>
+<h2 is-upgraded>1. Add PR Summary</h2>
+<p>We can ask Copilot to add Pull Request description.</p>
+<ol type="1">
+<li>Commit the changes from the previous slide.</li>
+<li>Push to your repo.</li>
+<li>Open your Github repo page, create a new Pull Request.</li>
+</ol>
+<p class="image-container"><img alt="generate summary" src="img/18ffabfac342e07b.png"></p>
+<p>The summary from Copilot: <img alt="summary" src="img/a2714b4422d1b988.png"></p>
+<p>It will create a comprehensive PR description based on the commits in the branch that we wanted to merge.</p>
+<h2 is-upgraded>2. Add As PR Reviewer</h2>
+<p>We can also add Copilot as a reviewer to a Pull Request. Very handy if you&#39;re working solo on a project.</p>
+<p>After pushing, let&#39;s create a Pull Request on GitHub.com and utilize Copilot&#39;s code review functionality.</p>
+<ol type="1">
+<li>Access your repository on GitHub</li>
+<li>Click <strong>Open a pull request</strong></li>
+<li>On the Pull Request creation screen, click <strong>Copilot icon</strong> » <strong>Summary</strong></li>
+</ol>
+<p class="image-container"><img alt="PR Reviewer" src="img/a8929f219cf37bb6.png"></p>
+<p>In the <strong>Reviewers</strong> section, you can assign <strong>Copilot</strong> as a reviewer to request code review from Copilot.</p>
+<p>Copilot would check all the files in the PR and make appropriate comments.</p>
+<aside class="special"><p><strong>Auto-assign Setting</strong>: By checking Settings » Branches » Rulesets » Require a pull request before merging » Automatically request Copilot code review, Copilot will be automatically assigned when opening Pull Requests.</p>
+</aside>
+<p>After the Pull Request is opened, you can view Copilot Code Review results:</p>
+<ul>
+<li><strong>Pull Request Overview</strong>: Summary of code changes</li>
+<li><strong>Issues Identified</strong>: Pointing out potential problems</li>
+<li><strong>Improvement Suggestions</strong>: Specific suggestions for improving code quality</li>
+</ul>
+<p class="image-container"><img alt="copilot comment" src="img/13cd54346ae64a55.png"></p>
+<aside class="warning"><p><strong>Note</strong>: Depending on the PR size, you might need to wait for Copilot to finish creating a summary or adding PR reviews.</p>
+</aside>
+<aside class="special"><p><strong>Pro Tip</strong>: not confidence about your PR? Anxious that the senior devs are going to roast your PR? Let Copilot review your PR first, before you add other reviewers.</p>
+</aside>
+<p>You can go ahead ask Copilot to work on its proposed changes to the PR. It will automatically create a new separate PR that targets your working branch in the original PR.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="GitHub Issue (OPTIONAL)" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>Let&#39;s use the website version of GitHub Copilot to assign the Coding Agent to work on a new feature using the Issues feature.</p>
+<p>First, make sure <strong>Issues</strong> is enabled in your Github repository&#39;s <strong>Settings</strong>.</p>
+<p class="image-container"><img alt="issues enabled" src="img/c72d012588dd9e2e.png"></p>
+<h2 is-upgraded>Automatic Issue Creation with GitHub Copilot</h2>
+<p>In this section we want to implement a new feature: bookmarks.</p>
+<ol type="1">
+<li>Access <strong>GitHub.com</strong> and click the <strong>Copilot</strong> icon in the top right</li>
+<li>Confirm your repository is added to the Chat context</li>
+<li>Enter the following prompt:</li>
+</ol>
+<pre><code language="language-text" class="language-text">I want the user to be able to bookmark an item in this app and then see all the bookmarks in a &#34;Bookmarks&#34; page.
+
+Create a feature which allows user to bookmark any item in the PR, PO, and GR list.
+
+Create the necessary API endpoints, database migration scripts, and frontend page/components.
+</code></pre>
+<ol type="1" start="4">
+<li>Assign the issue to Copilot</li>
+</ol>
+<p class="image-container"><img alt="assign issues" src="img/ef1ef7ccd6229530.png"></p>
+<ol type="1" start="5">
+<li>Wait for the agent to finish creating the PR. Once it is done, review generated branch/PR.</li>
+</ol>
+<p class="image-container"><img alt="issue pr" src="img/238409b759c88629.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Creating E2E test with Copilot" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
 <p>Now we create an end-to-end test using Playwright.</p>
 <p>The required scenarios for this end-to-end test:</p>
 <ol type="1">
@@ -898,8 +1034,8 @@ Save as markdown.
 
       </google-codelab-step>
     
-      <google-codelab-step label="Creating Custom Prompts and Agents (OPTIONAL)" duration="10">
-        <p><em>Dur: 10&#39;</em></p>
+      <google-codelab-step label="Creating Custom Prompts and Agents (OPTIONAL)" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
 <h2 is-upgraded>Prompt Files</h2>
 <p>Prompt files define reusable <strong>prompts for specific tasks</strong> that you can invoke when needed. We define it in a markdown file inside the <code>.github/prompts/</code> folder.</p>
 <h3 is-upgraded>1. Create a &#34;code explainer&#34; agent</h3>
