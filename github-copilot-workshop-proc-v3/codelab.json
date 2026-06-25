@@ -1,0 +1,24 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-06-25T14:37:46+07:00",
+  "id": "github-copilot-workshop-proc-v3",
+  "duration": 635,
+  "title": "GitHub Copilot Workshop: Build a Procurement System MVP",
+  "summary": "GitHub Copilot Workshop - Procurement MVP",
+  "source": "workshop_PROC_v3.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "ai",
+    "development"
+  ],
+  "tags": [
+    "web"
+  ],
+  "url": "github-copilot-workshop-proc-v3"
+}

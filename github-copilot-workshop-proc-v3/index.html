@@ -1,0 +1,1225 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>GitHub Copilot Workshop: Build a Procurement System MVP</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="github-copilot-workshop-proc-v3"
+                  title="GitHub Copilot Workshop: Build a Procurement System MVP"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="About this workshop" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Welcome. In this workshop, participants build a real-world procurement system MVP using GitHub Copilot in VS Code and GitHub.</p>
+<p class="image-container"><img alt="Octocat" src="img/2584e5b4363ade8f.png"></p>
+<p>We are going to work on an existing procurement system. This system already has two main modules/pages:</p>
+<ul>
+<li>Dashboard</li>
+<li><strong>PR (Purchase Requisition)</strong> module</li>
+</ul>
+<p>The aim is to build the <strong>PO (Purchase Order)</strong> module. Another module <strong>GR (Goods Receipts)</strong> is open for exploration. The tables for PO and GR modules are already in the database (after migration).</p>
+<p>Application scope:</p>
+<ul>
+<li>Baseline provided: <em>Home/Dashboard</em> &amp; <em>PR module</em> (list/create/detail pages and backend APIs)</li>
+<li>Participant backlog: <em>PO module</em> (list/create/detail pages and backend APIs)</li>
+<li>Optional extension: <em>Bookmark feature</em> (for PR, PO, &amp; GR modules) via GitHub Issue workflow</li>
+<li>Further exploration: <em>GR module</em> (self-paced)</li>
+</ul>
+<p>Tech stack:</p>
+<ul>
+<li>Backend: Fastify + JavaScript</li>
+<li>Frontend: Vue 3 + Vite + JavaScript</li>
+<li>Database: PostgreSQL in Docker</li>
+<li>Testing: Jest + Playwright</li>
+<li>Design: Figma + Figma MCP</li>
+<li>Support: Python</li>
+</ul>
+<aside class="special"><p>You can access the slide deck at <a href="https://bit.ly/eComCopilotWorkshop2026" target="_blank">bit.ly/eComCopilotWorkshop2026</a></p>
+</aside>
+<p class="image-container"><img alt="slides" src="img/1b8d657c9aef0b6b.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="The project: Procurement system MVP" duration="5">
+        <p><em>Dur: 5&#39;</em></p>
+<p>In this workshop we are going to build a procurement system MVP (minimum viable product). A procurement system manages how a company buys things, with control and traceability from request to receiving.</p>
+<p>In simple terms, it helps answer:</p>
+<ul>
+<li><em>Who requested what?</em></li>
+<li><em>Who approved it?</em></li>
+<li><em>What was ordered from which vendor?</em></li>
+<li><em>What quantity has been received so far?</em></li>
+<li><em>What is still open or pending?</em></li>
+</ul>
+<p>In this app, the workflow chain would be:</p>
+<ol type="1">
+<li>Purchase Requisition (PR) → internal request for goods/items</li>
+<li>Purchase Order (PO) → official order sent to supplier to buy goods/items</li>
+<li>Goods Receipt (GR) → record that goods/items were received</li>
+</ol>
+<p class="image-container"><img alt="Flow" src="img/a2f74db48de28743.png"></p>
+<h2 is-upgraded>Definitions and Functions</h2>
+<h3 is-upgraded>Purchase Requisition (PR)</h3>
+<p>An internal document created by a requester (employee/department) to ask for goods or services.</p>
+<p>Main function:</p>
+<ul>
+<li>Capture business need (item, quantity, required date, budget context).</li>
+<li>Run internal approvals before spending commitment.</li>
+<li>Does not go to vendor directly.</li>
+<li>Typical statuses: <code>DRAFT</code> → <code>SUBMITTED</code> → <code>APPROVED</code></li>
+</ul>
+<h3 is-upgraded>Purchase Order (PO)</h3>
+<p>A commercial document issued to a vendor after PR approval.</p>
+<p>Main function:</p>
+<ul>
+<li>Formally commit to buy specific items, quantities, and prices.</li>
+<li>Serve as the legal/operational ordering reference.</li>
+<li>Track what has been ordered and what remains open.</li>
+<li>In this workshop logic: PO lines are allocated from approved PR lines, and allocation cannot exceed PR remaining quantity.</li>
+<li>Typical statuses: <code>DRAFT</code> → <code>SUBMITTED</code></li>
+</ul>
+<h3 is-upgraded>Goods Receipt (GR)</h3>
+<p>A record that goods (or service delivery) were actually received against a PO.</p>
+<p>Main function:</p>
+<ul>
+<li>Confirm physical receipt (or service completion).</li>
+<li>Update received quantities.</li>
+<li>Provide proof for downstream matching/invoicing/payment.</li>
+<li>In this workshop logic: received quantity cannot exceed PO open quantity.</li>
+<li>Typical statuses: <code>DRAFT</code> → <code>POSTED</code></li>
+</ul>
+<h3 is-upgraded>One practical example</h3>
+<ol type="1">
+<li>PR: Maintenance team requests 10 safety helmets.</li>
+<li>PO: Purchasing orders 10 helmets from Vendor A at agreed unit price.</li>
+<li>GR: Warehouse receives 6 helmets today and records GR; later receives remaining 4 and records another GR.</li>
+</ol>
+<p>Result: system shows requested = 10, ordered = 10, received = 10, open = 0.</p>
+<p>So, a procurement app is essentially a controlled pipeline for spending:</p>
+<pre><code>request → approve → order → receive
+</code></pre>
+<p>with quantities and statuses enforced at each step.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AI, LLM, and Context Basics" duration="5">
+        <p><em>Dur: 5&#39;</em></p>
+<p class="image-container"><img alt="AI" src="img/84be88684a8df669.png"></p>
+<p>How do LLMs like GPT or Claude work? LLMs predict the next token based on the context provided to them. So, better context gives better output quality.</p>
+<p>Prompt anatomy in GitHub Copilot:</p>
+<ul>
+<li>System instructions: global behavior and constraints</li>
+<li>User message: immediate task objective, the prompt written by the user</li>
+<li>Repository context: code, docs, config, the information available in the repo/workspace</li>
+</ul>
+<p>Working rule for this workshop:</p>
+<ol type="1">
+<li>If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt</li>
+<li>When working on something new, ask for a plan first. Afterwards, implement in small checkpoints</li>
+<li>Always validate the agent&#39;s work. You can outsource your code, but you must not outsource your understanding.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Why context matters - Part 1" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Open your favorite online LLM application (e.g., ChatGPT, Claude, Gemini, etc.) and write a prompt to recreate this image:</p>
+<p class="image-container"><img alt="target picture" src="img/4ba4b66e4d376b12.jpeg"></p>
+<aside class="special"><p>Be as specific as you can.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Why context matters - Part 2" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>When working with an AI model, the problem (almost always) is not the AI. It is the brief you gave the AI. The gap is not technical—it is communicative. Prompting—communicating with an AI model—is a skill that we need to master so we can provide AI models with the best direction for it to complete its task. You have to make your intention as clear as possible.</p>
+<ul>
+<li>Lead with WHAT you need and WHY it matters. Let the agent work out the HOW.</li>
+<li>In human communication, brevity is a virtue; with AI agents, it is a liability. Be as comprehensive as you can.</li>
+<li>The devil is in the details. Leave nothing to chance. Let the model know every last tiny bit of information that you can provide.</li>
+</ul>
+<aside class="special"><p>Share your result with everyone. What do you think you can improve in your prompt to make your picture look as similar as the target picture? Do you think you share the responsibility if the result looks nothing like the target picture?</p>
+</aside>
+<h2 is-upgraded>Open discussion</h2>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Token optimization - Part 1" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>The most expensive code an AI agent writes is the code you run without thinking. Today, the bottleneck is not anymore whether AI agents can write code. It&#39;s whether you can use them economically.</p>
+<p>Let&#39;s breakdown some new (and old) ideas that can help us optimize AI token usage.</p>
+<h2 is-upgraded>Develop your own analytical skills</h2>
+<h3 is-upgraded>1. Analysis is the real value</h3>
+<p>Can you describe the problem without ambiguity? Can you name the constraints? Do you know what success looks like before you ask the agent to start? If the answer to any of these is &#34;not really,&#34; you are not ready to ask the agent. Spend time thinking and doing some research first.</p>
+<h3 is-upgraded>2. Keep your instructions concise and human-written</h3>
+<p>Many teams make the mistake of using AI to generate their agent&#39;s persistent instructions or system prompts. Your instruction file is too important for that. Write it down by yourself.</p>
+<h3 is-upgraded>3. Build architecture that speaks for itself</h3>
+<p>A tangled, poorly organized project forces the agent to fetch and inspect more files, read more code, generate more explanation of what things do. Good architecture is an optimization strategy. Treat it as such.</p>
+<h2 is-upgraded>Be strategic about what agents actually do</h2>
+<h3 is-upgraded>4. Only use MCP when it actually saves tokens</h3>
+<p>Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip Use MCP when you genuinely need the agent to interact with a system in real-time.</p>
+<aside class="special"><p>By default, turn all your MCP servers off.</p>
+</aside>
+<h3 is-upgraded>5. Avoid SKILL.md unless you actually need it</h3>
+<p>Most of the time, your SKILL.md is just repeating what it knows, wasting tokens on context that does not add value. If you find yourself writing a SKILL.md that is longer than a few paragraphs, ask whether the agent actually needs it. Most of the time, the answer is no.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Token optimization - Part 2" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p><em>(Continuing from our previous slide)</em></p>
+<h3 is-upgraded>6. Divide work into sessions, not monoliths</h3>
+<p>Divide tasks into sequential sessions, eg. research-planning-implementation. Long session is expensive because the context window is bloated the entire time. And if context window is bloated, response quality declines. Bad response will cost you more token in the long run.</p>
+<h3 is-upgraded>7. Choose the right model for the task</h3>
+<p>Not every task needs your most powerful model.</p>
+<ul>
+<li>A reasoning-class model (like Claude Opus or GPT-5.5) is excellent for planning, architecture, and debugging complex problems. It is also expensive. Use it when you need the thinking.</li>
+<li>Mid-tier models (Claude Sonnet, GPT-5.4) are workhorses: they handle most implementation tasks efficiently. Use them for writing code, generating content, refactoring.</li>
+<li>Smaller, faster models (Claude Haiku, GPT-5 mini) are excellent for repetitive tasks: updating documentation, adding simple features, running mechanical transformations. Use them for tasks where speed matters more than depth.</li>
+</ul>
+<h3 is-upgraded>8. Use AGENTS.md to stop the agent early</h3>
+<p>A subtle but important detail: most agents will keep generating output until they hit their token limit. They are optimistic by default. Your persistent instruction file should include explicit stopping criteria.</p>
+<h2 is-upgraded>Do not over-rely on agents for everything</h2>
+<h3 is-upgraded>9. Use deterministic tools when they exist</h3>
+<p>Want to check code quality? Use a linter. Want to find security issues? Use a scanner. Want to understand test coverage? Use an existing coverage tool. These tools are fast, deterministic, and cheap (often free). When you hand their output to the agent, the agent can focus on interpretation instead of discovery.</p>
+<aside class="special"><p>Tools like <code>rtk</code> improve shell output and make it easier for agents to parse with less token.</p>
+</aside>
+<h3 is-upgraded>10. Create guardrails that do not require agents</h3>
+<p>Unit tests, linters, type systems, security scanning; none of these require tokens. All of them save tokens by preventing the agent from generating code that will need fixing later.</p>
+<h3 is-upgraded>11. The agent is not your QA engineer</h3>
+<p>Validation is not optional. It is your job, and it saves you money in the long run by catching mistakes before they multiply.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Reverse engineer an application - Part 1" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>In this workshop we are going to learn how to use specifications to create an application. But before we do that, let&#39;s try the reverse process.</p>
+<p>In this exercise we are going to use Copilot to create specifications of an existing application.</p>
+<ol type="1">
+<li>Open the web application at <a href="https://simplydemo.secure.simplybook.me/v2/dashboard/new" target="_blank">https://simplydemo.secure.simplybook.me/v2/dashboard/new</a></li>
+<li>Login using these credentials:</li>
+</ol>
+<ul>
+<li>login: <code>admin</code></li>
+<li>password: <code>demo</code></li>
+</ul>
+<p class="image-container"><img alt="reverse" src="img/1074633199817554.png"></p>
+<ol type="1" start="3">
+<li>Learn and observe as much as you can from that web application.</li>
+<li>Create a new workspace.</li>
+<li>Open the workspace in VS Code.</li>
+<li>Enter this prompt in Copilot Chat:</li>
+</ol>
+<pre><code>Create specification documents in markdown format for a web application that:
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;your observation&gt;
+- &lt;etc.&gt;
+</code></pre>
+<p>Run the prompt and wait for Copilot to finish creating the specifications.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Reverse engineer an application - Part 2" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>We are going to conduct the previous exercise, but with new tools to help Copilot create better result.</p>
+<h2 is-upgraded>Install an MCP server</h2>
+<p>An MCP Server (Model Context Protocol Server) is a universal adapter that securely bridges AI models with external tools, databases, and services.</p>
+<p>For this exercise we are going to use the <code>chrome-devtools</code> MCP. It allows Copilot to perform browsing actions on a headless browser.</p>
+<ol type="1">
+<li>Open the MCP configuration file in VS Code.</li>
+<li>Copy this line to connect VS Code to the MCP server:</li>
+</ol>
+<pre><code>&#34;chrome-devtools&#34;: {
+  &#34;command&#34;: &#34;npx&#34;,
+  &#34;args&#34;: [&#34;-y&#34;, &#34;chrome-devtools-mcp@latest&#34;, &#34;--slim&#34;, &#34;--headless&#34;]
+}
+</code></pre>
+<h2 is-upgraded>Prompt</h2>
+<p>Before executing the prompt, let&#39;s add a file to create a more comprehensive context.</p>
+<ol type="1">
+<li>Create a new workspace.</li>
+<li>Open the workspace in VS Code.</li>
+<li>Create a file called <code>plan.md</code></li>
+<li>Put the content below in <code>plan.md</code>:</li>
+</ol>
+<pre><code>Based on the following url https://simplydemo.secure.simplybook.me/v2/dashboard/new, create a comprehensive specification of a fully working web application with the following structure template.
+
+specs/
+└── features/
+    ├── README.md                          # Feature catalog / index
+    ├── _template/                         # Boilerplate for new features
+    │   └── feature-template.md
+    │
+    └── F-001-online-booking/              # One folder per feature
+        ├── overview.md                    # Summary, goals, value prop
+        ├── user-stories.md                # Stories + acceptance criteria
+        ├── screens.md                     # Screens involved + states
+        ├── wireframes/                    # Visual mockups
+        │   ├── 01-service-select.png
+        │   ├── 02-time-pick.png
+        │   └── 03-confirmation.png
+        ├── business-rules.md              # Logic, validations, policies
+        ├── data-model.md                  # Entities, fields, relationships
+        ├── edge-cases.md                  # Error states, empty, conflicts
+        ├── permissions.md                 # Who can do what (RBAC)
+        ├── notifications.md               # Emails, SMS, in-app triggers
+        ├── analytics.md                   # Events tracked, KPIs
+        ├── dependencies.md                # Other features, 3rd parties
+        ├── test-scenarios.md              # Gherkin / acceptance tests
+        └── open-questions.md
+
+1. Use [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) to access the web application above.
+2. Use the following credentials to access the application:
+  - login: `admin`
+  - password: `demo`
+</code></pre>
+<p>Once the file <code>plan.md</code> is ready, enter this prompt in Copilot Chat:</p>
+<pre><code>Use the file #plan.md to conduct a reverse engineering process, ie. from application to specification documents.
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prerequisites" duration="5">
+        <p><em>Dur: 5&#39;</em></p>
+<ul>
+<li>Latest VS Code</li>
+<li>GitHub Copilot extension</li>
+<li>GitHub account + Copilot license</li>
+<li>Docker Desktop running</li>
+<li>Node.js 20+</li>
+<li>Git</li>
+<li>Figma account (recommended)</li>
+<li>Python</li>
+<li><a href="https://github.com/astral-sh/uv" target="_blank">uv Python package and project manager</a> (recommended)</li>
+</ul>
+<p class="image-container"><img alt="vscode" src="img/ad794efd9837bb06.png"></p>
+<p>Optional MCP tools:</p>
+<ul>
+<li>VS Code extension Markdown Preview Enhanced</li>
+<li>GitHub MCP Server</li>
+<li>Figma MCP integration available in Copilot/agent environment</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fork the Repository" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Open the project URL: <a href="https://github.com/eComindo/2026-github-copilot-workshop" target="_blank">https://github.com/eComindo/2026-github-copilot-workshop</a></p>
+<p class="image-container"><img alt="github repo" src="img/f1b9a46d68f21b0c.png"></p>
+<ol type="1">
+<li>Open the project URL in your browser</li>
+<li>Fork the repo. You can click the <strong>Fork</strong> button, on the top right</li>
+</ol>
+<p class="image-container"><img alt="fork" src="img/936f0647b01a7ef9.png"></p>
+<h2 is-upgraded>Open discussion</h2>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Setup the Project Locally" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>Go to your forked repo and clone it to your local machine.</p>
+<h2 is-upgraded>1. Set up the repo</h2>
+<pre><code language="language-bash" class="language-bash">git clone https://github.com/&lt;your-username&gt;/&lt;forked-repo&gt;.git
+cd &lt;repo&gt;
+git checkout -b feature/po-module
+</code></pre>
+<p>Ensure project references:</p>
+<ul>
+<li><code>docs/plan.md</code></li>
+<li><code>AGENTS.md</code></li>
+</ul>
+<h2 is-upgraded>2. Prepare the database</h2>
+<p>Bootstrap files used by all participants:</p>
+<ul>
+<li><code>db/migrations/001_init_procurement_mvp.sql</code></li>
+<li><code>db/seeds/002_seed_procurement_mvp.sql</code></li>
+<li><code>docker/postgres/init/00-init-mvp-db.sh</code></li>
+</ul>
+<p>Cross-OS readiness note:</p>
+<ul>
+<li>Bootstrap supports Windows, macOS, Linux via LF line endings for <code>.sh</code> and <code>.sql</code> in <code>.gitattributes</code></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Database Bootstrap using Docker" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>Bootstrap workshop database (schema + sample data):</p>
+<pre><code language="language-bash" class="language-bash">chmod +x docker/postgres/init/00-init-mvp-db.sh
+docker compose down -v
+docker compose up -d db
+</code></pre>
+<p>What this does:</p>
+<ul>
+<li>Creates PostgreSQL volume from scratch</li>
+<li>Applies baseline schema migration</li>
+<li>Inserts workshop sample data for Home/Dashboard + PR baseline</li>
+</ul>
+<p>Verification:</p>
+<pre><code language="language-bash" class="language-bash">docker compose exec -T db psql -U workshop -d procurement_mvp -c &#34;SELECT COUNT(*) FROM purchase_requisitions;&#34;
+</code></pre>
+<aside class="warning"><p>If you have another instance of PostgreSQL running in your machine, don&#39;t forget to turn it off first. On Windows, you can check <code>services.msc</code>. On Mac, use the Activity Monitor.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configure Local Credentials" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<h2 is-upgraded>1. Install libraries</h2>
+<p>Run <code>npm install</code> <strong>3 times</strong>, each in:</p>
+<ol type="1">
+<li><code>/</code> (project root)</li>
+<li><code>backend/</code></li>
+<li><code>frontend/</code></li>
+</ol>
+<h2 is-upgraded>2. Config for backend server</h2>
+<p>Create backend&#39;s environment variable: <code>backend/.env</code>:</p>
+<pre><code language="language-env" class="language-env">PORT=3000
+DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
+</code></pre>
+<p>The backend server is running on port 3000.</p>
+<h2 is-upgraded>3. Config for frontend server</h2>
+<p>Create frontend&#39;s environment variable: <code>frontend/.env</code>:</p>
+<pre><code language="language-env" class="language-env">VITE_API_BASE_URL=http://localhost:3000
+</code></pre>
+<p>This will tell the frontend the URL of the backend service.</p>
+<h2 is-upgraded>4. Start the application</h2>
+<p>To run the app, execute <code>npm run dev</code> from root.</p>
+<p>Open the app (frontend server) on <code>http://localhost:5173</code>.</p>
+<p>Base expectations:</p>
+<ul>
+<li>Home/Dashboard works</li>
+<li>PR list/create/detail works</li>
+<li>PR APIs connected to DB</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Agent Persistent Instructions Checklist" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>Before implementation, update custom instructions to shape Copilot output quality.</p>
+<p>Make sure you are in <strong>Ask</strong> mode, then enter this prompt:</p>
+<pre><code language="language-text" class="language-text">Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
+</code></pre>
+<p>Manually open <code>AGENTS.md</code>. Based on the answer, add instructions to make sure the content of <code>AGENTS.md</code> is more consistent with project standards</p>
+<p>You can also add rules such as:</p>
+<ul>
+<li>Always check <code>docs/plan.md</code> before large changes</li>
+<li>Add tests for new logic</li>
+<li>Use descriptive naming</li>
+<li>Update docs when introducing new flows</li>
+</ul>
+<aside class="special"><p>What makes a good <code>AGENTS.md</code>? You have to, at least, make sure it contains the product context &amp; tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the <code>.env</code> file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.</p>
+<p>And it is an evolving file. So you can always improve this file alongside the project.</p>
+</aside>
+<p>Example of the <code>AGENTS.md</code> file we are using for this project:</p>
+<p class="image-container"><img alt="instruction" src="img/d9db341d0439f9cc.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Token optimization - Part 3" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<h2 is-upgraded>Tool: RTK</h2>
+<p><a href="https://github.com/rtk-ai/rtk" target="_blank">RTK</a> is installed globally on our computer. It is a tool (written in Rust) that filters and compresses command outputs before they reach your LLM context.</p>
+<h3 is-upgraded>Installation</h3>
+<p>Homebrew (recommended)</p>
+<pre><code>brew install rtk
+</code></pre>
+<p>Cargo</p>
+<pre><code>cargo install --git https://github.com/rtk-ai/rtk
+</code></pre>
+<aside class="warning"><p>Check the pre-built binaries <a href="https://github.com/rtk-ai/rtk#pre-built-binaries" target="_blank">here</a> for installation instruction on other systems.</p>
+</aside>
+<p>Verify installation</p>
+<pre><code>rtk --version
+</code></pre>
+<p>Check token savings stats</p>
+<pre><code>rtk gain
+</code></pre>
+<p class="image-container"><img alt="rtk_gain" src="img/de4cae278b163ceb.png"></p>
+<h3 is-upgraded>Usage</h3>
+<p>Add these lines into <code>AGENTS.md</code>:</p>
+<p class="image-container"><img alt="rtk" src="img/b8ad52cf5921c25.png"></p>
+<p><strong>Example text:</strong></p>
+<aside class="warning"><p> RTK — Token-Optimized CLI</p>
+<p><strong>rtk</strong> is a CLI proxy that filters and compresses command outputs, saving 60-90% tokens.</p>
+<p>Rule</p>
+<p>Always prefix shell commands with <code>rtk</code>:</p>
+<pre><code language="language-bash" class="language-bash"># Instead of:      Use:
+git status         rtk git status
+git log -10        rtk git log -10
+docker ps          rtk docker ps
+</code></pre>
+<p>Other examples where you can use <code>rtk</code>:</p>
+<pre><code language="language-bash" class="language-bash">rtk tree
+rtk ls -la
+rtk read
+rtk grep
+rtk rg
+rtk npm run test
+rtk curl &lt;url&gt;
+</code></pre>
+</aside>
+<aside class="special"><p>You can adjust the examples according to your project&#39;s needs. Check other command examples in <a href="https://github.com/rtk-ai/rtk#quick-start" target="_blank">here</a>.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Token optimization - Part 4" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<h2 is-upgraded>Tool: Graphify</h2>
+<p>Graphify is a set of tools for AI coding assistants. By combining Tree-sitter static analysis with LLM-driven semantic extraction, Graphify turns an entire repository — including source code, documentation, research papers and diagrams — into an interactive graph that explains both what the code does and why it was designed that way.</p>
+<p>In this example we are going to use a tool (written in Python) to build a queryable knowledge graph from our repo&#39;s documents and codebase.</p>
+<h3 is-upgraded>Installation</h3>
+<p>*<em>Note that there are two &#34;y&#34;&#39;s in the installation command. But the installed tool will only have one &#34;y&#34;</em></p>
+<pre><code>uv tool install graphifyy
+</code></pre>
+<h3 is-upgraded>Configuration</h3>
+<p>When scanning the repo to create a knowledge graph, we can choose not to use LLM, so no token cost.</p>
+<p>To make sure Graphify creates a pure, AST-based knowledge graph of only our source code (costing $0 and zero LLM tokens), let&#39;s first create the <code>.graphifyignore</code> file and fill it with this:</p>
+<pre><code># Ignore documentation and text assets
+*.md
+*.txt
+*.pdf
+*.html
+
+# Ignore images, diagrams, and video walkthroughs
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.mp4
+*.wav
+
+# Ignore config and infrastructure files (which sometimes trigger semantic parsing)
+*.yaml
+*.yml
+*.json
+*.toml
+
+# Ignore generated build artifacts and test output (contain minified code that pollutes the graph)
+playwright-report/
+test-results/
+coverage/
+graphify-out/
+
+# Ignore HTML files (build output, reports)
+*.html
+</code></pre>
+<p>Then run this to start the scanning process:</p>
+<pre><code>graphify .
+</code></pre>
+<aside class="special"><p>Or we can use the <code>--no-llm</code> flag to make sure Graphify doesn&#39;t use LLM, eg. <code>graphify . --no-llm</code></p>
+</aside>
+<p>Graphify will look at the code files (e.g., <code>.py</code>, <code>.js</code>, <code>.go</code>, <code>.rs</code>, etc.), pull them through the local syntax tree parser, and write the final knowledge graph directly to <code>graphify-out/graph.json</code> without making a single network call.</p>
+<h3 is-upgraded>Usage</h3>
+<p>Add this to <code>AGENTS.md</code>:</p>
+<pre><code>## Codebase Context &amp; Knowledge Graph Protocol
+
+You have access to a pre-computed AST knowledge graph of this repository at `graphify-out/graph.json`. To minimize context window clutter, prevent hallucinations, and accurately map cross-file dependencies, you MUST follow these routing rules:
+
+1. **Consult the Graph First:** Before writing plans, making sweeping structural modifications, or tracing function call blast-radii, read `graphify-out/graph.json`. Filter nodes to only those whose `id` paths start with `backend/` or `frontend/src/` — nodes from `playwright-report/`, `test-results/`, and `coverage/` are minified build artifacts and must be ignored.
+2. **Identify God Nodes:** Rank nodes by edge degree. The highest-degree nodes are the structural hubs (e.g., service files, route registries). Avoid duplicating responsibilities already owned by a god node.
+3. **Trace Structural Paths:** If the user asks about relationships between modules or layers (e.g., how the API layer reaches the DB), do not grep blindly. Traverse the `links` array in `graph.json` to find the actual dependency path.
+4. **Graph State:** The graph is derived strictly via AST extraction — no documentation or semantic layer. Treat all node hierarchies and import edges as 100% extracted truth (`EXTRACTED` confidence tier). Do not infer structure that isn&#39;t in the graph.
+</code></pre>
+<p>To visualize the graph, run this command:</p>
+<pre><code>uvx --from graphifyy graphify export callflow-html
+</code></pre>
+<p class="image-container"><img alt="graph_01" src="img/d18ee70430048f77.png"></p>
+<p class="image-container"><img alt="graph_01" src="img/4720b6a9e1f17781.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="The Problem with Vibe Coding" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p><img alt="vcdead" src="img/c893a79309758b1e.webp"><em>Image source: </em><a href="https://ai.plainenglish.io/vibe-coding-is-dead-heres-what-replaced-it-aa7d2889b05a" target="_blank"><em>Vibe Coding Is Dead. Here&#39;s What Replaced It.</em></a></p>
+<p>You probably have experienced this pattern:</p>
+<ul>
+<li>You write a prompt describing roughly what you want</li>
+<li>Copilot generates something plausible</li>
+<li>You iterate — adjusting, correcting, re-running</li>
+<li>Eventually it looks right</li>
+</ul>
+<p>This works for fast prototyping. It does not work for production-grade, maintainable, auditable software — especially in a regulated banking environment. The output is only as precise as your prompt, and prompts are inherently imprecise.</p>
+<h2 is-upgraded>What is a &#34;spec&#34;?</h2>
+<p>A &#34;spec&#34; (short for specification) is a structured, human-readable document that defines:</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Section</p>
+</td><td colspan="1" rowspan="1"><p>What it captures</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Intent</strong></p>
+</td><td colspan="1" rowspan="1"><p>What this feature is meant to accomplish — in one sentence</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Behavior</strong></p>
+</td><td colspan="1" rowspan="1"><p>Inputs, expected outputs, state changes</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Constraints</strong></p>
+</td><td colspan="1" rowspan="1"><p>Performance requirements, security boundaries, architecture rules</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Edge cases</strong></p>
+</td><td colspan="1" rowspan="1"><p>Boundary conditions, failure scenarios, unexpected inputs</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Acceptance criteria</strong></p>
+</td><td colspan="1" rowspan="1"><p>Testable, unambiguous, one per line</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Data</strong></p>
+</td><td colspan="1" rowspan="1"><p>What data is touched, its classification, handling requirements</p>
+</td></tr>
+</table>
+<p>A spec is not code. It is not a design document. It is the <em>contract</em> between intent and implementation.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Concept: Spec-Driven Development (SDD)" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<h2 is-upgraded>1. What is SDD</h2>
+<p>Spec-driven development (SDD) is a software engineering approach where <strong>structured, human-readable specifications</strong> are the primary artifact and &#34;source of truth&#34;.</p>
+<p>Why SDD matters:</p>
+<ul>
+<li>Vibe-coded output is fast, but often inconsistent and unmaintainable</li>
+<li>Product-grade output needs explicit design documents (&#34;specs&#34;)</li>
+<li>Reduces ambiguous prompts and rework</li>
+<li>Makes requirements and edge-cases visible before coding</li>
+<li>Produces artifacts that are easier to review by dev, QA, and product</li>
+</ul>
+<h2 is-upgraded>2. How to start using SDD</h2>
+<p>There are various libraries and frameworks that help you create an SDD pattern (we will discuss them at the end of the workshop). We can start by setting up your own preferred pattern. To make sure your development follows spec-driven development guidelines:</p>
+<ul>
+<li>Create and maintain spec docs before large features. You can store it in a specific folder called <code>plans/</code> or <code>docs/</code> in your repo/workspace.</li>
+<li>Keep guardrail docs for architecture, naming, and patterns, e.g., in a <code>guidelines/</code> folder.</li>
+<li>If required, you can create a dedicated document that explains the tech-stack decisions and coding conventions.</li>
+</ul>
+<aside class="special"><p> Make sure <code>.github/copilot-instructions.md</code> are aware of the locations of these spec documents. This will ensure that the documents can be invoked as relatable context.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Finalize Plan" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>To start this project, we use an already created plan document, the spec for the MVP. Use Copilot <strong>Plan</strong> mode with <code>docs/plan.md</code> attached and enter the following prompt.</p>
+<p class="image-container"><img alt="plan" src="img/c3d1bad4653cb48f.png"></p>
+<pre><code language="language-text" class="language-text">Validate this plan for an MVP.
+Return a strict task sequence with checkpoints.
+Focus implementation on PO backlog.
+</code></pre>
+<p>Once you are satisfied with the plan, switch to <strong>Agent</strong> mode:</p>
+<p class="image-container"><img alt="agent" src="img/1442183f562939e9.png"></p>
+<pre><code language="language-text" class="language-text">Save the refined checklist to docs/runbook.md.
+</code></pre>
+<p>Here we are creating another &#34;spec&#34; document, a document that contains all the items the agent needs to implement in order to create the MVP.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Agent Skills" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Agent skills are folders of instructions, scripts, and resources that Copilot can load when relevant to improve its performance in specialized tasks. The Agent Skills specification is an open standard, used by a range of different AI systems.</p>
+<p>You can create your own skills to teach Copilot to perform tasks in a specific, repeatable way—or use skills shared online, for example in the <a href="https://github.com/anthropics/skills" target="_blank">anthropics/skills</a> repository or GitHub&#39;s community-created <a href="https://github.com/github/awesome-copilot" target="_blank">github/awesome-copilot</a> collection.</p>
+<aside class="special"><p> Skill files <strong>must</strong> be named SKILL.md</p>
+</aside>
+<h2 is-upgraded>How a skill works</h2>
+<p>A SKILL.md file contains structured instructions that tell Copilot how to behave when the skill is invoked — what inputs to look for, what outputs to produce, what format to follow, and what constraints to apply. Copilot reads the skill as context before responding, which makes its output consistent and predictable across team members and sessions.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Adding an agent Skill" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<h2 is-upgraded>1. Adding &#34;skills&#34; support</h2>
+<p>Create a new folder <code>.github/skills</code></p>
+<p>This will be the location for all the skill configurations.</p>
+<h2 is-upgraded>2. Add a Vue.js best practices skill</h2>
+<ul>
+<li>Create a new folder <code>.github/skills/vue-best-practices</code></li>
+<li>In that folder, create a new file <code>SKILL.md</code></li>
+<li>Copy the raw content of the markdown document in <a href="https://github.com/vuejs-ai/skills/blob/main/skills/vue-best-practices/SKILL.md?plain=1" target="_blank">this link</a> to that file you have just created.</li>
+</ul>
+<h2 is-upgraded>3. Add a Figma design implementation skill</h2>
+<p>Sometimes skills include other configuration files, not just the <code>SKILL.md</code> file.</p>
+<ul>
+<li>Create a new folder <code>.github/skills/figma-implement-design</code></li>
+<li>As usual, in that folder, create a new file <code>SKILL.md</code></li>
+<li>Copy the raw content of the markdown document in <a href="https://github.com/openai/skills/blob/main/skills/.curated/figma-implement-design/SKILL.md?plain=1" target="_blank">this link</a> to that file you have just created.</li>
+<li>Download or recreate the rest of the files in the <a href="https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design" target="_blank">https://github.com/openai/skills/tree/main/skills/.curated/figma-implement-design</a> folder.</li>
+</ul>
+<aside class="special"><p> You can learn more about adding skills on this <a href="https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills" target="_blank">official GitHub page</a></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="API Documentation &amp; Readiness Check" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Before we start with the PO module implementation in our procurement system MVP, let&#39;s validate the backend API first. Use the <strong>Agent</strong> mode and enter this prompt:</p>
+<pre><code language="language-text" class="language-text">Add Swagger/OpenAPI support to this Fastify JavaScript backend.
+Use @fastify/swagger and @fastify/swagger-ui.
+Expose API documentation at /api-docs.
+</code></pre>
+<p>The goal is:</p>
+<ol type="1">
+<li>Add Swagger/OpenAPI support</li>
+<li>Start backend and open Swagger UI</li>
+<li>Verify baseline PR endpoints are listed and callable</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Figma MCP Setup" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>Figma is the default tool for designing frontend pages and user interfaces. Adding Figma MCP allows the AI model to access a Figma file directly.</p>
+<h2 is-upgraded>Modify the MCP config</h2>
+<ol type="1">
+<li>Use the Command Palette, open the MCP configuration file <code>mcp.json</code>.</li>
+</ol>
+<p class="image-container"><img alt="mcp-config" src="img/599f4d081f0d4f77.png"></p>
+<ol type="1" start="2">
+<li>Add Figma configuration in the <code>mcp.json</code> file.</li>
+</ol>
+<p class="image-container"><img alt="mcp-figma" src="img/aa599198fa8d61bc.png"></p>
+<h2 is-upgraded>Important Note</h2>
+<aside class="special"><p><a href="https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-782&p=f&t=kto9reqIhe3VcQZi-0" target="_blank">Link to the Figma file</a></p>
+</aside>
+<p>Before you ask Copilot to access a Figma file, make sure that:</p>
+<ul>
+<li>you are logged in to Figma</li>
+<li>confirm workshop file and node IDs are accessible</li>
+<li>confirm that the Figma file owner has already assigned access to you</li>
+</ul>
+<aside class="warning"><p> To make sure the frontend codes implement the Figma design as accurate as possible, we need at least two things:</p>
+<ul>
+<li>Figma implementation skill</li>
+<li>Figma file that implements best practices</li>
+</ul>
+<p>Check <a href="https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f" target="_blank">this article</a> to learn about best practices for designing UIs in Figma for AI interpretation.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Using Figma MCP" duration="15">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Start developing the PO module by generating the <strong>Create PO</strong> page. We will be using a design in Figma to create the frontend codes.</p>
+<p>Use <strong>Agent</strong> mode in Copilot chat and enter the prompt below:</p>
+<pre><code language="language-text" class="language-text">Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-323&amp;p=f&amp;t=QJcJvfEN1Kpy8NGa-0
+Include reusable components for header form and line allocation table.
+Do not implement API calls yet. Keep structure simple.
+</code></pre>
+<p>Scope for generated page:</p>
+<ul>
+<li>Header section (vendor, PO date, notes)</li>
+<li>Line table section (approved PR open lines, allocate qty, unit price)</li>
+<li>Actions (save draft, submit)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Add Tests with Copilot" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>Ask Copilot to help us create unit tests for the pages we have just created. Enter this prompt:</p>
+<pre><code language="language-text" class="language-text">Create unit tests for important backend functions.
+Focus on services that provide lists to the frontend.
+
+Create Jest tests for frontend validations.
+Focus on rendering of pages and components.
+
+Keep tests readable.
+</code></pre>
+<p>Unit test result: <img alt="tests" src="img/f227931a259b8cea.png"></p>
+<p>Unit test coverage report: <img alt="coverage" src="img/590d673a7d780c9.png"></p>
+<aside class="warning"><p>One of the problems of AI models is that they are eager to please. Make sure your tests are actually producing good assessments, not just reinforcing mistakes in your code.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Project progress review" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>It is best practice to have a document that tracks the status of the project. This can help Copilot get context on the overall status of the system we are building. Use <strong>Agent</strong> mode and enter this prompt:</p>
+<pre><code language="language-text" class="language-text">Analyze this repository and summarize what is already implemented.
+Identify the available API endpoints for PO module.
+Document the latest state of the project in `docs/progress.md`.
+</code></pre>
+<p>The goal here is to make Copilot aware of what has been done and avoid redundancy.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Implement &#34;Create PO&#34; page" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>Use this prompt to start integrating the Create PO page. Attach the related documents to provide context to Copilot.</p>
+<pre><code language="language-text" class="language-text">Integrate the available PO endpoints with the &#34;Create PO&#34; page.
+Keep generated Figma components and wire them to purchase order APIs.
+Special request for the module functionality:
+- enforce over-allocation validation against PR remaining quantities
+- return 422 for rule violations with clear messages
+</code></pre>
+<p>The end result should be a working PO Create page.</p>
+<p class="image-container"><img alt="create po" src="img/8fbee6e79ab8f9f9.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Complete the PO Module" duration="30">
+        <p><em>Dur: 30&#39;</em></p>
+<p>Create the rest of the PO module pages and connect them to the PO module API endpoints. We don&#39;t have Figma file for these pages, so ask Copilot to follow the existing design rules (using available codes as context).</p>
+<pre><code language="language-text" class="language-text">Finish the PO module.
+Implement PO list and detail pages in Vue using existing patterns.
+Keep UI simple for clarity and follow the existing design system.
+Use existing components when possible. Only create components that aren&#39;t already available.
+Connect the new pages with the existing backend API endpoints for PO module.
+</code></pre>
+<p>The end result should be</p>
+<ul>
+<li>PO List page</li>
+<li>PO Detail page</li>
+</ul>
+<p class="image-container"><img alt="po detail" src="img/80a1d509b417bd1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Git Hooks Demo (OPTIONAL)" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>GitHub offers various features to make sure our project is secure and reliable. But before we take a look into those features, let&#39;s try something we can implement locally.</p>
+<aside class="special"><p>Reference: <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks" target="_blank">Git Hooks</a></p>
+</aside>
+<p>Git hooks let us do a lot of things. They are triggered by the <code>git</code> command. In this example we will make a hook that does pre-push checks, that can block low-quality pushes quickly.</p>
+<h2 is-upgraded>Create the hook</h2>
+<p>Create a new <code>.git/hooks/pre-push</code> file.</p>
+<p>Then enter this prompt:</p>
+<pre><code language="language-text" class="language-text">Create a git hook pre-push script that runs npm test and blocks the push if there&#39;s a failed test.
+</code></pre>
+<p>Copy the script provided by Copilot to the file you have just created.</p>
+<p>Below is an example of a simple pre-push script that runs <code>npm run test:unit</code>:</p>
+<pre><code language="language-text" class="language-text">#!/bin/sh
+
+set -eu
+
+echo &#34;Running unit tests before push...&#34;
+cd app
+npm run test:unit
+</code></pre>
+<p>Make sure you implement a script that runs the unit tests and cancels the push if an error is found.</p>
+<h2 is-upgraded>Test the hook</h2>
+<p>Before testing the hook, make sure the hook file is executable:</p>
+<pre><code language="language-text" class="language-text">chmod +x .githooks/pre-push
+</code></pre>
+<p>Then:</p>
+<ol type="1">
+<li>Create a failing test</li>
+<li>Create a git commit</li>
+<li>Push the commit and check the result</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Creating E2E test with Copilot" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Now we create an end-to-end test using Playwright.</p>
+<p>The required scenarios for this end-to-end test:</p>
+<ol type="1">
+<li>Happy path: create + submit PO from approved PR data</li>
+<li>Negative path: reject over-allocation qty</li>
+</ol>
+<p>Make sure Copilot chat is in <strong>Agent</strong> mode. Then, create a dedicated Playwright spec using this prompt:</p>
+<pre><code language="language-text" class="language-text">Create tests/e2e/po-module.spec.js using the Playwright library.
+Add happy path and negative over-allocation path with stable selectors and clear assertions.
+
+The required artifacts:
+- HTML report (`playwright-report/index.html`)
+- screenshots/traces/videos - store them in `test-results/`
+</code></pre>
+<p class="image-container"><img alt="playwright" src="img/b0bb60e489dd66a4.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Product Documentation" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Set Copilot Chat to <strong>Agent</strong> mode, then ask Copilot to generate implementation docs with diagrams.</p>
+<p>Prompt:</p>
+<pre><code language="language-text" class="language-text">Create documentation for how the current application works.
+Add a user flow chart and sequence diagram in Mermaid.
+Save as markdown.
+</code></pre>
+<p>Use your favorite markdown viewer plugin to check the result, including the charts.</p>
+<p>Because the charts are created using <a href="https://mermaid.js.org/" target="_blank">Mermaid format</a>, you can also copy-paste the Mermaid code into Mermaid&#39;s tool.</p>
+<aside class="warning"><p>Below are some screenshots of documentation created by Copilot for a simple Pomodoro app. Our procurement MVP app would have a more complex documentation.</p>
+</aside>
+<p class="image-container"><img alt="App documentation" src="img/a7015912a73a1ac.png"></p>
+<p class="image-container"><img alt="App documentation" src="img/93bc70641e1c2219.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Creating Custom Prompts and Agents (OPTIONAL)" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<h2 is-upgraded>Prompt Files</h2>
+<p>Prompt files define reusable <strong>prompts for specific tasks</strong> that you can invoke when needed. We define it in a markdown file inside the <code>.github/prompts/</code> folder.</p>
+<h3 is-upgraded>1. Create a &#34;code explainer&#34; agent</h3>
+<ol type="1">
+<li>Create a file: <code>.github/prompts/explain-code.prompt.md</code></li>
+<li>Add this into the file:</li>
+</ol>
+<pre><code language="language-text" class="language-text">---
+agent: &#39;agent&#39;
+description: &#39;Generate a clear code explanation with examples&#39;
+---
+
+Explain the following code in a clear, beginner-friendly way:
+
+Code to explain: ${input:code:Paste your code here}
+Target audience: ${input:audience:Who is this explanation for? (e.g., beginners, intermediate developers, etc.)}
+
+Please provide:
+
+* A brief overview of what the code does
+* A step-by-step breakdown of the main parts
+* Explanation of any key concepts or terminology
+* A simple example showing how it works
+* Common use cases or when you might use this approach
+
+Use clear, simple language and avoid unnecessary jargon.
+</code></pre>
+<p class="image-container"><img alt="Explainer" src="img/c7952b98bf7adc56.png"></p>
+<h2 is-upgraded>2. Custom Agents</h2>
+<p>Other than the default agent provided by Copilot, you can create your own custom agent for specific use cases. Like custom prompts, we define custom agents in a markdown file inside a specific folder, in this case the <code>.github/agents/</code> folder.</p>
+<h3 is-upgraded>Create a &#34;readme creator&#34; agent</h3>
+<ol type="1">
+<li>Create a file: <code>.github/agents/readme-creator.agent.md</code></li>
+<li>Add this into the file:</li>
+</ol>
+<pre><code language="language-text" class="language-text">---
+name: readme-creator
+description: Agent specializing in creating and improving README files
+---
+
+You are a documentation specialist focused on README files. Your scope is limited to README files or other related documentation files only - DO NOT modify or analyze code files.
+
+Focus on the following instructions:
+- Create and update README.md files with clear project descriptions
+- Structure README sections logically: overview, installation, usage, contributing
+- Write scannable content with proper headings and formatting
+- Add appropriate badges, links, and navigation elements
+- Use relative links (e.g., `docs/CONTRIBUTING.md`) instead of absolute URLs for files within the repository
+- Make links descriptive and add alt text to images
+</code></pre>
+<p>You will be able to access your custom agent in Copilot Chat.</p>
+<p class="image-container"><img alt="Copilot VSCode" src="img/fe65896ab474425c.png"></p>
+<aside class="special"><p>You can create as many custom prompts and agents as you want. Be creative, try creating some custom prompts and agents for your specific needs.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Exploration" duration="30">
+        <p><em>Dur: 30&#39;</em></p>
+<aside class="warning"><p><strong>Important</strong>: Before continuing, create a new branch from the current branch.</p>
+</aside>
+<p>Using what you have learned so far, let&#39;s try to implement the last module in this procurement app: Goods Receipts (GR) module. You have <strong>30 minutes</strong> to explore on your own, plan well.</p>
+<aside class="special"><p>Reminders:</p>
+<ul>
+<li>planning is crucial</li>
+<li>specification documents steer the agent to achieve the goal</li>
+<li>provide as much context as possible</li>
+</ul>
+</aside>
+<p class="image-container"><img alt="gr" src="img/92c30c06c2c818a.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="SDD frameworks" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>Below is an example of spec documents created using an SDD framework &#34;Spec-Kit&#34; for the development of GR module:</p>
+<p class="image-container"><img alt="sk-files" src="img/c8b3d413a6981a28.png"></p>
+<aside class="special"><p>Spec-Kit is one of the most popular SDD frameworks in GitHub.</p>
+</aside>
+<h2 is-upgraded>1. Why use framework</h2>
+<p>SDD frameworks can help us create a standardized specifications throughout the organization.</p>
+<p>Why use a ready-made framework:</p>
+<ul>
+<li>developing your own SDD standard takes time and resources</li>
+<li>you can use ready-made custom prompts, agents, and spec templates</li>
+<li>with a supportive community, the framework can continue to improve</li>
+</ul>
+<p class="image-container"><img alt="SpecKit" src="img/f41dd35753f5f8e0.png"></p>
+<aside class="special"><p>A framework is helpful, but not mandatory. You can still run SDD using your own templates and process.</p>
+</aside>
+<p>Common SDD framework options:</p>
+<ul>
+<li>Homegrown docs in <code>docs/</code> or <code>specs/</code> and custom prompts/agents</li>
+<li><a href="https://github.com/github/spec-kit" target="_blank">Spec-Kit</a></li>
+<li><a href="https://openspec.dev/" target="_blank">OpenSpec</a></li>
+<li><a href="https://www.augmentcode.com/product/intent" target="_blank">Intent by Augment Code</a></li>
+<li><a href="https://github.com/obra/superpowers" target="_blank">Superpowers</a></li>
+<li><a href="https://github.com/nahisaho/musubi" target="_blank">MUSUBI</a></li>
+</ul>
+<h2 is-upgraded>2. Why spec matters in AI-enabled SDLC</h2>
+<p>A good spec does not die when the code is written. It becomes:</p>
+<ul>
+<li>The reference for PR reviewers: <em>does this implementation match the spec?</em></li>
+<li>The source for test generation: <em>do the tests cover all acceptance criteria?</em></li>
+<li>The input for the next feature: <em>what was built, and where are the boundaries?</em></li>
+<li>The onboarding guide for new engineers: <em>what was this module intended to do?</em></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Spec-Kit: SDD Framework from GitHub" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<aside class="warning"><p><strong>Important</strong>: Check out to the branch before the Exploration slide</p>
+</aside>
+<p>Spec-Kit provides reusable building blocks for spec-first development:</p>
+<ul>
+<li>A set of custom prompts and agents</li>
+<li>Specification templates and workflow conventions</li>
+<li>A repeatable pattern so teams do not reinvent SDD from zero</li>
+</ul>
+<h2 is-upgraded>Installing Spec-Kit</h2>
+<p>The recommended method to install Spec-Kit is using <code>uv</code>, a Python package manager.</p>
+<p>Once uv is installed, run from your project root:</p>
+<pre><code language="language-bash" class="language-bash">uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.8.11
+</code></pre>
+<p class="image-container"><img alt="specify-cli" src="img/c04e3371e5d099ea.png"></p>
+<p>Alternative setup: download template/package from the <a href="https://github.com/github/spec-kit/releases" target="_blank">release page</a></p>
+<p class="image-container"><img alt="scf" src="img/418beb979ae0b0f2.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting Started with Spec-Kit" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>Initialize Spec-Kit in your project using the Specify CLI. Open a terminal, move to the project root, then initialize Spec-Kit.</p>
+<p>For an existing project we can use this command:</p>
+<pre><code language="language-bash" class="language-bash">specify init --here
+</code></pre>
+<p>Expected outcome:</p>
+<ul>
+<li>Spec-Kit folder/files are initialized</li>
+<li>Repository is ready for <code>/speckit.specify</code> and <code>/speckit.plan</code> workflow. You can try it out in the Copilot prompt.</li>
+</ul>
+<p class="image-container"><img alt="specs" src="img/8add0102f124b1f9.png"></p>
+<p>We can also use the Specify CLI for a new project:</p>
+<pre><code language="language-bash" class="language-bash">specify init &lt;new-project-folder-name&gt;
+</code></pre>
+<p>If the directory already contains files, skip confirmation:</p>
+<pre><code language="language-bash" class="language-bash"># Skip confirmation when the directory already has files
+specify init . --force
+# or
+specify init --here --force
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Spec-Kit agents" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>GitHub Spec-Kit is a set of <strong>agents</strong> installed into the <code>.github/agents/</code> folder of your repository. Each agent has a specific and repeatable skill in the spec-driven workflow. When you invoke a command, Copilot loads the corresponding agent skill and executes it using your codebase and spec documents as context.</p>
+<p class="image-container"><img alt="sk-agents" src="img/d9baaa6a4ab37889.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Constitution: Guardrails for the project" duration="20">
+        <p><em>Dur: 20&#39;</em></p>
+<p>The file <code>constitution.md</code> in the <code>.specify/memory/</code> directory is the baseline rulebook for your project behavior and quality standards.</p>
+<p>The constitution is the document that governs everything that follows. It captures:</p>
+<ul>
+<li>Project purpose — what this codebase is and who uses it</li>
+<li>Tech stack decisions — stack, frameworks, and why they were chosen</li>
+<li>Coding conventions — naming, file structure, patterns to follow</li>
+<li>Architecture rules — what is and is not allowed (ADR references)</li>
+<li>Quality standards — test requirements, coverage thresholds, DoD</li>
+</ul>
+<p>When the constitution exists, every <code>/speckit.specify</code>, <code>/speckit.plan</code>, and <code>/speckit.implement</code> call respects it automatically — because the skill is designed to reference <code>.speckit/constitution.md</code> as context. You define the rules once; Copilot follows them consistently.</p>
+<p>Use Copilot Agent to fill the constitution from template and existing project context:</p>
+<pre><code language="language-text" class="language-text">/speckit.constitution Fill in the constitution with the bare minimum requirements for a procurement management system, based on the template in constitution.md. Check the current codebase and README.md to get a context of the current state of the project.
+</code></pre>
+<p>Typical constitution content:</p>
+<ul>
+<li>Business-critical rules (PR -&gt; PO -&gt; GR flow integrity)</li>
+<li>Quality and testing baseline</li>
+<li>Architecture and convention constraints</li>
+</ul>
+<p>This file becomes a stable reference for all future specs.</p>
+<aside class="warning"><p>We already have <code>AGENTS.md</code> from that behaves as the agent&#39;s persistent instruction. If we are using SpecKit, the content of <code>AGENTS.md</code> might become redundant. You can opt to remove this file or only fill it with non-project related agent behaviour, that is not already defined in the SpecKit constitution. Check the <strong>&#34;Avoiding redundancy&#34;</strong> on how to repurpose <code>AGENTS.md</code> once we start using SpecKit.</p>
+</aside>
+<p class="image-container"><img alt="constitution" src="img/c309386cf22f6259.png"></p>
+<h2 is-upgraded>Avoiding redundancy</h2>
+<h3 is-upgraded>1. Strip the coding rules from AGENTS.md</h3>
+<p>Remove things like &#34;Use TypeScript&#34;, &#34;Ensure 80% test coverage&#34;, or &#34;We use Fastify instead of Express&#34; from <code>AGENTS.md</code>. Move all of those strict technical constraints into the SpecKit constitution instead.  Instead, optimize your <code>AGENTS.md</code> to focus strictly on execution protocols, slash commands, and tooling context (like our Graphify layout or RTK command).</p>
+<h3 is-upgraded>2. Let SpecKit manage constitution.md as the Technical SSOT</h3>
+<p>When you execute <code>/speckit.constitution</code>, let SpecKit generate the file inside <code>.specify/memory/constitution.md</code>. This file should contain absolutely zero metadata about terminal shortcuts or agent commands. It should strictly contain the rigid guardrails of your application.</p>
+<p>Conclusion:</p>
+<ul>
+<li><code>AGENTS.md</code> controls Agent Behaviors and Actions (How the AI interacts with you and your tools)</li>
+<li><code>.specify/memory/constitution.md</code> enforces Codebase Constraints (The unyielding laws of the code itself)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create the GR Spec" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Create a functional specification for the GR module using Spec-Kit&#39;s <code>/speckit.specify</code> command:</p>
+<pre><code language="language-text" class="language-text">/speckit.specify add a GR (Goods Receipts) module on this application
+</code></pre>
+<p>What to verify after running:</p>
+<ul>
+<li>A new branch is created for the spec work</li>
+<li>New specification files appear in <code>specs/</code></li>
+<li>Functional requirements cover list/create/detail and validation logic</li>
+</ul>
+<p class="image-container"><img alt="specs-result" src="img/c9511cb084eea9cc.png"></p>
+<p>Suggested GR spec checks:</p>
+<ul>
+<li>Cannot receive more than PO open quantity</li>
+<li>Supports partial receipts and cumulative tracking</li>
+<li>Includes status transitions (<code>DRAFT</code> -&gt; <code>POSTED</code>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Technical Plan" duration="10">
+        <p>Convert the functional spec into technical implementation steps using Spec-Kit&#39;s <code>/speckit.plan</code> command:</p>
+<pre><code language="language-text" class="language-text">/speckit.plan use the existing API endpoints and database (check the script in /db/migrations) to start developing the GR module. Make updates to existing files as necessary.
+</code></pre>
+<p>Review outputs in <code>specs/</code> (eg. <code>specs/001-add-gr-module/</code>):</p>
+<ul>
+<li><code>plan.md</code></li>
+<li>task breakdown and implementation notes</li>
+</ul>
+<p>Execution guidance:</p>
+<ol type="1">
+<li>Implement GR backend APIs following the generated plan</li>
+<li>Implement GR frontend pages using existing project patterns</li>
+<li>Add unit/integration tests for business rules and edge cases</li>
+<li>Validate with realistic sample data from migration/seed context</li>
+</ol>
+<p>Final checkpoint: GR module is implemented end-to-end and aligned with spec + constitution</p>
+<p class="image-container"><img alt="plans" src="img/c5a21f27147df52a.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="The Full Spec-Kit Workflow" duration="10">
+        <p>Below is a description of the full Spec-Kit workflow using its custom agents</p>
+<pre><code>/speckit.constitution
+    ↓  Establishes project principles, tech stack rules, and coding guidelines
+
+/speckit.specify
+    ↓  Captures requirements and user stories for the feature
+
+/speckit.plan
+    ↓  Produces a technical implementation plan for the chosen stack
+
+/speckit.tasks
+    ↓  Breaks the plan into a concrete, actionable task list
+
+/speckit.taskstoissues          ← optional
+    ↓  Converts task list into GitHub Issues for tracking
+
+/speckit.implement
+       Executes all tasks and builds the feature
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Further Exploration: GR Module" duration="40">
+        <p>Use this session to implement the <strong>GR (Goods Receipt)</strong> module based on the specifications from the previous Spec-Kit slides. You have <strong>30 minutes</strong>. You can also explore Spec-Kit&#39;s custom prompts and agents.</p>
+<p>SDD frameworks like Spec-Kit help implementation start from a clear, reviewable specification before moving into technical planning and execution.</p>
+<p class="image-container"><img alt="grmod" src="img/eb918199ba06f698.png"></p>
+<aside class="special"><p>Check this recommended <a href="https://www.youtube.com/watch?v=a9eR1xsfvHg" target="_blank">guideline video on using Spec-Kit</a> delivered by the creator of Spec-Kit himself.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Wrap-up, Retrospective, and Next Steps" duration="10">
+        <p>In this workshop, we learned to use GitHub Copilot to do the following:</p>
+<ul>
+<li>Using specifications to develop an application</li>
+<li>Started from a working baseline</li>
+<li>Delivered a new module end-to-end</li>
+<li>Utilizing agent functionality</li>
+<li>Using Spec-Kit as an SDD framework</li>
+<li>and many others</li>
+</ul>
+<h2 is-upgraded>Next Steps</h2>
+<ul>
+<li>Try using Copilot in actual projects</li>
+<li>Challenge more complex application development</li>
+<li>Keep up with new Copilot features</li>
+</ul>
+<h2 is-upgraded>Resources</h2>
+<ul>
+<li><a href="https://docs.github.com/copilot" target="_blank">GitHub Copilot Documentation</a></li>
+<li><a href="https://docs.github.com/copilot/using-github-copilot/best-practices-for-using-github-copilot" target="_blank">GitHub Copilot Best Practices</a></li>
+<li><a href="https://github.com/copilot/spaces" target="_blank">Copilot Spaces</a></li>
+<li><a href="https://playwright.dev" target="_blank">Playwright docs</a></li>
+</ul>
+<p>Great work! 🎉</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
