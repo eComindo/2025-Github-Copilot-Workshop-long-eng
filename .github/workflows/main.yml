@@ -39,7 +39,7 @@ jobs:
             --overwrite
 
       - name: Export codelab to HTML
-        run: ./claat export -o . -e web -f html workshop_PROC_btpns.md
+        run: ./claat export -o . -e web -f html workshop_PROC_v3-C.md
       
       - name: Upload to Azure Storage
         run: |
