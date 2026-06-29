@@ -1,6 +1,6 @@
 author: Arie M. Prasetyo
 summary: GitHub Copilot Workshop - Procurement MVP
-id: github-copilot-workshop-proc-v3-ghe
+id: github-copilot-workshop-proc-v3-B
 categories: AI, Development
 environments: Web
 status: Published
@@ -226,13 +226,13 @@ Good architecture is an optimization strategy. Treat it as such.
 
 ### Be strategic about what agents actually do
 
-#### 4. Only use MCP when it actually saves tokens
-Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip
-Use MCP when you genuinely need the agent to interact with a system in real-time.
+#### 4. Use MCP strategically
+Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip.
+Use MCP when you genuinely need the agent to interact with a system in real-time, in order to achieve your objective.
 
 > aside positive
 > 
-> By default, turn all your MCP servers off.
+> By default, turn all your agentic tools and MCP servers off.
 
 #### 5. Avoid SKILL.md unless you actually need it
 Most of the time, your SKILL.md is just repeating what it knows, wasting tokens on context that does not add value.

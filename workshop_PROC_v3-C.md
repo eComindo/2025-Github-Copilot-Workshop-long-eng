@@ -1,6 +1,6 @@
 author: Arie M. Prasetyo
 summary: GitHub Copilot Workshop - Procurement MVP
-id: github-copilot-workshop-proc-v3
+id: github-copilot-workshop-proc-v3-C
 categories: AI, Development
 environments: Web
 status: Published
@@ -14,15 +14,21 @@ change log:
     - RTK
     - Graphify
 
+25 June 2026
+- adding back GH enterprise content
+
+29 June 2026
+- replacing SpecKit with OpenSpec
+
 # GitHub Copilot Workshop: Build a Procurement System MVP
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## About this workshop
-Duration: 10
+Duration: 15
 
-*Dur: 10'*
+*Dur: 15'*
 
 Welcome. In this workshop, participants build a real-world procurement system MVP using GitHub Copilot in VS Code and GitHub.
 
@@ -60,9 +66,9 @@ Tech stack:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## The project: Procurement system MVP
-Duration: 5
+Duration: 10
 
-*Dur: 5'*
+*Dur: 10'*
 
 In this workshop we are going to build a procurement system MVP (minimum viable product). A procurement system manages how a company buys things, with control and traceability from request to receiving.
 
@@ -133,9 +139,9 @@ with quantities and statuses enforced at each step.
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## AI, LLM, and Context Basics
-Duration: 5
+Duration: 10
 
-*Dur: 5'*
+*Dur: 10'*
 
 ![AI](image_source/ai.png)
 
@@ -223,13 +229,13 @@ Good architecture is an optimization strategy. Treat it as such.
 
 ### Be strategic about what agents actually do
 
-#### 4. Only use MCP when it actually saves tokens
-Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip
-Use MCP when you genuinely need the agent to interact with a system in real-time.
+#### 4. Use MCP strategically
+Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip.
+Use MCP when you genuinely need the agent to interact with a system in real-time, in order to achieve your objective.
 
 > aside positive
 > 
-> By default, turn all your MCP servers off.
+> By default, turn all your agentic tools and MCP servers off.
 
 #### 5. Avoid SKILL.md unless you actually need it
 Most of the time, your SKILL.md is just repeating what it knows, wasting tokens on context that does not add value.
@@ -422,9 +428,9 @@ Optional MCP tools:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Fork the Repository
-Duration: 10
+Duration: 15
 
-*Dur: 10'*
+*Dur: 15'*
 
 Open the project URL: [https://github.com/eComindo/2026-github-copilot-workshop](https://github.com/eComindo/2026-github-copilot-workshop)
 
@@ -840,6 +846,40 @@ To make sure your development follows spec-driven development guidelines:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## GitHub Spaces (OPTIONAL)
+Duration: 10
+
+*Dur: 10'*
+
+Use Copilot Spaces for onboarding and product brainstorming.
+
+Create a space:
+- Name: `Procurement MVP Onboarding`
+- Attach: `README.md`, `docs/plan.md`
+
+Prompt 1 (onboarding):
+
+```text
+Create a new team member onboarding summary for this repository.
+Explain the business flow (PR -> PO -> GR), tech stack, and first 3 tasks.
+```
+
+Prompt 2 (brainstorming):
+
+```text
+For this procurement MVP, suggest 5 realistic enhancements for a future version.
+Keep workshop scope unchanged and mark each as out-of-scope for today.
+```
+
+> aside positive
+>
+> Copilot Space is optional but useful for keeping planning context reusable across the team.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Finalize Plan
 Duration: 10
 
@@ -1174,10 +1214,179 @@ Then:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Creating E2E test with Copilot
-Duration: 10
+## Code Quality
+Duration: 15
+
+*Dur: 15'*
+
+Code Quality is a feature from GitHub that allow scanning of the codes in your repository.
+
+GitHub Code Quality helps you ensure your codebase is reliable, maintainable, and efficient.
+It provides actionable insights and automated fixes so you can improve and maintain the code health of your repository efficiently.
+
+![code quality](image_source//code-quality.png)
+
+Code Quality performs rule-based analysis of the following languages using CodeQL:
+- C#
+- Go
+- Java
+- JavaScript
+- Python
+- Ruby
+- TypeScript
+
+> aside positive
+> 
+> Combining local hooks and GitHub Actions gives stronger quality gates
+
+We can check the progress and result of Code Quality in the Actions tab of the repository:
+
+![actions](image_source/github-actions.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Code Quality, Code Scanning, CodeQL
+Duration: 15
 
 *Dur: 10'*
+
+To enable and run checks:
+- Enable the Code Quality and Code Scanning features in the Settings
+- Ensure CodeQL analysis is available in your codebase
+
+![codeql](image_source/codeql.png)
+
+We can ask Copilot to create the workflow file:
+```text
+Create a GitHub Actions workflow for JavaScript CodeQL analysis.
+Run on push and pull_request for main and feature branches.
+```
+
+Code Scanning scans your codebase and commits for vulnerabilities like hardcoded API key and secrets.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Copilot PR summary, review, and commit message
+Duration: 20
+
+*Dur: 20'*
+
+Copilot is also available on Github's website. Click on [this link](https://github.com/copilot/) to open Copilot on Github.
+
+![copilot home](image_source/github-copilot-home.png)
+
+Let's see some of the things Copilot can do for us in the Github website.
+
+### 1. Add PR Summary
+
+We can ask Copilot to add Pull Request description.
+
+1. Commit the changes from the previous slide.
+2. Push to your repo.
+3. Open your Github repo page, create a new Pull Request.
+
+![generate summary](image_source/generate-summary.png)
+
+The summary from Copilot:
+![summary](image_source/copilot-pr-review.png)
+
+
+It will create a comprehensive PR description based on the commits in the branch that we wanted to merge.
+
+
+### 2. Add As PR Reviewer
+
+We can also add Copilot as a reviewer to a Pull Request. Very handy if you're working solo on a project.
+
+After pushing, let's create a Pull Request on GitHub.com and utilize Copilot's code review functionality.
+
+1. Access your repository on GitHub
+2. Click **Open a pull request**
+3. On the Pull Request creation screen, click **Copilot icon** >> **Summary**
+
+![PR Reviewer](image_source/request-copilot-review.png)
+
+In the **Reviewers** section, you can assign **Copilot** as a reviewer to request code review from Copilot.
+
+Copilot would check all the files in the PR and make appropriate comments.
+
+> aside positive
+>
+> **Auto-assign Setting**: By checking Settings >> Branches >> Rulesets >> Require a pull request before merging >> Automatically request Copilot code review, Copilot will be automatically assigned when opening Pull Requests.
+
+After the Pull Request is opened, you can view Copilot Code Review results:
+
+- **Pull Request Overview**: Summary of code changes
+- **Issues Identified**: Pointing out potential problems
+- **Improvement Suggestions**: Specific suggestions for improving code quality
+
+![copilot comment](image_source/copilot-pr-comment.png)
+
+> aside negative
+>
+> **Note**: Depending on the PR size, you might need to wait for Copilot to finish creating a summary or adding PR reviews.
+
+> aside positive
+>
+> **Pro Tip**: not confidence about your PR? Anxious that the senior devs are going to roast your PR? Let Copilot review your PR first, before you add other reviewers.
+
+You can go ahead ask Copilot to work on its proposed changes to the PR. It will automatically create a new separate PR that targets your working branch in the original PR.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## GitHub Issue (OPTIONAL)
+Duration: 20
+
+*Dur: 20'*
+
+Let's use the website version of GitHub Copilot to assign the Coding Agent to work on a new feature using the Issues feature.
+
+First, make sure **Issues** is enabled in your Github repository's **Settings**.
+
+![issues enabled](image_source/issues-enabled.png)
+
+### Automatic Issue Creation with GitHub Copilot
+
+In this section we want to implement a new feature: bookmarks.
+
+1. Access **GitHub.com** and click the **Copilot** icon in the top right
+2. Confirm your repository is added to the Chat context
+3. Enter the following prompt:
+
+```text
+I want the user to be able to bookmark an item in this app and then see all the bookmarks in a "Bookmarks" page.
+
+Create a feature which allows user to bookmark any item in the PR, PO, and GR list.
+
+Create the necessary API endpoints, database migration scripts, and frontend page/components.
+```
+
+4. Assign the issue to Copilot
+
+![assign issues](image_source/assign-issue-to-copilot.png)
+
+5. Wait for the agent to finish creating the PR. Once it is done, review generated branch/PR.
+
+![issue pr](image_source/issue-pr.png)
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Creating E2E test with Copilot
+Duration: 15
+
+*Dur: 15'*
 
 Now we create an end-to-end test using Playwright.
 
@@ -1236,9 +1445,9 @@ Because the charts are created using [Mermaid format](https://mermaid.js.org/), 
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Creating Custom Prompts and Agents (OPTIONAL)
-Duration: 10
+Duration: 15
 
-*Dur: 10'*
+*Dur: 15'*
 
 ### Prompt Files
 
@@ -1344,13 +1553,9 @@ Duration: 15
 
 *Dur: 15'*
 
-Below is an example of spec documents created using an SDD framework "Spec-Kit" for the development of GR module:
+<!-- Below is an example of spec documents created using an SDD framework "OpenSpec" for the development of GR module: -->
 
-![sk-files](image_source/sk-files.png)
-
-> aside positive
-> 
-> Spec-Kit is one of the most popular SDD frameworks in GitHub.
+<!-- ![sk-files2](image_source/sk-files2.png) -->
 
 ### 1. Why use framework
 
@@ -1361,19 +1566,22 @@ Why use a ready-made framework:
 - you can use ready-made custom prompts, agents, and spec templates
 - with a supportive community, the framework can continue to improve
 
-![SpecKit](image_source/speckit.png)
+![OpenSpec](image_source/openspec.png)
 
 > aside positive
->
-> A framework is helpful, but not mandatory. You can still run SDD using your own templates and process.
+> 
+> OpenSpec is one of the popular SDD frameworks, known for its simplicity & small size.
 
 Common SDD framework options:
 - Homegrown docs in `docs/` or `specs/` and custom prompts/agents
-- [Spec-Kit](https://github.com/github/spec-kit)
 - [OpenSpec](https://openspec.dev/)
-- [Intent by Augment Code](https://www.augmentcode.com/product/intent)
+- [Spec-Kit](https://github.com/github/spec-kit)
 - [Superpowers](https://github.com/obra/superpowers)
-- [MUSUBI](https://github.com/nahisaho/musubi)
+
+Comparison matrix of various SDD frameworks:
+
+![SDD frameworks](image_source/sdd-fs.jpg)
+*Source: [Comparing 15 SDD frameworks - Medium](https://medium.com/@wasowski.jarek/comparing-15-spec-driven-development-frameworks-sdd-c052df529274)*
 
 
 ### 2. Why spec matters in AI-enabled SDLC
@@ -1385,152 +1593,98 @@ A good spec does not die when the code is written. It becomes:
 - The input for the next feature: *what was built, and where are the boundaries?*
 - The onboarding guide for new engineers: *what was this module intended to do?*
 
+> aside positive
+>
+> A framework is helpful, but not mandatory. You can still run SDD using your own templates and process.
+
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Spec-Kit: SDD Framework from GitHub
-Duration: 15
+## OpenSpec: a lightweight framework for SDD
+Duration: 20
 
-*Dur: 15'*
+*Dur: 20'*
 
 > aside negative
 >
 > **Important**: Check out to the branch before the Exploration slide
 
-Spec-Kit provides reusable building blocks for spec-first development:
-- A set of custom prompts and agents
-- Specification templates and workflow conventions
-- A repeatable pattern so teams do not reinvent SDD from zero
+OpenSpec has these philosophies:
+- fluid not rigid
+- iterative not waterfall
+- easy not complex
+- built for brownfield not just greenfield
+- scalable from personal projects to enterprises
 
-### Installing Spec-Kit
+### Getting started OpenSpec
 
-The recommended method to install Spec-Kit is using `uv`, a Python package manager.
+Install OpenSpec globally:
 
-Once uv is installed, run from your project root:
-
-```bash
-uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.8.11
+```
+npm install -g @fission-ai/openspec@latest
 ```
 
-![specify-cli](image_source/specify-cli.png)
+Go to your root folder in the terminal/console and initialize OpenSpec:
 
-Alternative setup: download template/package from the [release page](https://github.com/github/spec-kit/releases)
+```
+cd <your-project-folder>
+openspec init
+```
 
+On this screen, press enter to continue:
+![OpenSpec init](image_source/openspec-init.png)
 
-![scf](image_source/scf.png)
+If GitHub Copilot is automatically detected, you can press enter to continue:
+![OpenSpec setup 1](image_source/openspec-setup-1.png)
+
+Once setup is complete, restart VS Code to let the changes take effect:
+![OpenSpec setup 2](image_source/openspec-setup-2.png)
+
+### Expected outcome:
+
+Once you have completed setting up OpenSpec, you will see:
+- New custom skills and prompts by OpenSpec
+- New slash commands (eg. `/opsx:explore`, `/opsx:new`) in the GitHub Copilot Chat's text input
+
+New custom skills and prompts:
+![OpenSpec result 1](image_source/openspec-result-1.png)
+
+New slash commands:
+![OpenSpec result 2](image_source/openspec-result-2.png)
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Getting Started with Spec-Kit
-Duration: 15
-
-*Dur: 15'*
-
-Initialize Spec-Kit in your project using the Specify CLI. Open a terminal, move to the project root, then initialize Spec-Kit.
-
-For an existing project we can use this command:
-
-```bash
-specify init --here
-```
-
-Expected outcome:
-- Spec-Kit folder/files are initialized
-- Repository is ready for `/speckit.specify` and `/speckit.plan` workflow. You can try it out in the Copilot prompt.
-
-![specs](image_source/specs.png)
-
-We can also use the Specify CLI for a new project:
-
-```bash
-specify init <new-project-folder-name>
-```
-
-If the directory already contains files, skip confirmation:
-
-```bash
-# Skip confirmation when the directory already has files
-specify init . --force
-# or
-specify init --here --force
-```
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Spec-Kit agents
+## Getting Started with OpenSpec
 Duration: 10
 
 *Dur: 10'*
 
-GitHub Spec-Kit is a set of **agents** installed into the `.github/agents/` folder of your repository. Each agent has a specific and repeatable skill in the spec-driven workflow. When you invoke a command, Copilot loads the corresponding agent skill and executes it using your codebase and spec documents as context.
+### OpenSpec workflow
 
-![sk-agents](image_source/sk-agents.png)
+The standard workflow for OpenSpec is a fluid, iterative workflow for spec changes. No rigid phases, just actions you can take anytime.
+- Actions, not phases — create, implement, update, archive — do any of them anytime
+- Dependencies are enablers — they show what's possible, not what's required next
 
----
+![OpenSpec flow](image_source/openspec-flow.png)
 
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Constitution: Guardrails for the project
-Duration: 20
-
-*Dur: 20'*
-
-The file `constitution.md` in the `.specify/memory/` directory is the baseline rulebook for your project behavior and quality standards.
-
-The constitution is the document that governs everything that follows. It captures:
-
-- Project purpose — what this codebase is and who uses it
-- Tech stack decisions — stack, frameworks, and why they were chosen
-- Coding conventions — naming, file structure, patterns to follow
-- Architecture rules — what is and is not allowed (ADR references)
-- Quality standards — test requirements, coverage thresholds, DoD
-
-When the constitution exists, every `/speckit.specify`, `/speckit.plan`, and `/speckit.implement` call respects it automatically — because the skill is designed to reference `.speckit/constitution.md` as context. You define the rules once; Copilot follows them consistently.
-
-Use Copilot Agent to fill the constitution from template and existing project context:
-
-```text
-/speckit.constitution Fill in the constitution with the bare minimum requirements for a procurement management system, based on the template in constitution.md. Check the current codebase and README.md to get a context of the current state of the project.
+Most common OpenSpec commands:
+```
+TERMINAL   $ npm install -g @fission-ai/openspec@latest
+TERMINAL   $ cd <your-project> && openspec init
+AI CHAT      /opsx:explore                    (optional: think it through first)
+AI CHAT      /opsx:propose add-dark-mode      (AI drafts the plan; you review it)
+AI CHAT      /opsx:apply                      (AI builds it)
+AI CHAT      /opsx:archive                    (specs updated, change filed away)
 ```
 
-Typical constitution content:
-- Business-critical rules (PR -> PO -> GR flow integrity)
-- Quality and testing baseline
-- Architecture and convention constraints
+Below is some examples of what you can do with OpenSpec commands:
 
-This file becomes a stable reference for all future specs.
-
-> aside negative
-> 
-> We already have `AGENTS.md` from that behaves as the agent's persistent instruction.
-> If we are using SpecKit, the content of `AGENTS.md` might become redundant.
-> You can opt to remove this file or only fill it with non-project related agent behaviour, that is not already defined in the SpecKit constitution.
-> Check the **"Avoiding redundancy"** on how to repurpose `AGENTS.md` once we start using SpecKit.
-
-![constitution](image_source/constitution.png)
-
-### Avoiding redundancy
-
-#### 1. Strip the coding rules from AGENTS.md
-
-Remove things like "Use TypeScript", "Ensure 80% test coverage", or "We use Fastify instead of Express" from `AGENTS.md`. Move all of those strict technical constraints into the SpecKit constitution instead.  Instead, optimize your `AGENTS.md` to focus strictly on execution protocols, slash commands, and tooling context (like our Graphify layout or RTK command).
-
-#### 2. Let SpecKit manage constitution.md as the Technical SSOT
-When you execute `/speckit.constitution`, let SpecKit generate the file inside `.specify/memory/constitution.md`. This file should contain absolutely zero metadata about terminal shortcuts or agent commands. It should strictly contain the rigid guardrails of your application.
-
-Conclusion:
-
-- `AGENTS.md` controls Agent Behaviors and Actions (How the AI interacts with you and your tools)
-- `.specify/memory/constitution.md` enforces Codebase Constraints (The unyielding laws of the code itself)
+![OpenSpec example](image_source/openspec-example.png)
 
 ---
 
@@ -1538,110 +1692,75 @@ Conclusion:
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Create the GR Spec
-Duration: 10
+Duration: 20
 
-*Dur: 10'*
+*Dur: 20'*
 
-Create a functional specification for the GR module using Spec-Kit's `/speckit.specify` command:
+Create a functional specification for the GR module using OpenSpec `/opsx:propose` command:
 
-```text
-/speckit.specify add a GR (Goods Receipts) module on this application
+```
+/opsx:propose goods-receipts-module
 ```
 
-What to verify after running:
-- A new branch is created for the spec work
-- New specification files appear in `specs/`
-- Functional requirements cover list/create/detail and validation logic
+After the proposition process is done, you will get the specification documents for the GR module.
 
-![specs-result](image_source/specs-result.png)
+![openspec propose 1](image_source/openspec-propose-1.png)
 
-Suggested GR spec checks:
-- Cannot receive more than PO open quantity
-- Supports partial receipts and cumulative tracking
-- Includes status transitions (`DRAFT` -> `POSTED`)
+You can check the specification documents in the newly created `openspec/` folder:
+
+![openspec propose 2](image_source/openspec-propose-2.png)
+
+> aside positive
+>
+> Suggested GR spec checks:
+> - Cannot receive more than PO open quantity
+> - Supports partial receipts and cumulative tracking
+> - Includes status transitions (`DRAFT` -> `POSTED`)
 
 ---
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Technical Plan
-Duration: 10
-
-*Dur: 10'*
-
-Convert the functional spec into technical implementation steps using Spec-Kit's `/speckit.plan` command:
-
-```text
-/speckit.plan use the existing API endpoints and database (check the script in /db/migrations) to start developing the GR module. Make updates to existing files as necessary.
-```
-
-Review outputs in `specs/` (eg. `specs/001-add-gr-module/`):
-- `plan.md`
-- task breakdown and implementation notes
-
-Execution guidance:
-1. Implement GR backend APIs following the generated plan
-2. Implement GR frontend pages using existing project patterns
-3. Add unit/integration tests for business rules and edge cases
-4. Validate with realistic sample data from migration/seed context
-
-Final checkpoint: GR module is implemented end-to-end and aligned with spec + constitution
-
-![plans](image_source/plans.png)
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## The Full Spec-Kit Workflow
-Duration: 10
-
-*Dur: 10'*
-
-Below is a description of the full Spec-Kit workflow using its custom agents
-
-```
-/speckit.constitution
-    ↓  Establishes project principles, tech stack rules, and coding guidelines
-
-/speckit.specify
-    ↓  Captures requirements and user stories for the feature
-
-/speckit.plan
-    ↓  Produces a technical implementation plan for the chosen stack
-
-/speckit.tasks
-    ↓  Breaks the plan into a concrete, actionable task list
-
-/speckit.taskstoissues          ← optional
-    ↓  Converts task list into GitHub Issues for tracking
-
-/speckit.implement
-       Executes all tasks and builds the feature
-```
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Further Exploration: GR Module
+## Implementation using OpenSpec
 Duration: 30
 
 *Dur: 30'*
 
-Use this session to implement the **GR (Goods Receipt)** module based on the specifications from the previous Spec-Kit slides.
-You have **30 minutes**. You can also explore Spec-Kit's custom prompts and agents.
+Use this session to implement the **GR (Goods Receipt)** module based on the specifications from the previous process.
 
-SDD frameworks like Spec-Kit help implementation start from a clear, reviewable specification before moving into technical planning and execution.
+You have **30 minutes**. You can also explore OpenSpec's custom prompt and skill files. Check [this documentation](https://github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md) for more information about OpenSpec's workflow.
+
+### Implementation
+
+Type this in the GitHub Copilot Chat:
+
+```text
+/opsx:apply
+```
+
+Once the implementation is finished, review the result:
+1. Implementation of GR backend APIs
+2. Implementation of GR frontend pages using existing project patterns
+3. Unit/integration tests for business rules and edge cases
+
+Validate with realistic sample data from migration/seed context. Final checkpoint: GR module is implemented end-to-end and aligned with spec + constitution
 
 ![grmod](image_source/grmod.png)
 
 > aside positive
 > 
-> Check this recommended [guideline video on using Spec-Kit](https://www.youtube.com/watch?v=a9eR1xsfvHg) delivered by the creator of Spec-Kit himself.
+> SDD frameworks help implementation start from a clear, reviewable specification before moving into technical planning and execution.
+> 
+> Check this [introduction to OpenSpec](https://www.youtube.com/watch?v=N-MftbmnmMo) from its YouTube channel.
+
+### Archive the spec
+
+Use this command to archive the spec once the implementation is complete.
+
+```text
+/opsx:archive
+```
 
 ---
 
@@ -1649,16 +1768,16 @@ SDD frameworks like Spec-Kit help implementation start from a clear, reviewable 
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Wrap-up, Retrospective, and Next Steps
-Duration: 10
+Duration: 15
 
-*Dur: 10'*
+*Dur: 15'*
 
 In this workshop, we learned to use GitHub Copilot to do the following:
 - Using specifications to develop an application
 - Started from a working baseline
 - Delivered a new module end-to-end
 - Utilizing agent functionality
-- Using Spec-Kit as an SDD framework
+- Using OpenSpec as an SDD framework
 - and many others
 
 ### Next Steps
