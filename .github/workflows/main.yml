@@ -39,7 +39,7 @@ jobs:
             --overwrite
 
       - name: Export codelab to HTML
-        run: ./claat export -o . -e web -f html workshop_PROC_v3-C.md
+        run: ./claat export -o . -e web -f html workshop_PROC_v3-C-compressed.md
       
       - name: Upload to Azure Storage
         run: |
@@ -47,5 +47,5 @@ jobs:
             --account-name ${{ secrets.AZURE_STORAGE_GHCOPILOT_ACCOUNT }} \
             --sas-token "${{ secrets.AZURE_STORAGE_GHCOPILOT_SAS_TOKEN }}" \
             --destination '$web' \
-            --source ./github-copilot-workshop-procurement-mvp/ \
+            --source ./github-copilot-workshop-proc-v3-C-compressed/ \
             --overwrite
