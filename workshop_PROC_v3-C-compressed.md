@@ -47,7 +47,7 @@ The aim is to build the **PO (Purchase Order)** module. Another module **GR (Goo
 Application scope:
 - Baseline provided: *Home/Dashboard* & *PR module* (list/create/detail pages and backend APIs)
 - Participant backlog: *PO module* (list/create/detail pages and backend APIs)
-- Optional extension: *Bookmark feature* (for PR, PO, & GR modules) via GitHub Issue workflow
+<!-- - Optional extension: *Bookmark feature* (for PR, PO, & GR modules) via GitHub Issue workflow -->
 - Further exploration: *GR module* (self-paced)
 
 Tech stack:
