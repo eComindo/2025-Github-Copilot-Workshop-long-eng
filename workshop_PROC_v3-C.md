@@ -56,9 +56,9 @@ Tech stack:
 
 > aside positive
 >
-> You can access the slide deck at [bit.ly/eComCopilotWorkshop2026](https://bit.ly/eComCopilotWorkshop2026)
+> You can access the slide deck at [https://bit.ly/eComindoCopilotWorkshop2026](https://bit.ly/eComindoCopilotWorkshop2026)
 
-![slides](image_source/slides.png)
+![qr_code](image_source/qr_code.png)
 
 ---
 
