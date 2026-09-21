@@ -3,10 +3,10 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <meta name="theme-color" content="#4F7DC9">
+  <meta name="theme-color" content="#0038E3">
   <meta charset="UTF-8">
   <title>GitHub Copilot Workshop: Build a Procurement System MVP</title>
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono|Poppins:400,500,600,700,800">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="codelab-elements/codelab-elements.css">
   <style>
@@ -187,7 +187,7 @@
 <li>Open the workspace in VS Code.</li>
 <li>Enter this prompt in Copilot Chat:</li>
 </ol>
-<pre><code>Create specification documents in markdown format for a web application that:
+<pre><code language="language-prompt" class="language-prompt">Create specification documents in markdown format for a web application that:
 - &lt;your observation&gt;
 - &lt;your observation&gt;
 - &lt;your observation&gt;
@@ -223,7 +223,7 @@
 <li>Create a file called <code>plan.md</code></li>
 <li>Put the content below in <code>plan.md</code>:</li>
 </ol>
-<pre><code>Based on the following url https://simplydemo.secure.simplybook.me/v2/dashboard/new, create a comprehensive specification of a fully working web application with the following structure template.
+<pre><code language="language-prompt" class="language-prompt">Based on the following url https://simplydemo.secure.simplybook.me/v2/dashboard/new, create a comprehensive specification of a fully working web application with the following structure template.
 
 specs/
 └── features/
@@ -255,7 +255,7 @@ specs/
   - password: `demo`
 </code></pre>
 <p>Once the file <code>plan.md</code> is ready, enter this prompt in Copilot Chat:</p>
-<pre><code>Use the file #plan.md to conduct a reverse engineering process, ie. from application to specification documents.
+<pre><code language="language-prompt" class="language-prompt">Use the file #plan.md to conduct a reverse engineering process, ie. from application to specification documents.
 </code></pre>
 
 
@@ -362,7 +362,7 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
         <p><em>Dur: 20&#39;</em></p>
 <p>Before implementation, update custom instructions to shape Copilot output quality.</p>
 <p>Make sure you are in <strong>Ask</strong> mode, then enter this prompt:</p>
-<pre><code language="language-text" class="language-text">Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
+<pre><code language="language-prompt" class="language-prompt">Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
 </code></pre>
 <p>Manually open <code>AGENTS.md</code>. Based on the answer, add instructions to make sure the content of <code>AGENTS.md</code> is more consistent with project standards</p>
 <p>You can also add rules such as:</p>
@@ -481,7 +481,7 @@ graphify-out/
 <p>Graphify will look at the code files (e.g., <code>.py</code>, <code>.js</code>, <code>.go</code>, <code>.rs</code>, etc.), pull them through the local syntax tree parser, and write the final knowledge graph directly to <code>graphify-out/graph.json</code> without making a single network call.</p>
 <h3 is-upgraded>Usage</h3>
 <p>Add this to <code>AGENTS.md</code>:</p>
-<pre><code>## Codebase Context &amp; Knowledge Graph Protocol
+<pre><code language="language-prompt" class="language-prompt">## Codebase Context &amp; Knowledge Graph Protocol
 
 You have access to a pre-computed AST knowledge graph of this repository at `graphify-out/graph.json`. To minimize context window clutter, prevent hallucinations, and accurately map cross-file dependencies, you MUST follow these routing rules:
 
@@ -569,13 +569,13 @@ You have access to a pre-computed AST knowledge graph of this repository at `gra
         <p><em>Dur: 10&#39;</em></p>
 <p>To start this project, we use an already created plan document, the spec for the MVP. Use Copilot <strong>Plan</strong> mode with <code>docs/plan.md</code> attached and enter the following prompt.</p>
 <p class="image-container"><img alt="plan" src="img/c3d1bad4653cb48f.png"></p>
-<pre><code language="language-text" class="language-text">Validate this plan for an MVP.
+<pre><code language="language-prompt" class="language-prompt">Validate this plan for an MVP.
 Return a strict task sequence with checkpoints.
 Focus implementation on PO backlog.
 </code></pre>
 <p>Once you are satisfied with the plan, switch to <strong>Agent</strong> mode:</p>
 <p class="image-container"><img alt="agent" src="img/1442183f562939e9.png"></p>
-<pre><code language="language-text" class="language-text">Save the refined checklist to docs/runbook.md.
+<pre><code language="language-prompt" class="language-prompt">Save the refined checklist to docs/runbook.md.
 </code></pre>
 <p>Here we are creating another &#34;spec&#34; document, a document that contains all the items the agent needs to implement in order to create the MVP.</p>
 
@@ -655,7 +655,7 @@ Focus implementation on PO backlog.
         <p><em>Dur: 10&#39;</em></p>
 <p>Start developing the PO module by generating the <strong>Create PO</strong> page. We will be using a design in Figma to create the frontend codes.</p>
 <p>Use <strong>Agent</strong> mode in Copilot chat and enter the prompt below:</p>
-<pre><code language="language-text" class="language-text">Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-323&amp;p=f&amp;t=QJcJvfEN1Kpy8NGa-0
+<pre><code language="language-prompt" class="language-prompt">Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-323&amp;p=f&amp;t=QJcJvfEN1Kpy8NGa-0
 Include reusable components for header form and line allocation table.
 Do not implement API calls yet. Keep structure simple.
 </code></pre>
@@ -672,7 +672,7 @@ Do not implement API calls yet. Keep structure simple.
       <google-codelab-step label="Add Tests with Copilot" duration="10">
         <p><em>Dur: 10&#39;</em></p>
 <p>Ask Copilot to help us create unit tests for the pages we have just created. Enter this prompt:</p>
-<pre><code language="language-text" class="language-text">Create unit tests for important backend functions.
+<pre><code language="language-prompt" class="language-prompt">Create unit tests for important backend functions.
 Focus on services that provide lists to the frontend.
 
 Create Jest tests for frontend validations.
@@ -691,7 +691,7 @@ Keep tests readable.
       <google-codelab-step label="Project progress review" duration="10">
         <p><em>Dur: 10&#39;</em></p>
 <p>It is best practice to have a document that tracks the status of the project. This can help Copilot get context on the overall status of the system we are building. Use <strong>Agent</strong> mode and enter this prompt:</p>
-<pre><code language="language-text" class="language-text">Analyze this repository and summarize what is already implemented.
+<pre><code language="language-prompt" class="language-prompt">Analyze this repository and summarize what is already implemented.
 Identify the available API endpoints for PO module.
 Document the latest state of the project in `docs/progress.md`.
 </code></pre>
@@ -806,7 +806,7 @@ npm run package
       <google-codelab-step label="Implement &#34;Create PO&#34; page" duration="10">
         <p><em>Dur: 10&#39;</em></p>
 <p>Use this prompt to start integrating the Create PO page. Attach the related documents to provide context to Copilot.</p>
-<pre><code language="language-text" class="language-text">Integrate the available PO endpoints with the &#34;Create PO&#34; page.
+<pre><code language="language-prompt" class="language-prompt">Integrate the available PO endpoints with the &#34;Create PO&#34; page.
 Keep generated Figma components and wire them to purchase order APIs.
 Special request for the module functionality:
 - enforce over-allocation validation against PR remaining quantities
@@ -821,7 +821,7 @@ Special request for the module functionality:
       <google-codelab-step label="Complete the PO Module" duration="20">
         <p><em>Dur: 20&#39;</em></p>
 <p>Create the rest of the PO module pages and connect them to the PO module API endpoints. We don&#39;t have Figma file for these pages, so ask Copilot to follow the existing design rules (using available codes as context).</p>
-<pre><code language="language-text" class="language-text">Finish the PO module.
+<pre><code language="language-prompt" class="language-prompt">Finish the PO module.
 Implement PO list and detail pages in Vue using existing patterns.
 Keep UI simple for clarity and follow the existing design system.
 Use existing components when possible. Only create components that aren&#39;t already available.
@@ -846,11 +846,11 @@ Connect the new pages with the existing backend API endpoints for PO module.
 <h2 is-upgraded>Create the hook</h2>
 <p>Create a new <code>.git/hooks/pre-push</code> file.</p>
 <p>Then enter this prompt:</p>
-<pre><code language="language-text" class="language-text">Create a git hook pre-push script that runs npm test and blocks the push if there&#39;s a failed test.
+<pre><code language="language-prompt" class="language-prompt">Create a git hook pre-push script that runs npm test and blocks the push if there&#39;s a failed test.
 </code></pre>
 <p>Copy the script provided by Copilot to the file you have just created.</p>
 <p>Below is an example of a simple pre-push script that runs <code>npm run test:unit</code>:</p>
-<pre><code language="language-text" class="language-text">#!/bin/sh
+<pre><code language="language-bash" class="language-bash">#!/bin/sh
 
 set -eu
 
@@ -861,7 +861,7 @@ npm run test:unit
 <p>Make sure you implement a script that runs the unit tests and cancels the push if an error is found.</p>
 <h2 is-upgraded>Test the hook</h2>
 <p>Before testing the hook, make sure the hook file is executable:</p>
-<pre><code language="language-text" class="language-text">chmod +x .githooks/pre-push
+<pre><code language="language-bash" class="language-bash">chmod +x .githooks/pre-push
 </code></pre>
 <p>Then:</p>
 <ol type="1">
@@ -882,7 +882,7 @@ npm run test:unit
 <li>Negative path: reject over-allocation qty</li>
 </ol>
 <p>Make sure Copilot chat is in <strong>Agent</strong> mode. Then, create a dedicated Playwright spec using this prompt:</p>
-<pre><code language="language-text" class="language-text">Create tests/e2e/po-module.spec.js using the Playwright library.
+<pre><code language="language-prompt" class="language-prompt">Create tests/e2e/po-module.spec.js using the Playwright library.
 Add happy path and negative over-allocation path with stable selectors and clear assertions.
 
 The required artifacts:
@@ -898,7 +898,7 @@ The required artifacts:
         <p><em>Dur: 10&#39;</em></p>
 <p>Set Copilot Chat to <strong>Agent</strong> mode, then ask Copilot to generate implementation docs with diagrams.</p>
 <p>Prompt:</p>
-<pre><code language="language-text" class="language-text">Create documentation for how the current application works.
+<pre><code language="language-prompt" class="language-prompt">Create documentation for how the current application works.
 Add a user flow chart and sequence diagram in Mermaid.
 Save as markdown.
 </code></pre>
@@ -921,7 +921,7 @@ Save as markdown.
 <li>Create a file: <code>.github/prompts/explain-code.prompt.md</code></li>
 <li>Add this into the file:</li>
 </ol>
-<pre><code language="language-text" class="language-text">---
+<pre><code language="language-prompt" class="language-prompt">---
 agent: &#39;agent&#39;
 description: &#39;Generate a clear code explanation with examples&#39;
 ---
@@ -949,7 +949,7 @@ Use clear, simple language and avoid unnecessary jargon.
 <li>Create a file: <code>.github/agents/readme-creator.agent.md</code></li>
 <li>Add this into the file:</li>
 </ol>
-<pre><code language="language-text" class="language-text">---
+<pre><code language="language-prompt" class="language-prompt">---
 name: readme-creator
 description: Agent specializing in creating and improving README files
 ---
@@ -975,7 +975,7 @@ Focus on the following instructions:
       <google-codelab-step label="API Documentation &amp; Readiness Check" duration="10">
         <p><em>Dur: 10&#39;</em></p>
 <p>Before we start with the GR module implementation in our procurement system MVP, let&#39;s validate the backend API first. Use the <strong>Agent</strong> mode and enter this prompt:</p>
-<pre><code language="language-text" class="language-text">Add Swagger/OpenAPI support to this Fastify JavaScript backend.
+<pre><code language="language-prompt" class="language-prompt">Add Swagger/OpenAPI support to this Fastify JavaScript backend.
 Use @fastify/swagger and @fastify/swagger-ui.
 Expose API documentation at /api-docs.
 </code></pre>
@@ -1086,7 +1086,7 @@ AI CHAT      /opsx:archive                    (specs updated, change filed away)
       <google-codelab-step label="Create the GR Spec" duration="20">
         <p><em>Dur: 20&#39;</em></p>
 <p>Create a functional specification for the GR module using OpenSpec <code>/opsx:propose</code> command:</p>
-<pre><code>/opsx:propose goods-receipts-module
+<pre><code language="language-prompt" class="language-prompt">/opsx:propose goods-receipts-module
 </code></pre>
 <p>After the proposition process is done, you will get the specification documents for the GR module.</p>
 <p class="image-container"><img alt="openspec propose 1" src="img/c4ab0e74d0bcb2fe.png"></p>
@@ -1109,7 +1109,7 @@ AI CHAT      /opsx:archive                    (specs updated, change filed away)
 <p>You have <strong>30 minutes</strong>. You can also explore OpenSpec&#39;s custom prompt and skill files. Check <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md" target="_blank">this documentation</a> for more information about OpenSpec&#39;s workflow.</p>
 <h2 is-upgraded>Implementation</h2>
 <p>Type this in the GitHub Copilot Chat:</p>
-<pre><code language="language-text" class="language-text">/opsx:apply
+<pre><code language="language-prompt" class="language-prompt">/opsx:apply
 </code></pre>
 <p>Once the implementation is finished, review the result:</p>
 <ol type="1">
@@ -1124,7 +1124,7 @@ AI CHAT      /opsx:archive                    (specs updated, change filed away)
 </aside>
 <h2 is-upgraded>Archive the spec</h2>
 <p>Use this command to archive the spec once the implementation is complete.</p>
-<pre><code language="language-text" class="language-text">/opsx:archive
+<pre><code language="language-prompt" class="language-prompt">/opsx:archive
 </code></pre>
 
 

@@ -232,7 +232,7 @@ In this exercise we are going to use Copilot to create specifications of an exis
 5. Open the workspace in VS Code.
 6. Enter this prompt in Copilot Chat:
 
-```
+```prompt
 Create specification documents in markdown format for a web application that:
 - <your observation>
 - <your observation>
@@ -280,7 +280,7 @@ Before executing the prompt, let's add a file to create a more comprehensive con
 3. Create a file called `plan.md`
 4. Put the content below in `plan.md`:
 
-```
+```prompt
 Based on the following url https://simplydemo.secure.simplybook.me/v2/dashboard/new, create a comprehensive specification of a fully working web application with the following structure template.
 
 specs/
@@ -315,7 +315,7 @@ specs/
 
 Once the file `plan.md` is ready, enter this prompt in Copilot Chat:
 
-```
+```prompt
 Use the file #plan.md to conduct a reverse engineering process, ie. from application to specification documents.
 ```
 
@@ -470,7 +470,7 @@ Before implementation, update custom instructions to shape Copilot output qualit
 
 Make sure you are in **Ask** mode, then enter this prompt:
 
-```text
+```prompt
 Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
 ```
 
@@ -654,7 +654,7 @@ Graphify will look at the code files (e.g., `.py`, `.js`, `.go`, `.rs`, etc.), p
 
 Add this to `AGENTS.md`:
 
-```
+```prompt
 ## Codebase Context & Knowledge Graph Protocol
 
 You have access to a pre-computed AST knowledge graph of this repository at `graphify-out/graph.json`. To minimize context window clutter, prevent hallucinations, and accurately map cross-file dependencies, you MUST follow these routing rules:
@@ -757,7 +757,7 @@ To start this project, we use an already created plan document, the spec for the
 
 ![plan](image_source/mode-plan.png)
 
-```text
+```prompt
 Validate this plan for an MVP.
 Return a strict task sequence with checkpoints.
 Focus implementation on PO backlog.
@@ -767,7 +767,7 @@ Once you are satisfied with the plan, switch to **Agent** mode:
 
 ![agent](image_source/mode-agent.png)
 
-```text
+```prompt
 Save the refined checklist to docs/runbook.md.
 ```
 
@@ -879,7 +879,7 @@ Start developing the PO module by generating the **Create PO** page.
 We will be using a design in Figma to create the frontend codes.
 
 Use **Agent** mode in Copilot chat and enter the prompt below:
-```text
+```prompt
 Using Figma MCP, generate Vue code for the PO Create page from this Figma file https://www.figma.com/design/1PpeiduceHdtCB0Qds30am/Github-Copilot--Workshop-?node-id=38-323&p=f&t=QJcJvfEN1Kpy8NGa-0
 Include reusable components for header form and line allocation table.
 Do not implement API calls yet. Keep structure simple.
@@ -903,7 +903,7 @@ Duration: 10
 Ask Copilot to help us create unit tests for the pages we have just created.
 Enter this prompt:
 
-```text
+```prompt
 Create unit tests for important backend functions.
 Focus on services that provide lists to the frontend.
 
@@ -936,7 +936,7 @@ Duration: 10
 It is best practice to have a document that tracks the status of the project. This can help Copilot get context on the overall status of the system we are building.
 Use **Agent** mode and enter this prompt:
 
-```text
+```prompt
 Analyze this repository and summarize what is already implemented.
 Identify the available API endpoints for PO module.
 Document the latest state of the project in `docs/progress.md`.
@@ -1113,7 +1113,7 @@ Duration: 10
 
 Use this prompt to start integrating the Create PO page. Attach the related documents to provide context to Copilot.
 
-```text
+```prompt
 Integrate the available PO endpoints with the "Create PO" page.
 Keep generated Figma components and wire them to purchase order APIs.
 Special request for the module functionality:
@@ -1137,7 +1137,7 @@ Duration: 20
 
 Create the rest of the PO module pages and connect them to the PO module API endpoints. We don't have Figma file for these pages, so ask Copilot to follow the existing design rules (using available codes as context).
 
-```text
+```prompt
 Finish the PO module.
 Implement PO list and detail pages in Vue using existing patterns.
 Keep UI simple for clarity and follow the existing design system.
@@ -1175,14 +1175,14 @@ In this example we will make a hook that does pre-push checks, that can block lo
 Create a new `.git/hooks/pre-push` file.
 
 Then enter this prompt:
-```text
+```prompt
 Create a git hook pre-push script that runs npm test and blocks the push if there's a failed test.
 ```
 
 Copy the script provided by Copilot to the file you have just created.
 
 Below is an example of a simple pre-push script that runs `npm run test:unit`:
-```text
+```bash
 #!/bin/sh
 
 set -eu
@@ -1197,7 +1197,7 @@ Make sure you implement a script that runs the unit tests and cancels the push i
 ### Test the hook
 Before testing the hook, make sure the hook file is executable:
 
-```text
+```bash
 chmod +x .githooks/pre-push
 ```
 
@@ -1224,7 +1224,7 @@ The required scenarios for this end-to-end test:
 
 Make sure Copilot chat is in **Agent** mode. Then, create a dedicated Playwright spec using this prompt:
 
-```text
+```prompt
 Create tests/e2e/po-module.spec.js using the Playwright library.
 Add happy path and negative over-allocation path with stable selectors and clear assertions.
 
@@ -1249,7 +1249,7 @@ Set Copilot Chat to **Agent** mode, then ask Copilot to generate implementation 
 
 Prompt:
 
-```text
+```prompt
 Create documentation for how the current application works.
 Add a user flow chart and sequence diagram in Mermaid.
 Save as markdown.
@@ -1286,7 +1286,7 @@ Prompt files define reusable **prompts for specific tasks** that you can invoke 
 1. Create a file: `.github/prompts/explain-code.prompt.md`
 2. Add this into the file:
 
-```text
+```prompt
 ---
 agent: 'agent'
 description: 'Generate a clear code explanation with examples'
@@ -1320,7 +1320,7 @@ Other than the default agent provided by Copilot, you can create your own custom
 1. Create a file: `.github/agents/readme-creator.agent.md`
 2. Add this into the file:
 
-```text
+```prompt
 ---
 name: readme-creator
 description: Agent specializing in creating and improving README files
@@ -1358,7 +1358,7 @@ Duration: 10
 Before we start with the GR module implementation in our procurement system MVP, let's validate the backend API first.
 Use the **Agent** mode and enter this prompt:
 
-```text
+```prompt
 Add Swagger/OpenAPI support to this Fastify JavaScript backend.
 Use @fastify/swagger and @fastify/swagger-ui.
 Expose API documentation at /api-docs.
@@ -1524,7 +1524,7 @@ Duration: 20
 
 Create a functional specification for the GR module using OpenSpec `/opsx:propose` command:
 
-```
+```prompt
 /opsx:propose goods-receipts-module
 ```
 
@@ -1561,7 +1561,7 @@ You have **30 minutes**. You can also explore OpenSpec's custom prompt and skill
 
 Type this in the GitHub Copilot Chat:
 
-```text
+```prompt
 /opsx:apply
 ```
 
@@ -1584,7 +1584,7 @@ Validate with realistic sample data from migration/seed context. Final checkpoin
 
 Use this command to archive the spec once the implementation is complete.
 
-```text
+```prompt
 /opsx:archive
 ```
 
