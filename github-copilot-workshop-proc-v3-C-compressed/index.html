@@ -381,7 +381,81 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 
       </google-codelab-step>
     
+      <google-codelab-step label="AI, LLM, and Context Basics" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p class="image-container"><img alt="AI" src="img/84be88684a8df669.png"></p>
+<p>How do LLMs like GPT or Claude work? LLMs predict the next token based on the context provided to them. So, better context gives better output quality.</p>
+<p>Prompt anatomy in GitHub Copilot:</p>
+<ul>
+<li>System instructions: global behavior and constraints</li>
+<li>User message: immediate task objective, the prompt written by the user</li>
+<li>Repository context: code, docs, config, the information available in the repo/workspace</li>
+</ul>
+<p>Working rule for this workshop:</p>
+<ol type="1">
+<li>If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt</li>
+<li>When working on something new, ask for a plan first. Afterwards, implement in small checkpoints</li>
+<li>Always validate the agent&#39;s work. You can outsource your code, but you must not outsource your understanding.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Token optimization - Part 1" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>The most expensive code an AI agent writes is the code you run without thinking. Today, the bottleneck is not anymore whether AI agents can write code. It&#39;s whether you can use them economically.</p>
+<p>Let&#39;s breakdown some new (and old) ideas that can help us optimize AI token usage.</p>
+<aside class="special"><p>Today&#39;s challenge in AI-enabled engineering is finding the sweet spot between providing AI agents with adequate context versus maintaining an optimum token usage.</p>
+</aside>
+<h2 is-upgraded>Develop your own analytical skills</h2>
+<h3 is-upgraded>1. Analysis is the real value</h3>
+<p>Can you describe the problem without ambiguity? Can you name the constraints? Do you know what success looks like before you ask the agent to start? If the answer to any of these is &#34;not really,&#34; you are not ready to ask the agent. Spend time thinking and doing some research first.</p>
+<h3 is-upgraded>2. Keep your instructions concise and human-written</h3>
+<p>Many teams make the mistake of using AI to generate their agent&#39;s persistent instructions or system prompts. Your instruction file is too important for that. Write it down by yourself.</p>
+<h3 is-upgraded>3. Build architecture that speaks for itself</h3>
+<p>A tangled, poorly organized project forces the agent to fetch and inspect more files, read more code, generate more explanation of what things do. Good architecture is an optimization strategy. Treat it as such.</p>
+<h2 is-upgraded>Be strategic about what agents actually do</h2>
+<h3 is-upgraded>4. Use MCP strategically</h3>
+<p>Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip. Use MCP when you genuinely need the agent to interact with a system in real-time, in order to achieve your objective.</p>
+<aside class="special"><p>By default, turn all your agentic tools and MCP servers off.</p>
+</aside>
+<h3 is-upgraded>5. Avoid SKILL.md unless the project actually needs it</h3>
+<p>Most of the time, the content of SKILL.md is just repeating what AI models already knows, wasting tokens on context that does not add value. For example: you can skip Figma related skills if the Figma file you are accessing using an MCP follows best-practices. A properly produced Figma file is, in itself, a proper prompt.</p>
+<aside class="special"><p><a href="https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f" target="_blank">Figma recommended practices in the age of AI</a></p>
+</aside>
+<p>If you find yourself writing a SKILL.md that is longer than a few paragraphs, ask whether the agent actually needs it. Most of the time, the answer is no. Skills are totally acceptable if the quality of output deteriorates without them.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Token optimization - Part 2" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p><em>(Continuing from our previous slide)</em></p>
+<h3 is-upgraded>6. Divide work into sessions, not monoliths</h3>
+<p>Divide tasks into sequential sessions, eg. research-planning-implementation. Long session is expensive because the context window is bloated the entire time. And if context window is bloated, response quality declines. Bad response will cost you more token in the long run.</p>
+<h3 is-upgraded>7. Choose the right model for the task</h3>
+<p>This is a very important notion that most developers often ignore: not every task needs your most powerful model.</p>
+<ul>
+<li>A reasoning-class model (like Claude Opus or GPT-5.5) is excellent for planning, architecture, and debugging complex problems. It is also expensive. Use it when you need the thinking.</li>
+<li>Mid-tier models (Claude Sonnet, GPT-5.4) are workhorses: they handle most implementation tasks efficiently. Use them for writing code, generating content, refactoring.</li>
+<li>Smaller, faster models (Claude Haiku, GPT-5 mini) are excellent for repetitive tasks: updating documentation, adding simple features, running mechanical transformations. Use them for tasks where speed matters more than depth.</li>
+</ul>
+<h3 is-upgraded>8. Use AGENTS.md to stop the agent early</h3>
+<p>A subtle but important detail: most agents will keep generating output until they hit their token limit. They are optimistic by default. Your persistent instruction file should include explicit stopping criteria.</p>
+<h2 is-upgraded>Do not over-rely on agents for everything</h2>
+<h3 is-upgraded>9. Use deterministic tools when they exist</h3>
+<p>Want to check code quality? Use a linter or tools like SonarQube. Want to find security issues? Use a scanner like Trivy or Semgrep. Want to understand test coverage? Use an existing coverage libraries. These tools are fast, deterministic, and cheap (often free). When you hand their output to the agent, the agent can focus on interpretation instead of discovery.</p>
+<aside class="special"><p>Tools like <code>rtk</code> improve shell output and make it easier for agents to parse with less token.</p>
+</aside>
+<h3 is-upgraded>10. Create guardrails that do not require agents</h3>
+<p>Unit tests, linters, type systems, security scanning; none of these require tokens. All of them save tokens by preventing the agent from generating code that will need fixing later.</p>
+<h3 is-upgraded>11. The agent is not your QA engineer</h3>
+<p>Validation is not optional. It is your job, and it saves you money in the long run by catching mistakes before they multiply.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Token optimization - Part 3" duration="15">
         <p><em>Dur: 15&#39;</em></p>
 <h2 is-upgraded>Tool: RTK</h2>
 <p><a href="https://github.com/rtk-ai/rtk" target="_blank">RTK</a> is installed globally on our computer. It is a tool (written in Rust) that filters and compresses command outputs before they reach your LLM context.</p>
@@ -430,7 +504,7 @@ rtk curl &lt;url&gt;
 
       </google-codelab-step>
     
-      <google-codelab-step label="Token optimization - Part 2" duration="20">
+      <google-codelab-step label="Token optimization - Part 4" duration="20">
         <p><em>Dur: 20&#39;</em></p>
 <h2 is-upgraded>Tool: Graphify</h2>
 <aside class="special"><p>Microsoft&#39;s GraphRAG research shows 26–97% fewer tokens per query when pre-built graph summaries replace raw document search (arXiv:2404.16130). <a href="https://copilot-academy.github.io/labs/context-engineering-lab#101-why-knowledge-graphs-reduce-tokens" target="_blank">Why Knowledge Graphs Reduce Tokens</a></p>
@@ -696,109 +770,6 @@ Identify the available API endpoints for PO module.
 Document the latest state of the project in `docs/progress.md`.
 </code></pre>
 <p>The goal here is to make Copilot aware of what has been done and avoid redundancy.</p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="AI, LLM, and Context Basics" duration="10">
-        <p><em>Dur: 10&#39;</em></p>
-<p class="image-container"><img alt="AI" src="img/84be88684a8df669.png"></p>
-<p>How do LLMs like GPT or Claude work? LLMs predict the next token based on the context provided to them. So, better context gives better output quality.</p>
-<p>Prompt anatomy in GitHub Copilot:</p>
-<ul>
-<li>System instructions: global behavior and constraints</li>
-<li>User message: immediate task objective, the prompt written by the user</li>
-<li>Repository context: code, docs, config, the information available in the repo/workspace</li>
-</ul>
-<p>Working rule for this workshop:</p>
-<ol type="1">
-<li>If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt</li>
-<li>When working on something new, ask for a plan first. Afterwards, implement in small checkpoints</li>
-<li>Always validate the agent&#39;s work. You can outsource your code, but you must not outsource your understanding.</li>
-</ol>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Token optimization - Part 3" duration="15">
-        <p><em>Dur: 15&#39;</em></p>
-<p>The most expensive code an AI agent writes is the code you run without thinking. Today, the bottleneck is not anymore whether AI agents can write code. It&#39;s whether you can use them economically.</p>
-<p>Let&#39;s breakdown some new (and old) ideas that can help us optimize AI token usage.</p>
-<aside class="special"><p>Today&#39;s challenge in AI-enabled engineering is finding the sweet spot between providing AI agents with adequate context versus maintaining an optimum token usage.</p>
-</aside>
-<h2 is-upgraded>Develop your own analytical skills</h2>
-<h3 is-upgraded>1. Analysis is the real value</h3>
-<p>Can you describe the problem without ambiguity? Can you name the constraints? Do you know what success looks like before you ask the agent to start? If the answer to any of these is &#34;not really,&#34; you are not ready to ask the agent. Spend time thinking and doing some research first.</p>
-<h3 is-upgraded>2. Keep your instructions concise and human-written</h3>
-<p>Many teams make the mistake of using AI to generate their agent&#39;s persistent instructions or system prompts. Your instruction file is too important for that. Write it down by yourself.</p>
-<h3 is-upgraded>3. Build architecture that speaks for itself</h3>
-<p>A tangled, poorly organized project forces the agent to fetch and inspect more files, read more code, generate more explanation of what things do. Good architecture is an optimization strategy. Treat it as such.</p>
-<h2 is-upgraded>Be strategic about what agents actually do</h2>
-<h3 is-upgraded>4. Use MCP strategically</h3>
-<p>Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip. Use MCP when you genuinely need the agent to interact with a system in real-time, in order to achieve your objective.</p>
-<aside class="special"><p>By default, turn all your agentic tools and MCP servers off.</p>
-</aside>
-<h3 is-upgraded>5. Avoid SKILL.md unless the project actually needs it</h3>
-<p>Most of the time, the content of SKILL.md is just repeating what AI models already knows, wasting tokens on context that does not add value. For example: you can skip Figma related skills if the Figma file you are accessing using an MCP follows best-practices. A properly produced Figma file is, in itself, a proper prompt.</p>
-<aside class="special"><p><a href="https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f" target="_blank">Figma recommended practices in the age of AI</a></p>
-</aside>
-<p>If you find yourself writing a SKILL.md that is longer than a few paragraphs, ask whether the agent actually needs it. Most of the time, the answer is no. Skills are totally acceptable if the quality of output deteriorates without them.</p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Token optimization - Part 4" duration="15">
-        <p><em>Dur: 15&#39;</em></p>
-<p><em>(Continuing from our previous slide)</em></p>
-<h3 is-upgraded>6. Divide work into sessions, not monoliths</h3>
-<p>Divide tasks into sequential sessions, eg. research-planning-implementation. Long session is expensive because the context window is bloated the entire time. And if context window is bloated, response quality declines. Bad response will cost you more token in the long run.</p>
-<h3 is-upgraded>7. Choose the right model for the task</h3>
-<p>This is a very important notion that most developers often ignore: not every task needs your most powerful model.</p>
-<ul>
-<li>A reasoning-class model (like Claude Opus or GPT-5.5) is excellent for planning, architecture, and debugging complex problems. It is also expensive. Use it when you need the thinking.</li>
-<li>Mid-tier models (Claude Sonnet, GPT-5.4) are workhorses: they handle most implementation tasks efficiently. Use them for writing code, generating content, refactoring.</li>
-<li>Smaller, faster models (Claude Haiku, GPT-5 mini) are excellent for repetitive tasks: updating documentation, adding simple features, running mechanical transformations. Use them for tasks where speed matters more than depth.</li>
-</ul>
-<h3 is-upgraded>8. Use AGENTS.md to stop the agent early</h3>
-<p>A subtle but important detail: most agents will keep generating output until they hit their token limit. They are optimistic by default. Your persistent instruction file should include explicit stopping criteria.</p>
-<h2 is-upgraded>Do not over-rely on agents for everything</h2>
-<h3 is-upgraded>9. Use deterministic tools when they exist</h3>
-<p>Want to check code quality? Use a linter or tools like SonarQube. Want to find security issues? Use a scanner like Trivy or Semgrep. Want to understand test coverage? Use an existing coverage libraries. These tools are fast, deterministic, and cheap (often free). When you hand their output to the agent, the agent can focus on interpretation instead of discovery.</p>
-<aside class="special"><p>Tools like <code>rtk</code> improve shell output and make it easier for agents to parse with less token.</p>
-</aside>
-<h3 is-upgraded>10. Create guardrails that do not require agents</h3>
-<p>Unit tests, linters, type systems, security scanning; none of these require tokens. All of them save tokens by preventing the agent from generating code that will need fixing later.</p>
-<h3 is-upgraded>11. The agent is not your QA engineer</h3>
-<p>Validation is not optional. It is your job, and it saves you money in the long run by catching mistakes before they multiply.</p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="AI Engineering Coach" duration="10">
-        <p><em>Dur: 10&#39;</em></p>
-<p>AI Engineering Coach is a VS Code extension developed by Microsoft. It reads our local AI session logs and turns them into actionable insights, no data leaves our machine.</p>
-<p>It is dashboard canvas where we can analyze our AI engineering effectiveness. It also provides suggestions on how we can improve our AI engineering skills.</p>
-<p class="image-container"><img alt="coach" src="img/8e1da1b702c12486.png"></p>
-<h2 is-upgraded>Build the extension</h2>
-<pre><code>git clone https://github.com/microsoft/ai-engineering-coach.git
-cd ai-engineering-coach
-npm ci
-npm run package
-</code></pre>
-<p>This will create a <code>.vsix</code> file in that repository.</p>
-<h2 is-upgraded>Install the extension</h2>
-<p>Install the extension file in VS Code:</p>
-<ol type="1">
-<li>Press Ctrl/Cmd+Shift+P</li>
-<li>Type &#34;Install from VSIX&#34;</li>
-<li>Browse to the <code>.vsix</code> file and select it.</li>
-</ol>
-<p>After install:</p>
-<ol type="1">
-<li>Open the command palette (Ctrl/Cmd+Shift+P)</li>
-<li>Run <code>AI Engineer Coach: Open Dashboard</code></li>
-<li>Navigate pages from the sidebar, filter by workspace or harness</li>
-</ol>
 
 
       </google-codelab-step>

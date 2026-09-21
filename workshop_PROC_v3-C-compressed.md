@@ -24,6 +24,9 @@ change log:
 - compression and rearrangement to fit BRI's 1.5 day workshop
 - removed GHE content
 
+21 September 2026
+- using the latest local customizable-style build-process
+
 # GitHub Copilot Workshop: Build a Procurement System MVP
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
@@ -58,11 +61,6 @@ Tech stack:
 - Design: Figma + Figma MCP
 - Support: Python
 
-> aside positive
->
-> You can access the slide deck at [bit.ly/eComCopilotWorkshop2026](https://bit.ly/eComCopilotWorkshop2026)
-
-![slides](image_source/slides.png)
 
 ---
 
@@ -497,7 +495,125 @@ Example of the `AGENTS.md` file we are using for this project:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+
+## AI, LLM, and Context Basics
+Duration: 10
+
+*Dur: 10'*
+
+![AI](image_source/ai.png)
+
+How do LLMs like GPT or Claude work? LLMs predict the next token based on the context provided to them. So, better context gives better output quality.
+
+Prompt anatomy in GitHub Copilot:
+- System instructions: global behavior and constraints
+- User message: immediate task objective, the prompt written by the user
+- Repository context: code, docs, config, the information available in the repo/workspace
+
+Working rule for this workshop:
+1. If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt
+2. When working on something new, ask for a plan first. Afterwards, implement in small checkpoints
+3. Always validate the agent's work. You can outsource your code, but you must not outsource your understanding.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## Token optimization - Part 1
+Duration: 15
+
+*Dur: 15'*
+
+The most expensive code an AI agent writes is the code you run without thinking. Today, the bottleneck is not anymore whether AI agents can write code. It’s whether you can use them economically.
+
+Let's breakdown some new (and old) ideas that can help us optimize AI token usage.
+
+> aside positive
+>
+> Today's challenge in AI-enabled engineering is finding the sweet spot between providing AI agents with adequate context versus maintaining an optimum token usage.
+
+### Develop your own analytical skills
+
+#### 1. Analysis is the real value
+Can you describe the problem without ambiguity? Can you name the constraints? Do you know what success looks like before you ask the agent to start?
+If the answer to any of these is “not really,” you are not ready to ask the agent. Spend time thinking and doing some research first.
+
+#### 2. Keep your instructions concise and human-written
+Many teams make the mistake of using AI to generate their agent’s persistent instructions or system prompts.
+Your instruction file is too important for that. Write it down by yourself.
+
+#### 3. Build architecture that speaks for itself
+A tangled, poorly organized project forces the agent to fetch and inspect more files, read more code, generate more explanation of what things do.
+Good architecture is an optimization strategy. Treat it as such.
+
+### Be strategic about what agents actually do
+
+#### 4. Use MCP strategically
+Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip.
+Use MCP when you genuinely need the agent to interact with a system in real-time, in order to achieve your objective.
+
+> aside positive
+> 
+> By default, turn all your agentic tools and MCP servers off.
+
+#### 5. Avoid SKILL.md unless the project actually needs it
+Most of the time, the content of SKILL.md is just repeating what AI models already knows, wasting tokens on context that does not add value.
+For example: you can skip Figma related skills if the Figma file you are accessing using an MCP follows best-practices. A properly produced Figma file is, in itself, a proper prompt.
+
+> aside positive
+>
+> [Figma recommended practices in the age of AI](https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f)
+
+If you find yourself writing a SKILL.md that is longer than a few paragraphs, ask whether the agent actually needs it. Most of the time, the answer is no.
+Skills are totally acceptable if the quality of output deteriorates without them.
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Token optimization - Part 2
+Duration: 15
+
+*Dur: 15'*
+
+*(Continuing from our previous slide)*
+
+#### 6. Divide work into sessions, not monoliths
+Divide tasks into sequential sessions, eg. research-planning-implementation. Long session is expensive because the context window is bloated the entire time.
+And if context window is bloated, response quality declines. Bad response will cost you more token in the long run.
+
+#### 7. Choose the right model for the task
+This is a very important notion that most developers often ignore: not every task needs your most powerful model.
+
+- A reasoning-class model (like Claude Opus or GPT-5.5) is excellent for planning, architecture, and debugging complex problems. It is also expensive. Use it when you need the thinking.
+- Mid-tier models (Claude Sonnet, GPT-5.4) are workhorses: they handle most implementation tasks efficiently. Use them for writing code, generating content, refactoring.
+- Smaller, faster models (Claude Haiku, GPT-5 mini) are excellent for repetitive tasks: updating documentation, adding simple features, running mechanical transformations. Use them for tasks where speed matters more than depth.
+
+#### 8. Use AGENTS.md to stop the agent early
+A subtle but important detail: most agents will keep generating output until they hit their token limit. They are optimistic by default.
+Your persistent instruction file should include explicit stopping criteria.
+
+### Do not over-rely on agents for everything
+
+#### 9. Use deterministic tools when they exist
+Want to check code quality? Use a linter or tools like SonarQube. Want to find security issues? Use a scanner like Trivy or Semgrep. Want to understand test coverage? Use an existing coverage libraries. These tools are fast, deterministic, and cheap (often free). When you hand their output to the agent, the agent can focus on interpretation instead of discovery.
+
+> aside positive
+>
+> Tools like `rtk` improve shell output and make it easier for agents to parse with less token.
+
+#### 10. Create guardrails that do not require agents
+Unit tests, linters, type systems, security scanning; none of these require tokens. All of them save tokens by preventing the agent from generating code that will need fixing later.
+
+#### 11. The agent is not your QA engineer
+Validation is not optional. It is your job, and it saves you money in the long run by catching mistakes before they multiply.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Token optimization - Part 3
 Duration: 15
 
 *Dur: 15'*
@@ -579,7 +695,7 @@ Add these lines into `AGENTS.md`:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Token optimization - Part 2
+## Token optimization - Part 4
 Duration: 20
 
 *Dur: 20'*
@@ -943,163 +1059,6 @@ Document the latest state of the project in `docs/progress.md`.
 ```
 
 The goal here is to make Copilot aware of what has been done and avoid redundancy.
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## AI, LLM, and Context Basics
-Duration: 10
-
-*Dur: 10'*
-
-![AI](image_source/ai.png)
-
-How do LLMs like GPT or Claude work? LLMs predict the next token based on the context provided to them. So, better context gives better output quality.
-
-Prompt anatomy in GitHub Copilot:
-- System instructions: global behavior and constraints
-- User message: immediate task objective, the prompt written by the user
-- Repository context: code, docs, config, the information available in the repo/workspace
-
-Working rule for this workshop:
-1. If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt
-2. When working on something new, ask for a plan first. Afterwards, implement in small checkpoints
-3. Always validate the agent's work. You can outsource your code, but you must not outsource your understanding.
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Token optimization - Part 3
-Duration: 15
-
-*Dur: 15'*
-
-The most expensive code an AI agent writes is the code you run without thinking. Today, the bottleneck is not anymore whether AI agents can write code. It’s whether you can use them economically.
-
-Let's breakdown some new (and old) ideas that can help us optimize AI token usage.
-
-> aside positive
->
-> Today's challenge in AI-enabled engineering is finding the sweet spot between providing AI agents with adequate context versus maintaining an optimum token usage.
-
-### Develop your own analytical skills
-
-#### 1. Analysis is the real value
-Can you describe the problem without ambiguity? Can you name the constraints? Do you know what success looks like before you ask the agent to start?
-If the answer to any of these is “not really,” you are not ready to ask the agent. Spend time thinking and doing some research first.
-
-#### 2. Keep your instructions concise and human-written
-Many teams make the mistake of using AI to generate their agent’s persistent instructions or system prompts.
-Your instruction file is too important for that. Write it down by yourself.
-
-#### 3. Build architecture that speaks for itself
-A tangled, poorly organized project forces the agent to fetch and inspect more files, read more code, generate more explanation of what things do.
-Good architecture is an optimization strategy. Treat it as such.
-
-### Be strategic about what agents actually do
-
-#### 4. Use MCP strategically
-Model Context Protocol (MCP) servers are powerful, they are also expensive. Every MCP call is a roundtrip.
-Use MCP when you genuinely need the agent to interact with a system in real-time, in order to achieve your objective.
-
-> aside positive
-> 
-> By default, turn all your agentic tools and MCP servers off.
-
-#### 5. Avoid SKILL.md unless the project actually needs it
-Most of the time, the content of SKILL.md is just repeating what AI models already knows, wasting tokens on context that does not add value.
-For example: you can skip Figma related skills if the Figma file you are accessing using an MCP follows best-practices. A properly produced Figma file is, in itself, a proper prompt.
-
-> aside positive
->
-> [Figma recommended practices in the age of AI](https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f)
-
-If you find yourself writing a SKILL.md that is longer than a few paragraphs, ask whether the agent actually needs it. Most of the time, the answer is no.
-Skills are totally acceptable if the quality of output deteriorates without them.
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## Token optimization - Part 4
-Duration: 15
-
-*Dur: 15'*
-
-*(Continuing from our previous slide)*
-
-#### 6. Divide work into sessions, not monoliths
-Divide tasks into sequential sessions, eg. research-planning-implementation. Long session is expensive because the context window is bloated the entire time.
-And if context window is bloated, response quality declines. Bad response will cost you more token in the long run.
-
-#### 7. Choose the right model for the task
-This is a very important notion that most developers often ignore: not every task needs your most powerful model.
-
-- A reasoning-class model (like Claude Opus or GPT-5.5) is excellent for planning, architecture, and debugging complex problems. It is also expensive. Use it when you need the thinking.
-- Mid-tier models (Claude Sonnet, GPT-5.4) are workhorses: they handle most implementation tasks efficiently. Use them for writing code, generating content, refactoring.
-- Smaller, faster models (Claude Haiku, GPT-5 mini) are excellent for repetitive tasks: updating documentation, adding simple features, running mechanical transformations. Use them for tasks where speed matters more than depth.
-
-#### 8. Use AGENTS.md to stop the agent early
-A subtle but important detail: most agents will keep generating output until they hit their token limit. They are optimistic by default.
-Your persistent instruction file should include explicit stopping criteria.
-
-### Do not over-rely on agents for everything
-
-#### 9. Use deterministic tools when they exist
-Want to check code quality? Use a linter or tools like SonarQube. Want to find security issues? Use a scanner like Trivy or Semgrep. Want to understand test coverage? Use an existing coverage libraries. These tools are fast, deterministic, and cheap (often free). When you hand their output to the agent, the agent can focus on interpretation instead of discovery.
-
-> aside positive
->
-> Tools like `rtk` improve shell output and make it easier for agents to parse with less token.
-
-#### 10. Create guardrails that do not require agents
-Unit tests, linters, type systems, security scanning; none of these require tokens. All of them save tokens by preventing the agent from generating code that will need fixing later.
-
-#### 11. The agent is not your QA engineer
-Validation is not optional. It is your job, and it saves you money in the long run by catching mistakes before they multiply.
-
----
-
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
-<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
-## AI Engineering Coach
-Duration: 10
-
-*Dur: 10'*
-
-AI Engineering Coach is a VS Code extension developed by Microsoft. It reads our local AI session logs and turns them into actionable insights, no data leaves our machine.
-
-It is dashboard canvas where we can analyze our AI engineering effectiveness. It also provides suggestions on how we can improve our AI engineering skills.
-
-![coach](image_source/screen-antipatterns.png)
-
-### Build the extension
-
-```
-git clone https://github.com/microsoft/ai-engineering-coach.git
-cd ai-engineering-coach
-npm ci
-npm run package
-```
-
-This will create a `.vsix` file in that repository.
-
-### Install the extension
-
-Install the extension file in VS Code:
-
-1. Press Ctrl/Cmd+Shift+P
-2. Type "Install from VSIX"
-3. Browse to the `.vsix` file and select it.
-
-After install:
-1. Open the command palette (Ctrl/Cmd+Shift+P)
-2. Run `AI Engineer Coach: Open Dashboard`
-3. Navigate pages from the sidebar, filter by workspace or harness
 
 ---
 
