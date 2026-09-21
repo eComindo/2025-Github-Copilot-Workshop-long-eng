@@ -2,13 +2,25 @@ Check the build site here: [https://stghuniverse.z45.web.core.windows.net/#0](ht
 
 How to build the codelabs from its markdown source:
 ```
-~/go/bin/claat export <name of the markdown file>
+scripts/build-codelab.sh <name of the markdown file>
 ```
 
 Example:
 ```
-~/go/bin/claat export workshop.md
+scripts/build-codelab.sh workshop.md
 ```
+
+This wraps `claat export` with a local template (`build/claat-template.html`) that
+loads the `google-codelab` web components from `assets/codelab-elements/` instead
+of `https://storage.googleapis.com/claat-public/`, which stopped serving files
+(the bucket's billing account was disabled). The script also copies
+`assets/codelab-elements/` into the exported deck's folder as `codelab-elements/`,
+so each deck stays self-contained for local preview and for the Azure deploy step.
+
+To customize the codelab look and feel, edit `assets/codelab-elements/codelab-elements.css`
+directly and re-run the build script for the decks you want to update.
+
+Requires the `claat` binary at `~/go/bin/claat` (override with the `CLAAT_BIN` env var).
 
 To serve the resulting codelabs locally, run:
 ```

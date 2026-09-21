@@ -47,5 +47,5 @@ jobs:
             --account-name ${{ secrets.AZURE_STORAGE_GHCOPILOT_ACCOUNT }} \
             --sas-token "${{ secrets.AZURE_STORAGE_GHCOPILOT_SAS_TOKEN }}" \
             --destination '$web' \
-            --source ./github-copilot-workshop-procurement-mvp/ \
+            --source ./github-copilot-workshop-proc-v3-C/ \
             --overwrite

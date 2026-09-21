@@ -1,8 +1,7 @@
 {
   "environment": "web",
-  "format": "html",
+  "format": "/Users/Arie/Workspace/ecom/copilot_workshops/presentation_decks/000_Github-Copilot-Workshop-long-eng/build/claat-template.html",
   "prefix": "https://storage.googleapis.com",
-  "mainga": "UA-49880327-14",
   "updated": "2026-07-02T11:44:44+07:00",
   "id": "github-copilot-workshop-proc-v3-C-compressed",
   "duration": 560,

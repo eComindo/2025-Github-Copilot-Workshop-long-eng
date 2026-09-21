@@ -1,0 +1,52 @@
+<!--
+Local fork of claat's default HTML export template
+(https://github.com/googlecodelabs/tools/blob/master/claat/render/template.html).
+
+Changes from upstream:
+- codelab-elements/* assets are loaded from a local relative path instead of
+  https://storage.googleapis.com/claat-public/, which no longer serves files
+  (the bucket's billing account was disabled). See assets/codelab-elements/
+  and scripts/build-codelab.sh, which copies that folder next to every
+  exported deck as ./codelab-elements/.
+- Removed <google-codelab-analytics> and the support.google.com feedback
+  widget script; this repo doesn't use Google Analytics or the in-app
+  feedback API.
+-->
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>{{.Meta.Title}}</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab id="{{.Meta.ID}}"
+                  title="{{.Meta.Title}}"
+                  environment="{{index .Env}}"
+                  feedback-link="{{.Meta.Feedback}}">
+    {{range $i, $e := .Steps}}{{if matchEnv .Tags $.Env}}
+      <google-codelab-step label="{{.Title}}" duration="{{.Duration.Minutes}}">
+        {{.Content | renderHTML $.Context}}
+      </google-codelab-step>
+    {{end}}{{end}}
+  </google-codelab>
+
+  <script src="codelab-elements/native-shim.js"></script>
+  <script src="codelab-elements/custom-elements.min.js"></script>
+  <script src="codelab-elements/prettify.js"></script>
+  <script src="codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
