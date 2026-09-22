@@ -957,6 +957,63 @@ Expose API documentation at /api-docs.
 
       </google-codelab-step>
     
+      <google-codelab-step label="Introduction to Microsoft Foundry" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<p>Microsoft Foundry (formerly Azure AI Studio) is a unified platform for discovering, testing, deploying, and building on top of AI models and agents, all in one workspace.</p>
+<p class="image-container"><img alt="Foundry home" src="img/2913e198a1d0351b.png"></p>
+<p>From the home page you can:</p>
+<ul>
+<li><strong>Use a model</strong> — manage existing endpoints or deploy a new one</li>
+<li><strong>Build an agent</strong> — configure instructions, tools, and knowledge without writing code</li>
+<li><strong>Code an agent</strong> — define and deploy an agent in code using the Microsoft Agent Framework for full control</li>
+<li>Grab your <strong>API key</strong>, <strong>project endpoint</strong>, and <strong>Azure OpenAI endpoint</strong> directly from the dashboard</li>
+</ul>
+<h2 is-upgraded>Model catalog</h2>
+<p>Foundry gives access to a large, multi-vendor model catalog (248+ models at the time of writing), including models from OpenAI, Anthropic, Microsoft, DeepSeek, xAI, Cohere, and more. You can filter by availability, features, inference tasks, and more, then compare or test models side by side in the playground.</p>
+<p class="image-container"><img alt="Foundry model catalog" src="img/424d6187d256c624.png"></p>
+<h2 is-upgraded>Deployments</h2>
+<p>Once a model is deployed, Foundry gives you a ready-to-use endpoint, API key, and code snippet (Python, etc.) to call it directly from your application.</p>
+<p class="image-container"><img alt="Foundry deployment" src="img/5041d817f3ffc638.png"></p>
+<aside class="special"><p>Foundry is a good option when you need to standardize model access, compare providers, or build custom agents outside of an IDE-centric workflow like Copilot in VS Code.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Using Copilot on GitHub.com" duration="15">
+        <p><em>Dur: 15&#39;</em></p>
+<p>Besides VS Code, GitHub Copilot is also available directly on <a href="https://github.com/copilot" target="_blank">github.com</a>. This gives you a browser-based entry point to Copilot that doesn&#39;t require a local dev environment.</p>
+<p class="image-container"><img alt="Copilot chat on github.com" src="img/cc3e3a97fbb55526.png"></p>
+<p>From this page you can:</p>
+<ul>
+<li>Start a <strong>new chat</strong> to ask questions about a repository</li>
+<li>Use quick actions like <strong>Create issue</strong>, <strong>Repo overview</strong>, <strong>Performance issues</strong>, and <strong>Recent PRs</strong></li>
+<li>Browse your <strong>Agent sessions</strong> — background tasks Copilot has worked on, with their status (draft, ready for review, merged)</li>
+<li>Download <strong>the GitHub Copilot app</strong>, an agent-driven desktop experience built natively on GitHub</li>
+</ul>
+<h2 is-upgraded>Giving Copilot a background task</h2>
+<p>Switching to <strong>Agent</strong> mode lets you hand Copilot a task to run against a specific repository and branch, without you actively driving it.</p>
+<p class="image-container"><img alt="Copilot agent mode" src="img/887ae189ba2719ca.png"></p>
+<p>Useful starting points:</p>
+<ul>
+<li><strong>Debug</strong> an issue</li>
+<li><strong>Explain repository</strong> structure</li>
+<li><strong>Improve my workflow</strong></li>
+<li><strong>Create a plan</strong> before implementation</li>
+</ul>
+<h2 is-upgraded>What Copilot does with the task</h2>
+<p>Once assigned, Copilot works autonomously: it creates its own branch...</p>
+<p class="image-container"><img alt="Copilot branch" src="img/d209d43e3a2a9d95.png"></p>
+<p>...commits its changes, and opens a draft pull request describing what it did and why.</p>
+<p class="image-container"><img alt="Copilot PR" src="img/3365c5236b7bb8a1.png"></p>
+<p>Copilot can also be added as a <strong>reviewer</strong> on a pull request, giving automated code review feedback alongside human reviewers.</p>
+<p class="image-container"><img alt="Copilot as reviewer" src="img/3f9de75c41c192fe.png"></p>
+<aside class="warning"><p>Copilot uses AI — always check its commits and review comments for mistakes before merging.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="SDD frameworks" duration="15">
         <p><em>Dur: 15&#39;</em></p>
 <h2 is-upgraded>1. Why use framework</h2>

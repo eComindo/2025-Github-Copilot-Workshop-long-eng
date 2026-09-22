@@ -1333,6 +1333,92 @@ The goal is:
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Introduction to Microsoft Foundry
+Duration: 10
+
+*Dur: 10'*
+
+Microsoft Foundry (formerly Azure AI Studio) is a unified platform for discovering, testing, deploying, and building on top of AI models and agents, all in one workspace.
+
+![Foundry home](image_source/foundry_overview_001.png)
+
+From the home page you can:
+- **Use a model** — manage existing endpoints or deploy a new one
+- **Build an agent** — configure instructions, tools, and knowledge without writing code
+- **Code an agent** — define and deploy an agent in code using the Microsoft Agent Framework for full control
+- Grab your **API key**, **project endpoint**, and **Azure OpenAI endpoint** directly from the dashboard
+
+### Model catalog
+
+Foundry gives access to a large, multi-vendor model catalog (248+ models at the time of writing), including models from OpenAI, Anthropic, Microsoft, DeepSeek, xAI, Cohere, and more. You can filter by availability, features, inference tasks, and more, then compare or test models side by side in the playground.
+
+![Foundry model catalog](image_source/foundry_overview_002.png)
+
+### Deployments
+
+Once a model is deployed, Foundry gives you a ready-to-use endpoint, API key, and code snippet (Python, etc.) to call it directly from your application.
+
+![Foundry deployment](image_source/foundry_overview_003.png)
+
+> aside positive
+>
+> Foundry is a good option when you need to standardize model access, compare providers, or build custom agents outside of an IDE-centric workflow like Copilot in VS Code.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+## Using Copilot on GitHub.com
+Duration: 15
+
+*Dur: 15'*
+
+Besides VS Code, GitHub Copilot is also available directly on [github.com](https://github.com/copilot). This gives you a browser-based entry point to Copilot that doesn't require a local dev environment.
+
+![Copilot chat on github.com](image_source/overview_copilot_001.png)
+
+From this page you can:
+- Start a **new chat** to ask questions about a repository
+- Use quick actions like **Create issue**, **Repo overview**, **Performance issues**, and **Recent PRs**
+- Browse your **Agent sessions** — background tasks Copilot has worked on, with their status (draft, ready for review, merged)
+- Download **the GitHub Copilot app**, an agent-driven desktop experience built natively on GitHub
+
+### Giving Copilot a background task
+
+Switching to **Agent** mode lets you hand Copilot a task to run against a specific repository and branch, without you actively driving it.
+
+![Copilot agent mode](image_source/overview_copilot_002.png)
+
+Useful starting points:
+- **Debug** an issue
+- **Explain repository** structure
+- **Improve my workflow**
+- **Create a plan** before implementation
+
+### What Copilot does with the task
+
+Once assigned, Copilot works autonomously: it creates its own branch...
+
+![Copilot branch](image_source/overview_copilot_003.png)
+
+...commits its changes, and opens a draft pull request describing what it did and why.
+
+![Copilot PR](image_source/overview_copilot_004.png)
+
+Copilot can also be added as a **reviewer** on a pull request, giving automated code review feedback alongside human reviewers.
+
+![Copilot as reviewer](image_source/overview_copilot_005.png)
+
+> aside negative
+>
+> Copilot uses AI — always check its commits and review comments for mistakes before merging.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 ## SDD frameworks
 Duration: 15
 
