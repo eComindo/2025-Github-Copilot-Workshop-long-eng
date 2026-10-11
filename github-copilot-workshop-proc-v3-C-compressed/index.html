@@ -28,12 +28,19 @@
         <p><em>Dur: 10&#39;</em></p>
 <p>Welcome. In this workshop, participants build a real-world procurement system MVP using GitHub Copilot in VS Code and GitHub.</p>
 <p class="image-container"><img alt="Octocat" src="img/2584e5b4363ade8f.png"></p>
-<p>We are going to work on an existing procurement system. This system already has two main modules/pages:</p>
+<p>We are going to work on an <strong>existing procurement system</strong>.</p>
+<p>This system already has two main modules/pages:</p>
 <ul>
 <li>Dashboard</li>
 <li><strong>PR (Purchase Requisition)</strong> module</li>
 </ul>
-<p>The aim is to build the <strong>PO (Purchase Order)</strong> module. Another module <strong>GR (Goods Receipts)</strong> is open for exploration. The tables for PO and GR modules are already in the database (after migration).</p>
+<p>The aim is to finish the system by adding two more modules:</p>
+<ul>
+<li><strong>PO (Purchase Order)</strong></li>
+<li><strong>GR (Goods Receipts)</strong></li>
+</ul>
+<aside class="special"><p>The tables for PO and GR modules are already in the database (after migration).</p>
+</aside>
 <p>Application scope:</p>
 <ul>
 <li>Baseline provided: <em>Home/Dashboard</em> &amp; <em>PR module</em> (list/create/detail pages and backend APIs)</li>
@@ -66,9 +73,9 @@
 </ul>
 <p>In this app, the workflow chain would be:</p>
 <ol type="1">
-<li>Purchase Requisition (PR) → internal request for goods/items</li>
-<li>Purchase Order (PO) → official order sent to supplier to buy goods/items</li>
-<li>Goods Receipt (GR) → record that goods/items were received</li>
+<li><strong>Purchase Requisition (PR)</strong> → internal request for goods/items</li>
+<li><strong>Purchase Order (PO)</strong> → official order sent to supplier to buy goods/items</li>
+<li><strong>Goods Receipt (GR)</strong> → record that goods/items were received</li>
 </ol>
 <p class="image-container"><img alt="Flow" src="img/a2f74db48de28743.png"></p>
 <h2 is-upgraded>Definitions and Functions</h2>
@@ -283,7 +290,7 @@ git checkout -b feature/po-module
 <p>Ensure project references:</p>
 <ul>
 <li><code>docs/plan.md</code></li>
-<li><code>AGENTS.md</code></li>
+<li><code>.github/copilot-instructions.md</code></li>
 </ul>
 <h2 is-upgraded>2. Prepare the database</h2>
 <p>Bootstrap files used by all participants:</p>
@@ -361,7 +368,7 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 <p>Make sure you are in <strong>Ask</strong> mode, then enter this prompt:</p>
 <pre><code language="language-prompt" class="language-prompt">Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
 </code></pre>
-<p>Manually open <code>AGENTS.md</code>. Based on the answer, add instructions to make sure the content of <code>AGENTS.md</code> is more consistent with project standards</p>
+<p>Manually open <code>copilot-instructions.md</code>. Based on the answer, add instructions to make sure its content is more consistent with project standards</p>
 <p>You can also add rules such as:</p>
 <ul>
 <li>Always check <code>docs/plan.md</code> before large changes</li>
@@ -369,10 +376,10 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 <li>Use descriptive naming</li>
 <li>Update docs when introducing new flows</li>
 </ul>
-<aside class="special"><p>What makes a good <code>AGENTS.md</code>? You have to, at least, make sure it contains the product context &amp; tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the <code>.env</code> file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.</p>
+<aside class="special"><p>What makes a good <code>copilot-instructions.md</code>? You have to, at least, make sure it contains the product context &amp; tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the <code>.env</code> file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.</p>
 <p>And it is an evolving file. So you can always improve this file alongside the project.</p>
 </aside>
-<p>Example of the <code>AGENTS.md</code> file we are using for this project:</p>
+<p>Example of the <code>copilot-instructions.md</code> file we are using for this project:</p>
 <p class="image-container"><img alt="instruction" src="img/d9db341d0439f9cc.png"></p>
 
 
@@ -394,6 +401,28 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 <li>When working on something new, ask for a plan first. Afterwards, implement in small checkpoints</li>
 <li>Always validate the agent&#39;s work. You can outsource your code, but you must not outsource your understanding.</li>
 </ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Goodbye coders, hello builders" duration="10">
+        <p><em>Dur: 10&#39;</em></p>
+<ul>
+<li>The way we build software undergoes fundamental shifts from time to time</li>
+<li>Code is not the only useful unit of work anymore</li>
+<li>When code becomes cheaper to produce, the surrounding decisions become more visible</li>
+<li>The new development loop</li>
+<li>Correcting a flawed plan is cheaper than reviewing a large flawed implementation.</li>
+<li>More output requires more judgment</li>
+<li>Knowledge of data structures, networking, security, databases, distributed systems, and software design helps an engineer recognize when an agent&#39;s confident answer is subtly wrong</li>
+<li>We must change how engineers learn</li>
+<li>But our professional identity should not be tied to the mechanical act of typing code</li>
+</ul>
+<h2 is-upgraded>Conclusion: AI supplies speed and breadth; the engineer supplies purpose and judgment</h2>
+<aside class="special"><p><a href="https://arie-m-prasetyo.medium.com/goodbye-coders-hello-builders-1d6cc6a30474" target="_blank">Source</a></p>
+</aside>
+<aside class="special"><p><a href="https://www.youtube.com/watch?v=vDjW_dRyKXY&t=2368s" target="_blank">Inspiration</a></p>
+</aside>
 
 
       </google-codelab-step>
@@ -437,7 +466,7 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 <li>Mid-tier models (Claude Sonnet, GPT-5.4) are workhorses: they handle most implementation tasks efficiently. Use them for writing code, generating content, refactoring.</li>
 <li>Smaller, faster models (Claude Haiku, GPT-5 mini) are excellent for repetitive tasks: updating documentation, adding simple features, running mechanical transformations. Use them for tasks where speed matters more than depth.</li>
 </ul>
-<h3 is-upgraded>8. Use AGENTS.md to stop the agent early</h3>
+<h3 is-upgraded>8. Use copilot-instructions.md to stop the agent early</h3>
 <p>A subtle but important detail: most agents will keep generating output until they hit their token limit. They are optimistic by default. Your persistent instruction file should include explicit stopping criteria.</p>
 <h2 is-upgraded>Do not over-rely on agents for everything</h2>
 <h3 is-upgraded>9. Use deterministic tools when they exist</h3>
@@ -473,8 +502,10 @@ DATABASE_URL=postgres://workshop:workshop@localhost:5433/procurement_mvp
 </code></pre>
 <p class="image-container"><img alt="rtk_gain" src="img/de4cae278b163ceb.png"></p>
 <h3 is-upgraded>Usage</h3>
-<p>Add these lines into <code>AGENTS.md</code>:</p>
+<p>Add these lines into <code>copilot-instructions.md</code>:</p>
 <p class="image-container"><img alt="rtk" src="img/b8ad52cf5921c25.png"></p>
+<aside class="special"><p>Complete example of instructions focusing on token optimization is available <a href="https://gist.github.com/arisetyo/8d6282bb1035ffb87c7cdb5341e944ce" target="_blank">here</a>.</p>
+</aside>
 <p><strong>Example text:</strong></p>
 <aside class="warning"><p> RTK — Token-Optimized CLI</p>
 <p><strong>rtk</strong> is a CLI proxy that filters and compresses command outputs, saving 60-90% tokens.</p>
@@ -551,8 +582,8 @@ graphify-out/
 </aside>
 <p>Graphify will look at the code files (e.g., <code>.py</code>, <code>.js</code>, <code>.go</code>, <code>.rs</code>, etc.), pull them through the local syntax tree parser, and write the final knowledge graph directly to <code>graphify-out/graph.json</code> without making a single network call.</p>
 <h3 is-upgraded>Usage</h3>
-<p>Add this to <code>AGENTS.md</code>:</p>
-<pre><code language="language-prompt" class="language-prompt">## Codebase Context &amp; Knowledge Graph Protocol
+<p>Add this to <code>copilot-instructions.md</code>:</p>
+<pre><code>## Codebase Context &amp; Knowledge Graph Protocol
 
 You have access to a pre-computed AST knowledge graph of this repository at `graphify-out/graph.json`. To minimize context window clutter, prevent hallucinations, and accurately map cross-file dependencies, you MUST follow these routing rules:
 
@@ -572,7 +603,8 @@ You have access to a pre-computed AST knowledge graph of this repository at `gra
     
       <google-codelab-step label="The Problem with Vibe Coding" duration="10">
         <p><em>Dur: 10&#39;</em></p>
-<p><img alt="vcdead" src="img/c893a79309758b1e.webp"><em>Image source: </em><a href="https://ai.plainenglish.io/vibe-coding-is-dead-heres-what-replaced-it-aa7d2889b05a" target="_blank"><em>Vibe Coding Is Dead. Here&#39;s What Replaced It.</em></a></p>
+<p class="image-container"><img alt="vcdead" src="img/c893a79309758b1e.webp"></p>
+<p><em>Image source: </em><a href="https://ai.plainenglish.io/vibe-coding-is-dead-heres-what-replaced-it-aa7d2889b05a" target="_blank"><em>Vibe Coding Is Dead. Here&#39;s What Replaced It.</em></a></p>
 <p>You probably have experienced this pattern:</p>
 <ul>
 <li>You write a prompt describing roughly what you want</li>
@@ -889,7 +921,7 @@ Save as markdown.
 <li>Create a file: <code>.github/prompts/explain-code.prompt.md</code></li>
 <li>Add this into the file:</li>
 </ol>
-<pre><code language="language-prompt" class="language-prompt">---
+<pre><code language="language-text" class="language-text">---
 agent: &#39;agent&#39;
 description: &#39;Generate a clear code explanation with examples&#39;
 ---
@@ -917,7 +949,7 @@ Use clear, simple language and avoid unnecessary jargon.
 <li>Create a file: <code>.github/agents/readme-creator.agent.md</code></li>
 <li>Add this into the file:</li>
 </ol>
-<pre><code language="language-prompt" class="language-prompt">---
+<pre><code language="language-text" class="language-text">---
 name: readme-creator
 description: Agent specializing in creating and improving README files
 ---

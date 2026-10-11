@@ -27,6 +27,9 @@ change log:
 21 September 2026
 - using the latest local customizable-style build-process
 
+12 October 2026
+- minor content adjustments
+
 # GitHub Copilot Workshop: Build a Procurement System MVP
 
 <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
@@ -41,11 +44,19 @@ Welcome. In this workshop, participants build a real-world procurement system MV
 
 ![Octocat](image_source/octocat-copilot.png)
 
-We are going to work on an existing procurement system. This system already has two main modules/pages:
+We are going to work on an **existing procurement system**.
+
+This system already has two main modules/pages:
 - Dashboard
 - **PR (Purchase Requisition)** module
 
-The aim is to build the **PO (Purchase Order)** module. Another module **GR (Goods Receipts)** is open for exploration. The tables for PO and GR modules are already in the database (after migration).
+The aim is to finish the system by adding two more modules:
+- **PO (Purchase Order)**
+- **GR (Goods Receipts)**
+
+> aside positive
+>
+> The tables for PO and GR modules are already in the database (after migration).
 
 Application scope:
 - Baseline provided: *Home/Dashboard* & *PR module* (list/create/detail pages and backend APIs)
@@ -84,9 +95,9 @@ In simple terms, it helps answer:
 
 In this app, the workflow chain would be:
 
-1. Purchase Requisition (PR) → internal request for goods/items
-2. Purchase Order (PO) → official order sent to supplier to buy goods/items
-3. Goods Receipt (GR) → record that goods/items were received
+1. **Purchase Requisition (PR)** → internal request for goods/items
+2. **Purchase Order (PO)** → official order sent to supplier to buy goods/items
+3. **Goods Receipt (GR)** → record that goods/items were received
 
 ![Flow](image_source/flow.png)
 
@@ -360,7 +371,7 @@ git checkout -b feature/po-module
 
 Ensure project references:
 - `docs/plan.md`
-- `AGENTS.md`
+- `.github/copilot-instructions.md`
 
 ### 2. Prepare the database
 
@@ -472,7 +483,7 @@ Make sure you are in **Ask** mode, then enter this prompt:
 Review this repository instruction file and improve it with a concise checklist for implementation quality, testing, and documentation discipline.
 ```
 
-Manually open `AGENTS.md`. Based on the answer, add instructions to make sure the content of `AGENTS.md` is more consistent with project standards
+Manually open `copilot-instructions.md`. Based on the answer, add instructions to make sure its content is more consistent with project standards
 
 You can also add rules such as:
 - Always check `docs/plan.md` before large changes
@@ -482,11 +493,11 @@ You can also add rules such as:
 
 > aside positive
 >
-> What makes a good `AGENTS.md`? You have to, at least, make sure it contains the product context & tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the `.env` file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.
+> What makes a good `copilot-instructions.md`? You have to, at least, make sure it contains the product context & tech stack. You can also add code convention, unit testing strategy, or tell the agent to never add the `.env` file. This file should contain all the conventions, rules, and exceptions that you want the agent to follow.
 > 
 > And it is an evolving file. So you can always improve this file alongside the project.
 
-Example of the `AGENTS.md` file we are using for this project:
+Example of the `copilot-instructions.md` file we are using for this project:
 
 ![instruction](image_source/copilot-instructions.png)
 
@@ -514,6 +525,37 @@ Working rule for this workshop:
 1. If possible, attach relevant docs (markdown plans, actual code files, screenshots, etc.) with every prompt
 2. When working on something new, ask for a plan first. Afterwards, implement in small checkpoints
 3. Always validate the agent's work. You can outsource your code, but you must not outsource your understanding.
+
+---
+
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = SLIDE = = = = = = = = = = = = = = = -->
+<!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+
+## Goodbye coders, hello builders
+Duration: 10
+
+*Dur: 10'*
+
+- The way we build software undergoes fundamental shifts from time to time
+- Code is not the only useful unit of work anymore
+- When code becomes cheaper to produce, the surrounding decisions become more visible
+- The new development loop
+- Correcting a flawed plan is cheaper than reviewing a large flawed implementation.
+- More output requires more judgment
+- Knowledge of data structures, networking, security, databases, distributed systems, and software design helps an engineer recognize when an agent’s confident answer is subtly wrong
+- We must change how engineers learn
+- But our professional identity should not be tied to the mechanical act of typing code
+
+### Conclusion: AI supplies speed and breadth; the engineer supplies purpose and judgment
+
+> aside positive
+> 
+> [Source](https://arie-m-prasetyo.medium.com/goodbye-coders-hello-builders-1d6cc6a30474)
+
+> aside positive
+>
+> [Inspiration](https://www.youtube.com/watch?v=vDjW_dRyKXY&t=2368s)
 
 ---
 
@@ -589,7 +631,7 @@ This is a very important notion that most developers often ignore: not every tas
 - Mid-tier models (Claude Sonnet, GPT-5.4) are workhorses: they handle most implementation tasks efficiently. Use them for writing code, generating content, refactoring.
 - Smaller, faster models (Claude Haiku, GPT-5 mini) are excellent for repetitive tasks: updating documentation, adding simple features, running mechanical transformations. Use them for tasks where speed matters more than depth.
 
-#### 8. Use AGENTS.md to stop the agent early
+#### 8. Use copilot-instructions.md to stop the agent early
 A subtle but important detail: most agents will keep generating output until they hit their token limit. They are optimistic by default.
 Your persistent instruction file should include explicit stopping criteria.
 
@@ -652,9 +694,13 @@ rtk gain
 
 #### Usage
 
-Add these lines into `AGENTS.md`:
+Add these lines into `copilot-instructions.md`:
 
 ![rtk](image_source/token_opt.png)
+
+> aside positive
+>
+> Complete example of instructions focusing on token optimization is available [here](https://gist.github.com/arisetyo/8d6282bb1035ffb87c7cdb5341e944ce).
 
 **Example text:**
 
@@ -768,9 +814,9 @@ Graphify will look at the code files (e.g., `.py`, `.js`, `.go`, `.rs`, etc.), p
 
 #### Usage
 
-Add this to `AGENTS.md`:
+Add this to `copilot-instructions.md`:
 
-```prompt
+```
 ## Codebase Context & Knowledge Graph Protocol
 
 You have access to a pre-computed AST knowledge graph of this repository at `graphify-out/graph.json`. To minimize context window clutter, prevent hallucinations, and accurately map cross-file dependencies, you MUST follow these routing rules:
@@ -802,6 +848,7 @@ Duration: 10
 *Dur: 10'*
 
 ![vcdead](image_source/vcdead.webp)
+
 *Image source: [Vibe Coding Is Dead. Here’s What Replaced It.](https://ai.plainenglish.io/vibe-coding-is-dead-heres-what-replaced-it-aa7d2889b05a)*
 
 
@@ -1245,7 +1292,7 @@ Prompt files define reusable **prompts for specific tasks** that you can invoke 
 1. Create a file: `.github/prompts/explain-code.prompt.md`
 2. Add this into the file:
 
-```prompt
+```text
 ---
 agent: 'agent'
 description: 'Generate a clear code explanation with examples'
@@ -1279,7 +1326,7 @@ Other than the default agent provided by Copilot, you can create your own custom
 1. Create a file: `.github/agents/readme-creator.agent.md`
 2. Add this into the file:
 
-```prompt
+```text
 ---
 name: readme-creator
 description: Agent specializing in creating and improving README files
