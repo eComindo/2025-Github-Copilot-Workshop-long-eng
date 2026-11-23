@@ -15,6 +15,9 @@ Changes from upstream:
   theme-color to Ecomindo's brand blue. See the "Ecomindo brand theme"
   section at the end of assets/codelab-elements/codelab-elements.css for
   the rest of the reskin.
+- The Ecomindo logo at the top of the sidebar (#drawer) is added in that same
+  CSS section via #drawer ol::before, not here: #drawer is generated at runtime
+  by codelab-elements.js, so it doesn't exist in this template.
 -->
 <!doctype html>
 <html>

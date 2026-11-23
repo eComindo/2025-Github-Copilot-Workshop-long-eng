@@ -81,6 +81,23 @@ google-codelab #drawer ol li[completed] .step:before {
   background-color: var(--ecomindo-blue);
 }
 
+/* Small, subtle Ecomindo logo at the top of the sidebar's step list. Done as
+   a pseudo-element (not markup in claat-template.html) because
+   codelab-elements.js builds #drawer at runtime and replaces its contents on
+   render, which would wipe any injected node. It hangs off the <ol> (the
+   scroll container) rather than #drawer, so it scrolls away with the steps
+   instead of staying pinned. Not an <li>, so step numbering is unaffected.
+   ecomindo_logo.svg ships in this folder (copied from image_source/) and is
+   synced into every deck by scripts/build-codelab.sh. */
+google-codelab #drawer ol::before {
+  content: "";
+  display: block;
+  height: 16px;
+  margin: 4px 10px 12px;
+  background: url("ecomindo_logo.svg") left center / contain no-repeat;
+  opacity: 0.6;
+}
+
 /* Prev/Next are redundant with arrow-key navigation (built into
    google-codelab's own keydown handler, independent of these buttons) -
    hide them but leave #done alone, since finishing a step has no

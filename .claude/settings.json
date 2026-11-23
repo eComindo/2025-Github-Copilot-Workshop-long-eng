@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk ls *)",
+      "Bash(rtk grep *)",
+      "Bash(rtk read *)",
+      "Bash(/usr/bin/python3 -I -)",
+      "Bash(/usr/bin/grep -n \"drawer\" assets/codelab-elements/codelab-elements.css)",
+      "Bash(/usr/bin/grep -n \"Ecomindo\" assets/codelab-elements/codelab-elements.css)",
+      "Bash(rtk wc *)",
+      "Bash(cp image_source/ecomindo_logo.svg assets/codelab-elements/ecomindo_logo.svg && rtk ls assets/codelab-elements)"
+    ],
+    "additionalDirectories": [
+      "/Users/Arie/Workspace/ecom/copilot_workshops/presentation_decks/000_Github-Copilot-Workshop-long-eng/image_source"
+    ]
+  }
+}
