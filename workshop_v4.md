@@ -153,7 +153,8 @@ Duration: 10
 
 How do LLMs like GPT or Claude work? LLMs predict the next token based on the context provided to them. So, better context gives better output quality.
 
-Prompt anatomy in GitHub Copilot:
+### Prompt anatomy in GitHub Copilot
+
 - System instructions: global behavior and constraints
 - User message: immediate task objective, the prompt written by the user
 - Repository context: code, docs, config, the information available in the repo/workspace
@@ -1447,7 +1448,7 @@ Prompt:
 ```prompt
 - Create documentation for how the current application works.
 - Add a user flow chart and sequence diagram in Mermaid.
-- Save as markdown.
+- Save as `docs/product-technical-documentation.md`.
 ```
 
 Use your favorite markdown viewer plugin to check the result, including the charts.

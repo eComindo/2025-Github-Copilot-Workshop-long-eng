@@ -1,0 +1,23 @@
+{
+  "environment": "web",
+  "format": "/Users/Arie/Workspace/ecom/copilot_workshops/presentation_decks/000_Github-Copilot-Workshop-long-eng/build/claat-template.html",
+  "prefix": "https://storage.googleapis.com",
+  "updated": "2026-11-23T15:24:03+07:00",
+  "id": "github-copilot-workshop-v4-halfday",
+  "duration": 435,
+  "title": "GitHub Copilot Workshop: Build a Procurement System MVP",
+  "summary": "GitHub Copilot Workshop - Procurement MVP",
+  "source": "workshop_v4_halfday.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "ai",
+    "development"
+  ],
+  "tags": [
+    "web"
+  ],
+  "url": "github-copilot-workshop-v4-halfday"
+}
